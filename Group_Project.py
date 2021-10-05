@@ -7,4 +7,3 @@ class administration():
         self.users =users
         self.password = password
 
-笑死
