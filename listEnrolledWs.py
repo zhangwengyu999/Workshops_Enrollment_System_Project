@@ -1,4 +1,10 @@
 def listEnrolledWs(sID):
+    """
+    function to list all workshops enrolled by a studnet
+
+    parameter:
+        - sID: a String of the number of student's ID
+    """
     sIDfile = sID+".txt"
     file = open(sIDfile,mode='r')
     readLine = file.readlines()

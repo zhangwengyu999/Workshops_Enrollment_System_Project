@@ -1,4 +1,10 @@
 def findByRemaining(inRemaining):
+    """
+    function to find workshops according to thier remaining quotas , and print out
+
+    parameter:
+        - inName: a String of the workshop's remaining quotas
+    """
     file = open('workshop.txt',mode='r')
     readLine = file.readlines()
     outList = []

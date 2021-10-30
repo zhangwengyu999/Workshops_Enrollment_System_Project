@@ -1,4 +1,10 @@
 def findByDateTime(inDT):
+    """
+    function to find workshops according to thier date and time , and print out
+
+    parameter:
+        - inName: a String of the workshop's date and time
+    """
     file = open('workshop.txt',mode='r')
     readLine = file.readlines()
     outList = []

@@ -1,4 +1,10 @@
 def findByLocation(inLocatin):
+    """
+    function to find workshops according to thier location , and print out
+
+    parameter:
+        - inName: a String of the workshop's location
+    """
     file = open('workshop.txt',mode='r')
     readLine = file.readlines()
     outList = []

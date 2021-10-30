@@ -1,4 +1,7 @@
 def listAll():
+    """
+    function to print all workshops to studnets
+    """
     file = open('workshop.txt',mode='r')
     readLine = file.readlines()
     outList = []

@@ -1,4 +1,10 @@
 def findBywID(inwID):
+    """
+    function to find a workshop according to its ID, and print out
+
+    parameter:
+        - inwID: a String of the workshop's ID
+    """
     file = open('workshop.txt',mode='r')
     readLine = file.readlines()
     outList = []

@@ -1,6 +1,10 @@
-def updateWs(wID,infoList):
+def updateLocation(wID,inLocation):
     """
-    function to update a workshop by the adminnistator
+    function to update a workshop's location by the adminnistator
+
+    parameter:
+        - wID: a String of the number of workshop's ID
+        - inLocation: the location to update to that workshop
     """
     file = open('workshop.txt',mode='r')
     readLine = file.readlines()
@@ -13,7 +17,7 @@ def updateWs(wID,infoList):
     outDict = dict(outList)
     file.close()
 
-    outDict[wID] = infoList
+    outDict[wID][1] = inLocation
 
     file = open('workshop.txt',mode='w+')
     for d in outDict:
@@ -21,4 +25,4 @@ def updateWs(wID,infoList):
         file.write(writeStr)
     file.close
 
-updateWs('W000001',['workshop2','pq604b','1300-1400','50','50'])
+updateLocation("W000000","pq604b")

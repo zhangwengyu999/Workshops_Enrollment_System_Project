@@ -1,6 +1,10 @@
-def updateWs(wID,infoList):
+def updateQuota(wID,inQuota):
     """
-    function to update a workshop by the adminnistator
+    function to update a workshop's quotas by the adminnistator
+
+    parameter:
+        - wID: a String of the number of workshop's ID
+        - inQuota: the quotas to update to taht workshop
     """
     file = open('workshop.txt',mode='r')
     readLine = file.readlines()
@@ -13,7 +17,7 @@ def updateWs(wID,infoList):
     outDict = dict(outList)
     file.close()
 
-    outDict[wID] = infoList
+    outDict[wID][3] = inQuota
 
     file = open('workshop.txt',mode='w+')
     for d in outDict:
@@ -21,4 +25,4 @@ def updateWs(wID,infoList):
         file.write(writeStr)
     file.close
 
-updateWs('W000001',['workshop2','pq604b','1300-1400','50','50'])
+updateQuota("W000000","200")
