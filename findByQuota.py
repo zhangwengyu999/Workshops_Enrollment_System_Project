@@ -1,4 +1,10 @@
 def findByQuota(inQuota):
+    """
+    function to find workshops according to thier quotas , and print out
+
+    parameter:
+        - inName: a String of the workshop's quotas
+    """
     file = open('workshop.txt',mode='r')
     readLine = file.readlines()
     outList = []

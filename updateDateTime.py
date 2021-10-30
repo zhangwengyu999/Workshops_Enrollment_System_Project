@@ -1,6 +1,10 @@
-def updateWs(wID,infoList):
+def updateDateTime(wID,inTime):
     """
-    function to update a workshop by the adminnistator
+    function to update a workshop's date and time by the adminnistator
+
+    parameter:
+        - wID: a String of the number of workshop's ID
+        - inTime: the date and time to update to that workshop
     """
     file = open('workshop.txt',mode='r')
     readLine = file.readlines()
@@ -13,7 +17,7 @@ def updateWs(wID,infoList):
     outDict = dict(outList)
     file.close()
 
-    outDict[wID] = infoList
+    outDict[wID][2] = inTime
 
     file = open('workshop.txt',mode='w+')
     for d in outDict:
@@ -21,4 +25,4 @@ def updateWs(wID,infoList):
         file.write(writeStr)
     file.close
 
-updateWs('W000001',['workshop2','pq604b','1300-1400','50','50'])
+updateDateTime("W000000","1000-1100")

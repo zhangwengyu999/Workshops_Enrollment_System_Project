@@ -1,4 +1,10 @@
 def findByName(inName):
+    """
+    function to find workshops according to thier name , and print out
+
+    parameter:
+        - inName: a String of the workshop's name
+    """
     file = open('workshop.txt',mode='r')
     readLine = file.readlines()
     outList = []
