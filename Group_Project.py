@@ -62,6 +62,8 @@ class administrator():
                     times+=1
             else:
                 print("You have already input password for three times! Please input from the start")
+        else:
+            print("users is not exist!")
                     
         
 
@@ -227,4 +229,3 @@ def main():
             student.addusers()
 
 main()
-
