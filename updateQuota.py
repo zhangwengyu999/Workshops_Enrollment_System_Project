@@ -17,7 +17,10 @@ def updateQuota(wID,inQuota):
     outDict = dict(outList)
     file.close()
 
-    outDict[wID][3] = inQuota
+    if (wID in outDict):
+        outDict[wID][3] = inQuota
+    else:
+        print("Workshop ID:{0} not found! Please try again!".format(wID))
 
     file = open('workshop.txt',mode='w+')
     for d in outDict:

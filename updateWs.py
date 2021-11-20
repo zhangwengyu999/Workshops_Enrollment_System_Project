@@ -13,7 +13,10 @@ def updateWs(wID,infoList):
     outDict = dict(outList)
     file.close()
 
-    outDict[wID] = infoList
+    if (wID in outDict):
+        outDict[wID] = infoList
+    else:
+        print("Workshop ID:{0} not found! Please try again!".format(wID))
 
     file = open('workshop.txt',mode='w+')
     for d in outDict:

@@ -1,6 +1,5 @@
 from os import write
 
-#print(inWorkshop.readlines())
 def addWs(wID,infoString):
     inWorkshop = open("workshop.txt",'a+')
     inAllInfo = wID + ":" + infoString

@@ -17,7 +17,10 @@ def updateLocation(wID,inLocation):
     outDict = dict(outList)
     file.close()
 
-    outDict[wID][1] = inLocation
+    if (wID in outDict):
+        outDict[wID][1] = inLocation
+    else:
+        print("Workshop ID:{0} not found! Please try again!".format(wID))
 
     file = open('workshop.txt',mode='w+')
     for d in outDict:

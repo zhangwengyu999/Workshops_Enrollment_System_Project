@@ -16,8 +16,11 @@ def updateDateTime(wID,inTime):
         outList.append(lineList)
     outDict = dict(outList)
     file.close()
-
-    outDict[wID][2] = inTime
+    
+    if (wID in outDict):
+        outDict[wID][2] = inTime
+    else:
+        print("Workshop ID:{0} not found! Please try again!".format(wID))
 
     file = open('workshop.txt',mode='w+')
     for d in outDict:

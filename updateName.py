@@ -17,8 +17,12 @@ def updateName(wID,inName):
     outDict = dict(outList)
     file.close()
 
-    outDict[wID][0] = inName
 
+    if (wID in outDict):
+        outDict[wID][0] = inName
+    else:
+        print("Workshop ID:{0} not found! Please try again!".format(wID))
+        
     file = open('workshop.txt',mode='w+')
     for d in outDict:
         writeStr = d+":"+outDict[d][0]+" "+outDict[d][1]+" "+outDict[d][2]+" "+outDict[d][3]+" "+outDict[d][4]+"\n"

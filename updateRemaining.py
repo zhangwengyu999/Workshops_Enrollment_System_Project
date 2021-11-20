@@ -17,7 +17,10 @@ def updateRemaining(wID,inRemaining):
     outDict = dict(outList)
     file.close()
 
-    outDict[wID][4] = inRemaining
+    if (wID in outDict):
+        outDict[wID][4] = inRemaining
+    else:
+        print("Workshop ID:{0} not found! Please try again!".format(wID))
 
     file = open('workshop.txt',mode='w+')
     for d in outDict:
