@@ -6,19 +6,22 @@ class searchEngine():
     """
     isStudent = False
     
-    def setStudnet():
-        searchEngine.isStudent = True
-    def setAdmin():
+    def __init__(self):
         searchEngine.isStudent = False
     
-    def getWorkshopDataDict():
+    def setStudnet(self):
+        self.isStudent = True
+    def setAdmin(self):
+        self.isStudent = False
+    
+    def getWorkshopDataDict(self):
         """a function to get a dictionary from workshop text file
 
         Returns:
             dictionary: a dictionary from workshop text file (key: wID; value:[name,location,date,time,quota,remaining])
 
         """
-    
+
         file = open('workshop.txt',mode='r')
         readLine = file.readlines()
         outList = []
@@ -31,7 +34,7 @@ class searchEngine():
         file.close()
         return outDict
     
-    def findBywID(inwID):
+    def findBywID(self,inwID):
         """
         function to find a workshop according to its ID, and print out
 
@@ -39,13 +42,13 @@ class searchEngine():
             - inwID: a String of the workshop's ID
         """
         
-        outDict = searchEngine.getWorkshopDataDict()
+        outDict = self.getWorkshopDataDict()
         
         if (inwID not in outDict):
             print("NO workshop with ID: "+inwID)
         else:
             print("--------Found:--------s\n----------------------")
-            if (searchEngine.isStudent):
+            if (self.isStudent):
                 print("workshop ID: "+inwID
                         +"\nTitle:       "+outDict[inwID][0]
                         +"\nLocation:    "+outDict[inwID][1]
@@ -63,7 +66,7 @@ class searchEngine():
                         +"\nRemaining:   "+outDict[inwID][5]
                         +"\n----------------------")
     
-    def findByName(inName):
+    def findByName(self,inName):
         """
         function to find workshops according to thier name , and print out
 
@@ -71,14 +74,14 @@ class searchEngine():
             - inName: a String of the workshop's name
         """
         
-        outDict = searchEngine.getWorkshopDataDict()
+        outDict = self.getWorkshopDataDict()
         
         flag = False
         print("--------Found:--------\n----------------------")
         for d in outDict:
             if (outDict[d][0] == inName):
                 flag = True
-                if (searchEngine.isStudent):
+                if (self.isStudent):
                     print("workshop ID: "+d
                         +"\nTitle:       "+outDict[d][0]
                         +"\nLocation:    "+outDict[d][1]
@@ -98,7 +101,7 @@ class searchEngine():
         if (flag == False):
             print("NOT FOUND!")
             
-    def findByLocation(inLocatin):
+    def findByLocation(self,inLocatin):
         """
         function to find workshops according to thier location , and print out
 
@@ -106,14 +109,14 @@ class searchEngine():
             - inName: a String of the workshop's location
         """
         
-        outDict = searchEngine.getWorkshopDataDict()
+        outDict = self.getWorkshopDataDict()
         
         flag = False
         print("--------Found:--------\n----------------------")
         for d in outDict:
             if (outDict[d][1] == inLocatin):
                 flag = True
-                if (searchEngine.isStudent):
+                if (self.isStudent):
                     print("workshop ID: "+d
                         +"\nTitle:       "+outDict[d][0]
                         +"\nLocation:    "+outDict[d][1]
@@ -133,7 +136,7 @@ class searchEngine():
         if (flag == False):
             print("NOT FOUND!")
             
-    def findByDate(inD):
+    def findByDate(self,inD):
         """
         function to find workshops according to thier date , and print out
 
@@ -141,14 +144,14 @@ class searchEngine():
             - inName: a String of the workshop's date
         """
 
-        outDict = searchEngine.getWorkshopDataDict()
+        outDict = self.getWorkshopDataDict()
         
         flag = False
         print("--------Found:--------\n----------------------")
         for d in outDict:
             if (outDict[d][2] == inD):
                 flag = True
-                if (searchEngine.isStudent):
+                if (self.isStudent):
                     print("workshop ID: "+d
                         +"\nTitle:       "+outDict[d][0]
                         +"\nLocation:    "+outDict[d][1]
@@ -168,7 +171,7 @@ class searchEngine():
         if (flag == False):
             print("NOT FOUND!")
             
-    def findByTime(inT):
+    def findByTime(self,inT):
         """
         function to find workshops according to thier time , and print out
 
@@ -176,14 +179,14 @@ class searchEngine():
             - inName: a String of the workshop's time
         """
 
-        outDict = searchEngine.getWorkshopDataDict()
+        outDict = self.getWorkshopDataDict()
         
         flag = False
         print("--------Found:--------\n----------------------")
         for d in outDict:
             if (outDict[d][3] == inT):
                 flag = True
-                if (searchEngine.isStudent):
+                if (self.isStudent):
                     print("workshop ID: "+d
                         +"\nTitle:       "+outDict[d][0]
                         +"\nLocation:    "+outDict[d][1]
@@ -203,7 +206,7 @@ class searchEngine():
         if (flag == False):
             print("NOT FOUND!")
                 
-    def findByQuota(inQuota):
+    def findByQuota(self,inQuota):
         """
         function to find workshops according to thier quotas , and print out
 
@@ -211,7 +214,7 @@ class searchEngine():
             - inName: a String of the workshop's quotas
         """
         
-        outDict = searchEngine.getWorkshopDataDict()
+        outDict = self.getWorkshopDataDict()
         
         flag = False
         print("--------Found:--------\n----------------------")
@@ -229,7 +232,7 @@ class searchEngine():
         if (flag == False):
             print("NOT FOUND!")
             
-    def findByRemaining(inRemaining):
+    def findByRemaining(self,inRemaining):
         """
         function to find workshops according to thier remaining quotas , and print out
 
@@ -237,14 +240,14 @@ class searchEngine():
             - inName: a String of the workshop's remaining quotas
         """
         
-        outDict = searchEngine.getWorkshopDataDict()
+        outDict = self.getWorkshopDataDict()
         
         flag = False
         print("--------Found:--------\n----------------------")
         for d in outDict:
             if (outDict[d][5] == inRemaining):
                 flag = True
-                if (searchEngine.isStudent):
+                if (self.isStudent):
                     print("workshop ID: "+d
                         +"\nTitle:       "+outDict[d][0]
                         +"\nLocation:    "+outDict[d][1]
@@ -265,7 +268,7 @@ class searchEngine():
             print("NOT FOUND!")
 
 
-class administrator():
+class Administrator():
     """a class for administrator implementation
     """
 
@@ -305,7 +308,7 @@ class administrator():
             - True for contained 
             - False for not
         """
-        dictList = administrator.txtToDict()
+        dictList = Administrator.txtToDict()
         if users in dictList.keys():
             return True
         else:
@@ -318,7 +321,7 @@ class administrator():
             - True for correct 
             - False for wrong
         """
-        dictList = administrator.txtToDict()
+        dictList = Administrator.txtToDict()
         if passwd == dictList[users]:
             return True
         else:
@@ -358,14 +361,14 @@ class administrator():
         function to generate the workshop ID
         returm: workshop ID
         """
-        administrator.workshopID +=1
-        return f'{administrator.workshopID:0>6d}'
+        Administrator.workshopID +=1
+        return f'{Administrator.workshopID:0>6d}'
     
     def getNowID():
         """
         return the current workshop ID
         """
-        return f'{administrator.workshopID:0>6d}'
+        return f'{Administrator.workshopID:0>6d}'
     
     
     def txtToDict():
@@ -386,7 +389,7 @@ class administrator():
         """a function to write a dictionary to a txt file
 
         Args:
-            inDict (String): a dictionary to be worte into the txt file
+            inDict (String): a dictionary to be wrote into the txt file
         """
         file = open('workshop.txt',mode='w+')
         for d in inDict:
@@ -400,22 +403,22 @@ class administrator():
         Args:
             infoString ([type]): [description]
         """
-        wID = administrator.inID()
+        wID = Administrator.inID()
         
-        outDict = administrator.getWorkshopDataDict()
+        outDict = Administrator.getWorkshopDataDict()
         outDict[wID] = infoString
         
-        administrator.writeWorkshopData(outDict)
+        Administrator.writeWorkshopData(outDict)
     
     def updateWorkShop(wID,inData,Index):
-        outDict = administrator.getWorkshopDataDict()
+        outDict = Administrator.getWorkshopDataDict()
 
         if (wID in outDict):
             outDict[wID][eval(Index)] = inData
         else:
             print("Workshop ID:{0} not found! Please try again!".format(wID))
             
-        administrator.writeWorkshopData(outDict)
+        Administrator.writeWorkshopData(outDict)
         
     def updateName(wID,inName):
         """
@@ -425,7 +428,7 @@ class administrator():
             - wID: a String of the number of workshop's ID
             - inName: the name to update to that workshop
         """
-        administrator.updateWorkShop(wID,inName,0)
+        Administrator.updateWorkShop(wID,inName,0)
 
     def updateLocation(wID,inLocation):
         """
@@ -435,7 +438,7 @@ class administrator():
             - wID: a String of the number of workshop's ID
             - inLocation: the location to update to that workshop
         """
-        administrator.updateWorkShop(wID,inLocation,1)
+        Administrator.updateWorkShop(wID,inLocation,1)
 
     def updateDate(wID,inDate):
         """
@@ -445,7 +448,7 @@ class administrator():
             - wID: a String of the number of workshop's ID
             - inTime: the date to update to that workshop
         """
-        administrator.updateWorkShop(wID,inDate,2)
+        Administrator.updateWorkShop(wID,inDate,2)
         
     def updateTime(wID,inTime):
         """
@@ -455,7 +458,7 @@ class administrator():
             - wID: a String of the number of workshop's ID
             - inTime: the time to update to that workshop
         """
-        administrator.updateWorkShop(wID,inTime,3)
+        Administrator.updateWorkShop(wID,inTime,3)
         
     def updateQuota(wID,inQuota):
         """
@@ -465,7 +468,7 @@ class administrator():
             - wID: a String of the number of workshop's ID
             - inQuota: the quotas to update to taht workshop
         """
-        outDict = administrator.getWorkshopDataDict()
+        outDict = Administrator.getWorkshopDataDict()
         
         if (wID in outDict):
             enrolledNum = eval(outDict[wID][4]) - eval(outDict[wID][5])
@@ -477,7 +480,7 @@ class administrator():
         else:
             print("Workshop ID:{0} not found! Please try again!".format(wID))
 
-        administrator.writeWorkshopData(outDict)
+        Administrator.writeWorkshopData(outDict)
         
     def updateRemaining(wID,inRemaining):
         """
@@ -487,7 +490,7 @@ class administrator():
             - wID: a String of the number of workshop's ID
             - inRemaining: the remianing quotas to update to taht workshop
         """
-        outDict = administrator.getWorkshopDataDict()
+        outDict = Administrator.getWorkshopDataDict()
 
         if (wID in outDict):
             if (eval(inRemaining)>eval(outDict[wID][4])):
@@ -497,7 +500,7 @@ class administrator():
         else:
             print("Workshop ID:{0} not found! Please try again!".format(wID))
 
-        administrator.writeWorkshopData(outDict)
+        Administrator.writeWorkshopData(outDict)
 
     def listAll():
         """
@@ -528,13 +531,13 @@ class administrator():
         """
         login function for administrator
         """
-        inUsers = administrator.setUsers()
-        if administrator.isContainUsers(inUsers):
+        inUsers = Administrator.setUsers()
+        if Administrator.isContainUsers(inUsers):
             for times in range(3):
-                inPasswd = administrator.setPasswd()
-                if administrator.isCorrectPasswd(inUsers,inPasswd)==True:
+                inPasswd = Administrator.setPasswd()
+                if Administrator.isCorrectPasswd(inUsers,inPasswd)==True:
                     print("Successfully login! Welcome, administration!")
-                    inAdmin = administrator(inUsers,inPasswd)
+                    inAdmin = Administrator(inUsers,inPasswd)
                     inAdmin.adminInterface() # enter the main interface
                     main()
                 else:
@@ -543,9 +546,10 @@ class administrator():
             else:
                 print("You have already input password for three times! Please input from the start")
         else:
-            print("The user is not exist!")    
+            print("The user is not exist! Please input user name again!")
+            Administrator.login()
       
-    #-------------------function interface for administractor-------------------
+    #-------------------functional interface for administractor-------------------
     def adminInterface(self):
         """an interface for administrator function including Add a workshop; Update a workshop; Search in workshops;
 
@@ -576,7 +580,7 @@ class administrator():
             
             infoList = [name,location,date,time,quota,remainder]
         
-            administrator.addWs(infoList)
+            Administrator.addWs(infoList)
             print("Create workshop successfully!")
             
             self.adminInterface()
@@ -584,29 +588,29 @@ class administrator():
         elif(choose == "u"):
             print("Update workshop information:")
             print("Here is all the event: \n")
-            administrator.listAll()
+            Administrator.listAll()
             eventChoose = input("Enter the ID of event for updating:")
             print("Update based on (l):Location; (n):Name; (d)Date; (t)Time; (quo)Quota; (r)Remaining".center(100),"\n","(l/n/d/t/quo/r)".center(100,"*"))
             choose = input().lower()
             print("Please choose the information for updating: ")
             data = input().lower()
             if(choose == "d"):
-                administrator.updateDate(eventChoose,data)
+                Administrator.updateDate(eventChoose,data)
 
             elif(choose == "t"):
-                administrator.updateTime(eventChoose,data)
+                Administrator.updateTime(eventChoose,data)
 
             elif(choose == "l"):
-                administrator.updateLocation(eventChoose,data)
+                Administrator.updateLocation(eventChoose,data)
 
             elif(choose == "n"):
-                administrator.updateName(eventChoose,data)
+                Administrator.updateName(eventChoose,data)
 
             elif(choose == "quo"):
-                administrator.updateQuota(eventChoose,data)
+                Administrator.updateQuota(eventChoose,data)
                 
             elif(choose == "r"):
-                administrator.updateRemaining(eventChoose,data)
+                Administrator.updateRemaining(eventChoose,data)
                 
             self.adminInterface()
 
@@ -616,21 +620,22 @@ class administrator():
             choose = input().lower()
             print("Please enter the data to search:".center(100))
             data = input()
-            searchEngine.setAdmin()
+            adminSe = searchEngine()
+            adminSe.setAdmin()
             if(choose == "i"):
-                searchEngine.findBywID(data)
+                adminSe.findBywID(data)
             elif(choose == "n"):
-                searchEngine.findByName(data)
+                adminSe.findByName(data)
             elif(choose == "d"):
-                searchEngine.findByDate(data)
+                adminSe.findByDate(data)
             elif(choose == "t"):
-                searchEngine.findByTime(data)
+                adminSe.findByTime(data)
             elif(choose == "quo"):
-                searchEngine.findByQuota(data)
+                adminSe.findByQuota(data)
             elif(choose == "r"):
-                searchEngine.findByRemaining(data)
+                adminSe.findByRemaining(data)
             elif(choose == "l"):
-                searchEngine.findByLocation(data)
+                adminSe.findByLocation(data)
             else:
                 print("Empty or Illegal input, back to the previous page!")
             
@@ -644,7 +649,7 @@ class administrator():
             self.adminInterface()
     
     
-class student():
+class Student():
     users = ""
     passwd = ""
     def __init__(self, users, passwd):
@@ -685,7 +690,7 @@ class student():
             - True for contained
             - False for not
         """
-        dictList = student.txtToDict()
+        dictList = Student.txtToDict()
         if users in dictList.keys():
             return True
         else:
@@ -698,7 +703,7 @@ class student():
             - True for correct 
             - False for wrong
         """
-        dictList = student.txtToDict()
+        dictList = Student.txtToDict()
         if passwd == dictList[users]:
             return True
         else:
@@ -826,7 +831,7 @@ class student():
             - sID: the student ID
             - wID: the workshop ID which the student want to enroll
         """
-        outDict = student.getWorkshopDataDict()
+        outDict = Student.getWorkshopDataDict()
 
         outDictsID = self.getEnrolledDataDict(sID)
 
@@ -837,7 +842,7 @@ class student():
                         outDict[wID][5] = str(int(outDict[wID][5]) - 1)
                         outDictsID[wID] = outDict[wID]
                         
-                        student.writeWorkshopData(outDict)
+                        Student.writeWorkshopData(outDict)
                         for item in outDictsID:
                             outDictsID[item] = outDict[item]
                         self.writeEnrolledData(sID,outDictsID)
@@ -854,7 +859,7 @@ class student():
             - sID: the student ID
             - wID: the workshop ID which the student want to cancel
         """
-        outDict = student.getWorkshopDataDict()
+        outDict = Student.getWorkshopDataDict()
 
         outDictsID = self.getEnrolledDataDict(sID)
 
@@ -863,7 +868,7 @@ class student():
             outDict[wID][5] = str(int(outDict[wID][5]) + 1)
             outDictsID.pop(wID)
             
-            student.writeWorkshopData(outDict)
+            Student.writeWorkshopData(outDict)
             for item in outDictsID:
                 outDictsID[item] = outDict[item]
             self.writeEnrolledData(sID,outDictsID)
@@ -912,7 +917,7 @@ class student():
         outDict = dict(outList)
         file.close()
         
-        wsDict = student.getWorkshopDataDict()
+        wsDict = Student.getWorkshopDataDict()
         
         if (len(outDict) == 0):
             print("No enrolled workshop!")
@@ -932,13 +937,13 @@ class student():
         function for student to login
         """
         for times in range(100):
-            inUsers = student.setUsers()
-            if student.isContainUsers(inUsers):
+            inUsers = Student.setUsers()
+            if Student.isContainUsers(inUsers):
                 for times2 in range(3):
-                    inPasswd = student.setPasswd()
-                    if student.isCorrectPasswd(inUsers,inPasswd)==True:
+                    inPasswd = Student.setPasswd()
+                    if Student.isCorrectPasswd(inUsers,inPasswd)==True:
                         print("Successfully login! Welcome, student {0}!".format(inUsers))
-                        inStudnet = student(inUsers,inPasswd)
+                        inStudnet = Student(inUsers,inPasswd)
                         inStudnet.studentInterface()
                         main() 
                     else:
@@ -951,13 +956,13 @@ class student():
                 times+=1
                 choose = input("Users is not correct or not exist! if want to create new account, please input ‘q'; or input other to back the login!").lower()
                 if choose =="q":
-                    student.addusers()
+                    Student.addusers()
         else:
             print("")
 
     
 
-    #-------------------function interface for student-------------------
+    #-------------------functional interface for student-------------------
     def studentInterface(self):
         """an interface for student function including Enroll a workshop; Cancel a workshop; ListAll; List enrolled workshops; Search in workshops
         """
@@ -971,7 +976,7 @@ class student():
             self.cancel(self.getUsers(),wID)
         elif(choose == "la"):
             print("---All workshops---\n----------------------")
-            student.listAll()
+            Student.listAll()
         elif(choose == "l"):
             print("---Your Enrollments---\n----------------------")
             self.listEnrolledWs(self.getUsers())
@@ -984,19 +989,20 @@ class student():
             choose = input().lower()
             print("Please enter the data to search:".center(100))
             data = input()
-            searchEngine.setStudnet()
+            stuSe = searchEngine()
+            stuSe.setStudnet()
             if(choose == "i"):
-                searchEngine.findBywID(data)
+                stuSe.findBywID(data)
             elif(choose == "n"):
-                searchEngine.findByName(data)
+                stuSe.findByName(data)
             elif(choose == "d"):
-                searchEngine.findByDate(data)
+                stuSe.findByDate(data)
             elif(choose == "t"):
-                searchEngine.findByTime(data)
+                stuSe.findByTime(data)
             elif(choose == "r"):
-                searchEngine.findByRemaining(data)
+                stuSe.findByRemaining(data)
             elif(choose == "l"):
-                searchEngine.findByLocation(data)
+                stuSe.findByLocation(data)
             else:
                 print("Empty or Illegal input, back to the previous page!")
             self.studentInterface()
@@ -1011,32 +1017,32 @@ class student():
             - users: user ID
         """
         # users = student.getUsers()
-        if student.isContainUsers(users)==False:   
-            passwd = student.setPasswd()
+        if Student.isContainUsers(users)==False:   
+            passwd = Student.setPasswd()
             str = "\n"+users+" "+passwd
             with open('student.txt','a')as file:
                 file.write(str)
             print("Seccessfully register a new account as student!")
-            student.login()
+            Student.login()
         else:
             print("Unseccessfully register a new account as student because already has the same users!")
-            student.addusers()
+            Student.addusers()
        
     def addusers():
         """
         function to register a new student account
         """
-        users = student.setUsers()
-        if student.isContainUsers(users):
+        users = Student.setUsers()
+        if Student.isContainUsers(users):
             print("The users have already register before, do you want to back to (l)login or continue (r)registering?".center(100),"\n","(l/r)".center(100,"*"))
             choose = input().lower()
             if choose=="l":
-                student.login()
+                Student.login()
             elif choose =="r":
-                users = student.setUsers()
-                student.strToTxt(users)
+                users = Student.setUsers()
+                Student.strToTxt(users)
         else:
-            student.strToTxt(users)
+            Student.strToTxt(users)
 
 
 def main():
@@ -1047,14 +1053,14 @@ def main():
     print("Choose your identity, (a)administrator or (s)student? q for quit".center(100),"\n","(a/s/q)".center(100,"*"))
     identity = input()
     if identity == "a":
-        administrator.login()
+        Administrator.login()
     elif identity == "s":
         print("Do you want to (l)login or (r)register a new account? q for quit".center(100),"\n","(l/r/q)".center(100,"*"))
         choose = input().lower()
         if choose =="l":
-            student.login()
+            Student.login()
         elif choose =="r":
-            student.addusers()
+            Student.addusers()
         elif choose =="q":
             exit()
         else:
