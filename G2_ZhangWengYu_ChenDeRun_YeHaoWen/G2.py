@@ -362,13 +362,13 @@ class Administrator():
         
     #-------------------functions for workshop information process by administractor-------------------
     
-    def getWorkshopDataDict():
+    def  getWorkshopDataDict():
         """
         function to get the workshop dictionary
         return: outDitc
         """
 
-        file = open('workshop.txt',mode='a+')
+        file = open('workshop.txt',mode='r')
         readLine = file.readlines()
         outList = []
 
@@ -448,7 +448,7 @@ class Administrator():
         outDict = Administrator.getWorkshopDataDict()
         outStr = ""
         if (wID in outDict):
-            outDict[wID][eval(Index)] = inData
+            outDict[wID][Index] = inData
             outStr +=("Update successfully!".center(100)+"\n")
         else:
             outStr +=("Workshop ID:{0} not found! Please try again!".format(wID).center(100)+"\n")
@@ -636,8 +636,8 @@ class Administrator():
             print(Administrator.listAll())
             print("#","Enter the ID of event for updating:".center(100,"-"),"#")
             eventChoose = input("# >>> ID:")
-            print("#","Update based on (l):Location; (n):Name; (d)Date; (t)Time; (quo)Quota; (r)Remaining".center(100),"#")
-            print("#","Enter(l/n/d/t/quo/r)".center(100,"-"),"#")
+            print("#","Update based on (l):Location; (til):Title; (d)Date; (t)Time; (quo)Quota; (r)Remaining".center(100),"#")
+            print("#","Enter(l/til/d/t/quo/r)".center(100,"-"),"#")
             choose = input("# >>>").lower()
             print("#","Please enter the updated information:".center(100,"-"),"#")
             data = input("# >>>").lower()
@@ -650,7 +650,7 @@ class Administrator():
             elif(choose == "l"):
                 print(Administrator.updateLocation(eventChoose,data))
 
-            elif(choose == "n"):
+            elif(choose == "til"):
                 print(Administrator.updateName(eventChoose,data))
 
             elif(choose == "quo"):
@@ -943,6 +943,7 @@ class Student():
             outList.append(lineList)
         outDict = dict(outList)
         file.close()
+        outStr +=(("="*38).center(100,)+"\n")
         for d in outDict:
             outStr +=("|{0:^15}|{1:^20}|".format("workshop ID",d).center(100)+"\n")
             outStr +=(("."*38).center(100,)+"\n")
@@ -978,6 +979,7 @@ class Student():
         if (len(outDict) == 0):
             outStr +=("No enrolled workshop!".center(100)+"\n")
         else:
+            outStr +=(("="*38).center(100,)+"\n")
             for d in outDict:
                 outStr +=("|{0:^15}|{1:^20}|".format("workshop ID",d).center(100)+"\n")
                 outStr +=(("."*38).center(100,)+"\n")
@@ -999,20 +1001,21 @@ class Student():
                 for times2 in range(3):
                     inPasswd = Student.setPasswd()
                     if Student.isCorrectPasswd(inUsers,inPasswd)==True:
-                        print("Successfully login! Welcome, student {0}!".format(inUsers))
+                        print("#",("Successfully login! Welcome, student {0}!".format(inUsers)).center(100,"-"),"#")
                         inStudnet = Student(inUsers,inPasswd)
                         inStudnet.studentInterface()
                         main() 
                     else:
-                        print("Password is not correct! Please input the correct password again! You have",2-times2,"times to try")
+                        print("#",("Wrong password! Please enter again! You have",2-times2,"times to try").center(100,"-"),"#")
                         times2+=1
                 else:
-                    print("You have already input password for three times! Please input from the start")
+                    print("#","Input wrong password for three times! Back to login page!".center(100,"-"),"#")
                     times = 0
             else:
                 times+=1
-                choose = input("Users is not correct or not exist! if want to create new account, please input ‘q'; or input other to back the login!").lower()
-                if choose =="q":
+                print("#","Users is not exist! Enter 'n' to create new account; Else to back the login!".center(100,"-"),"#")
+                choose = input("# >>>").lower()
+                if choose =="n":
                     Student.addusers()
         else:
             print("")
@@ -1023,29 +1026,34 @@ class Student():
     def studentInterface(self):
         """an interface for student function including Enroll a workshop; Cancel a workshop; ListAll; List enrolled workshops; Search in workshops
         """
-        print("Please select function: (e)Enroll a workshop; (c)Cancel a workshop; (la)ListAll; (l)List enrolled workshops; (s) Search in workshops (q)Quit".center(100),"\n","(e/c/la/l/s/q)".center(100,"*"))
-        choose = input().lower()
+        
+        print("#","Please select:(e)Enrollment; (c)Cancellation; (la)ListAll; (l)List enrollment; (s) Searching (q)Quit".center(100),"#")
+        print("#","Enter (e/c/la/l/s/q)".center(100,"-"),"#")
+        choose = input("# >>>").lower()
         if(choose == "e"):
-            wID = input("Please input the ID of which workshop you want to eroll:")
-            self.eroll(self.getUsers(),wID)
+            print("#","Please input the ID of which workshop you want to eroll:".center(100,"-"),"#")
+            wID = input("# >>>")
+            print(self.eroll(self.getUsers(),wID))
         elif(choose == "c"):
-            wID = input("Please input the ID of which workshop you want to cancel:")
-            self.cancel(self.getUsers(),wID)
+            print("#","Please input the ID of which workshop you want to cancel:".center(100,"-"),"#")
+            wID = input("# >>>")
+            print(self.cancel(self.getUsers(),wID))
         elif(choose == "la"):
-            print("---All workshops---\n----------------------")
+            print("#","All workshop information:".center(100),"#")
             print(Student.listAll())
         elif(choose == "l"):
-            print("---Your Enrollments---\n----------------------")
+            print("#","Your enrollment information:".center(100),"#")
             print(self.listEnrolledWs(self.getUsers()))
         elif(choose == "q"):
             main()
             return 0
         elif(choose == "s"):
-            print("Search workshop information:")
-            print("Search based on (i)workshopID; (n):Name; (l)Location; (d)Date; (t)Time; (r)Remaining; else to back".center(100),"\n","(i/n/d/t/r)".center(100,"*"))
-            choose = input().lower()
-            print("Please enter the data to search:".center(100))
-            data = input()
+            print("#","Searching workshop information".center(100),"#")
+            print("#","Search for [i]ID; [n]:Name; [l]Location; [d]Date; [t]Time; [r]Remaining;  else to back".center(100),"#")
+            print("#","Enter(i/n/d/t/r)".center(100,"-"),"#")
+            choose = input("# >>>").lower()
+            print("#","Please enter the data to search:".center(100,"-"),"#")
+            data = input("# >>>")
             stuSe = searchEngine()
             stuSe.setStudnet()
             if(choose == "i"):
@@ -1061,10 +1069,10 @@ class Student():
             elif(choose == "l"):
                 print(stuSe.findByLocation(data))
             else:
-                print("Empty or Illegal input, back to the previous page!")
+                print("#","Empty or Illegal input, back to the previous page!".center(100),"#")
             self.studentInterface()
         else:
-            print("Empty or illegal input, please try again!")
+            print("#","Illegal input, please try again!".center(100),"#")
         self.studentInterface()
     
     def strToTxt(users):
@@ -1081,11 +1089,12 @@ class Student():
             file = open('student.txt','a')
             file.write(str)
             file.close()
-            print("Seccessfully register a new account as student!")
+            print("Seccessfully register a new student account!".center(100)+"\n")
             Student.login()
         else:
-            print("Unseccessfully register a new account as student because already has the same users!")
+            print("Unseccessful! For same user name! Try again!".center(100)+"\n")
             Student.addusers()
+            
        
     def addusers():
         """
@@ -1093,13 +1102,13 @@ class Student():
         """
         users = Student.setUsers()
         if Student.isContainUsers(users):
-            print("The users have already register before, do you want to back to (l)login or continue (r)registering?".center(100),"\n","(l/r)".center(100,"*"))
-            choose = input().lower()
+            print("#","The user have already been registered, to (l)login or continue (r)registering?".center(100),"#")
+            print("#","(l/r)".center(100,"-"),"#")
+            choose = input("# >>>").lower()
             if choose=="l":
                 Student.login()
             elif choose =="r":
-                users = Student.setUsers()
-                Student.strToTxt(users)
+                Student.addusers()
         else:
             Student.strToTxt(users)
 
@@ -1122,7 +1131,7 @@ def main():
         Administrator.login()
     elif identity == "s":
         print("#","Do you want to [l]login or [r]register a new account? [q] for quit".center(100),"#")
-        print("\n","#","Enter(l/r/q)".center(100,"-"),"#")
+        print("#","Enter(l/r/q)".center(100,"-"),"#")
         choose = input("# >>> ").lower()
         if choose =="l":
             Student.login()
