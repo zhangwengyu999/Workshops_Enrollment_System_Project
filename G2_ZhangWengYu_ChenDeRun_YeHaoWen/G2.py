@@ -1,4 +1,5 @@
 from os import write
+from tkinter import*
 import os
 
 class searchEngine():
@@ -1113,6 +1114,168 @@ class Student():
             Student.strToTxt(users)
 
 
+def GUI():
+    win = Tk()
+    win.title("Workshops Enrollment System - Group2")
+    width = 600
+    height = 600
+    screenwidth = win.winfo_screenwidth()
+    screenheight = win.winfo_screenheight()
+    alignstr = '%dx%d+%d+%d' % (width, height, (screenwidth-width)/2, (screenheight-height)/2)
+    win.geometry(alignstr)
+    win.resizable(width=False, height=False)
+    x = IntVar() # radio button value
+    sub_title_text = StringVar()
+    sub_title_text.set("Please select your indentity to login or register")
+
+    # main login page
+    main_page = Canvas(win).place(x=0,y=0)
+
+    # title lable
+
+    main_title = Label(main_page,text="Welcome to use Workshops Enrollment System made by Group 2!\n\nZHANG Wengyu21098431d\nCHEN Derun21098424d\nYE Haowen21098829d",font=(CENTER,14)).place(x=85,y=50)
+    sub_title = Label(main_page,textvariable=sub_title_text,font=(CENTER,14)).place(x=150,y=200)
+
+    # user and password label
+    Label(main_page,text='User:').place(x=150,y=300)
+    Label(main_page,text='Password:').place(x=150,y=350)
+
+    # user entry
+    var_usr_name=StringVar()
+    input_user=Entry(main_page,textvariable=var_usr_name)
+    input_user.place(x=250,y=300)
+
+    # password entry
+    var_usr_pwd=StringVar()
+    input_pwd=Entry(main_page,textvariable=var_usr_pwd,show='*')
+    input_pwd.place(x=250,y=350)
+
+
+    # main page quit button listener
+    def quit_linstener():
+        
+        win_quit_con=Toplevel(main_page)
+        screenwidth = win.winfo_screenwidth()
+        screenheight = win.winfo_screenheight()
+        alignstr = '%dx%d+%d+%d' % (200, 100, (screenwidth-width)/2, (screenheight-height)/2)
+        win_quit_con.geometry(alignstr)
+        win_quit_con.title("Confirm Quit?")
+        
+        def con_exit():
+            exit()
+        def can_exit():
+            win_quit_con.destroy()
+        
+        # confirm button on the quit page
+        Button(win_quit_con,text='Quit',command=con_exit).place(x=60,y=40)
+        Button(win_quit_con,text='Cancel',command=can_exit).place(x=100,y=40)
+        
+    # main page register button listener
+    def register_linstener():
+        register_title = StringVar()
+        register_title.set("")
+        if (x.get() != 1 and x.get() != 2):
+            sub_title_text.set("Please select your identity first!".center(50))
+            return 0
+        #register page
+        win_reg=Toplevel(main_page)
+        screenwidth = win.winfo_screenwidth()
+        screenheight = win.winfo_screenheight()
+        alignstr = '%dx%d+%d+%d' % (400, 250, (screenwidth-width)/2, (screenheight-height)/2)
+        win_reg.geometry(alignstr)
+        
+        win_reg.title('Register New Account')
+        # user
+        in_name=StringVar()
+        Label(win_reg,text='User:').place(x=10,y=10)
+        inUser = Entry(win_reg,textvariable=in_name).place(x=150,y=10)
+        #password
+        in_pwd=StringVar()
+        Label(win_reg,text='Enter Password').place(x=10,y=50)
+        inPw = Entry(win_reg,textvariable=in_pwd,show='*').place(x=150,y=50)    
+        #password confirm
+        in_pwd_confirm=StringVar()
+        Label(win_reg,text='Conform Password:').place(x=10,y=90)
+        inConPw = Entry(win_reg,textvariable=in_pwd_confirm,show='*').place(x=150,y=90)   
+        
+        reg_label = Label(win_reg, textvariable = register_title).place(x=90,y=180)
+        
+        # confirm button listener
+        def confirm_listener():
+            inUser = in_name.get()
+            inPw = in_pwd.get()
+            inConPw = in_pwd_confirm.get()
+            if (inUser == "" or inPw == ""):
+                register_title.set("Empty input!".center(50))
+            elif (inPw != inConPw):
+                register_title.set("Wrong confirmed password!".center(50))
+            elif (Student.isContainUsers(inUser)):
+                register_title.set("User name has been used!".center(50))
+            elif ((not Student.isContainUsers(inUser)) and inPw == inConPw):
+                str = "\n"+inUser+" "+inPw
+                file = open('student.txt','a')
+                file.write(str)
+                file.close()
+                register_title.set("Seccessfully registered!".center(50))
+            return 0
+         
+        #confirm button
+        bt_confirm_sign_up=Button(win_reg,text='Confirm',command=confirm_listener)
+        bt_confirm_sign_up.place(x=150,y=130)
+        
+        
+
+    # login button listener
+    def login_listener():
+        inUser = input_user.get()
+        inPw = input_pwd.get()
+        if (x.get() == 2):
+            if (not Student.isContainUsers(inUser)):
+                sub_title_text.set("No such user! Please register first!".center(50))
+                
+            elif (not Student.isCorrectPasswd(inUser,inPw) or inUser == "" or inPw == ""):
+                sub_title_text.set("Wrong User name or Password!".center(50))
+            else:
+                inStu = Student(inUser,inPw)
+                sub_title_text.set("Successfully login! Welcome {0}".format(inStu.users).center(50))
+                # do sth
+        elif (x.get() == 1):
+            if (not Administrator.isContainUsers(inUser)):
+                sub_title_text.set("No such user!".center(50))
+                
+            elif (not Administrator.isCorrectPasswd(inUser,inPw) or inUser == "" or inPw == ""):
+                sub_title_text.set("Wrong User name or Password!".center(50))
+            else:
+                inAdmin = Administrator(inUser,inPw)
+                sub_title_text.set("Successfully login! Welcome {0}".format(inAdmin.users).center(50))
+                # do sth
+        else:
+            sub_title_text.set("Please select your identity first!".center(50))
+    
+    # 3 buttons on the main page
+    bt_login=Button(main_page,text='Login',command=login_listener)
+    bt_login.place(x=150,y=400)
+    bt_register=Button(main_page,text='Register',command = register_linstener)
+    bt_register.place(x=250,y=400)
+    bt_quit=Button(main_page,text='Quit',command = quit_linstener)
+    bt_quit.place(x=350,y=400)
+
+    
+
+    # identity radio button listener
+    def select_ID():
+        if (x.get() == 1):
+            bt_register.config(state=DISABLED)
+        elif (x.get() == 2):
+            bt_register.config(state=NORMAL)
+            
+    # 2 radiobuttons on the main page
+    rbt_admin = Radiobutton(main_page,text="Admin",variable=x,value=1,command=select_ID).place(x=175,y=275)
+    rbt_stu = Radiobutton(main_page,text="Student",variable=x,value=2,command=select_ID).place(x=325,y=275)
+
+    win.mainloop()
+        
+
 def main():
     """
     function to run the whole program
@@ -1124,6 +1287,18 @@ def main():
     print("#","CHEN Derun21098424d".center(100),"#")
     print("#","YE Haowen21098829d".center(100),"#")
     print("#","".center(100,"-"),"#")
+    
+    print("#","Launch [c]CLI or [g]GUI? [q] for quit".center(100),"#")
+    print("#","Enter(c/g/q)".center(100,"-"),"#")
+    choose = input("# >>> ")
+    if (choose == "g"):
+        GUI()
+        exit()
+    elif(choose == "q"):
+        exit()
+        
+    
+    print("#","CLI launched!".center(100),"#")
     print("#","Choose your identity, [a]administrator or [s]student? [q] for quit".center(100),"#")
     print("#","Enter(a/s/q)".center(100,"-"),"#")
     identity = input("# >>> ")
