@@ -44,30 +44,33 @@ class searchEngine():
         
         outDict = self.getWorkshopDataDict()
         
+        outStr = ""
+        
         if (inwID not in outDict):
-            print(("#","NO workshop with ID: "+inwID).center(100,"-"),"#")
+            outStr += (("NO workshop with ID: "+inwID).center(100)+"\n")
         else:
-            print("#","Found:".center(100,"-"),"#")
-            print("#","".center(100,"-"),"#")
+            outStr +=("Found:".center(100)+"\n")
+            outStr +=(("="*38).center(100,)+"\n")
             if (self.isStudent):
-                print("#","|{0:^15}|{1:^20}|".format("workshop ID",inwID).center(100),"#")
-                print("#",("."*38).center(100,),"#")
-                print("#","|{0:^15}|{1:^20}|".format("Title",outDict[inwID][0]).center(100),"#")
-                print("#","|{0:^15}|{1:^20}|".format("Location",outDict[inwID][1]).center(100),"#")
-                print("#","|{0:^15}|{1:^20}|".format("Date",outDict[inwID][2]).center(100),"#")
-                print("#","|{0:^15}|{1:^20}|".format("Time",outDict[inwID][3]).center(100),"#")
-                print("#","|{0:^15}|{1:^20}|".format("Remaining",outDict[inwID][5]).center(100),"#")
-                print("#",("="*38).center(100,),"#")
+                outStr +=("|{0:^15}|{1:^20}|".format("workshop ID",inwID).center(100)+"\n")
+                outStr +=(("."*38).center(100,)+"\n")
+                outStr +=("|{0:^15}|{1:^20}|".format("Title",outDict[inwID][0]).center(100)+"\n")
+                outStr +=("|{0:^15}|{1:^20}|".format("Location",outDict[inwID][1]).center(100)+"\n")
+                outStr +=("|{0:^15}|{1:^20}|".format("Date",outDict[inwID][2]).center(100)+"\n")
+                outStr +=("|{0:^15}|{1:^20}|".format("Time",outDict[inwID][3]).center(100)+"\n")
+                outStr +=("|{0:^15}|{1:^20}|".format("Remaining",outDict[inwID][5]).center(100)+"\n")
+                outStr +=(("="*38).center(100,)+"\n")
             else:
-                print("#","|{0:^15}|{1:^20}|".format("workshop ID",inwID).center(100),"#")
-                print("#",("."*38).center(100,),"#")
-                print("#","|{0:^15}|{1:^20}|".format("Title",outDict[inwID][0]).center(100),"#")
-                print("#","|{0:^15}|{1:^20}|".format("Location",outDict[inwID][1]).center(100),"#")
-                print("#","|{0:^15}|{1:^20}|".format("Date",outDict[inwID][2]).center(100),"#")
-                print("#","|{0:^15}|{1:^20}|".format("Time",outDict[inwID][3]).center(100),"#")
-                print("#","|{0:^15}|{1:^20}|".format("Quota",outDict[inwID][4]).center(100),"#")
-                print("#","|{0:^15}|{1:^20}|".format("Remaining",outDict[inwID][5]).center(100),"#")
-                print("#",("="*38).center(100,),"#")
+                outStr +=("|{0:^15}|{1:^20}|".format("workshop ID",inwID).center(100)+"\n")
+                outStr +=(("."*38).center(100,)+"\n")
+                outStr +=("|{0:^15}|{1:^20}|".format("Title",outDict[inwID][0]).center(100)+"\n")
+                outStr +=("|{0:^15}|{1:^20}|".format("Location",outDict[inwID][1]).center(100)+"\n")
+                outStr +=("|{0:^15}|{1:^20}|".format("Date",outDict[inwID][2]).center(100)+"\n")
+                outStr +=("|{0:^15}|{1:^20}|".format("Time",outDict[inwID][3]).center(100)+"\n")
+                outStr +=("|{0:^15}|{1:^20}|".format("Quota",outDict[inwID][4]).center(100)+"\n")
+                outStr +=("|{0:^15}|{1:^20}|".format("Remaining",outDict[inwID][5]).center(100)+"\n")
+                outStr +=(("="*38).center(100,)+"\n")
+        return outStr
     
     def findByName(self,inName):
         """
@@ -79,33 +82,36 @@ class searchEngine():
         
         outDict = self.getWorkshopDataDict()
         
+        outStr = ""
+        
         flag = False
-        print("#","Found:".center(100,"-"),"#")
-        print("#","".center(100,"-"),"#")
+        outStr +=("Found:".center(100)+"\n")
+        outStr +=(("="*38).center(100,)+"\n")
         for d in outDict:
             if (outDict[d][0] == inName):
                 flag = True
                 if (self.isStudent):
-                    print("#","|{0:^15}|{1:^20}|".format("workshop ID",d).center(100),"#")
-                    print("#",("."*38).center(100,),"#")
-                    print("#","|{0:^15}|{1:^20}|".format("Title",outDict[d][0]).center(100),"#")
-                    print("#","|{0:^15}|{1:^20}|".format("Location",outDict[d][1]).center(100),"#")
-                    print("#","|{0:^15}|{1:^20}|".format("Date",outDict[d][2]).center(100),"#")
-                    print("#","|{0:^15}|{1:^20}|".format("Time",outDict[d][3]).center(100),"#")
-                    print("#","|{0:^15}|{1:^20}|".format("Remaining",outDict[d][5]).center(100),"#")
-                    print("#",("="*38).center(100,),"#")
+                    outStr +=("|{0:^15}|{1:^20}|".format("workshop ID",d).center(100)+"\n")
+                    outStr +=(("."*38).center(100,)+"\n")
+                    outStr +=("|{0:^15}|{1:^20}|".format("Title",outDict[d][0]).center(100)+"\n")
+                    outStr +=("|{0:^15}|{1:^20}|".format("Location",outDict[d][1]).center(100)+"\n")
+                    outStr +=("|{0:^15}|{1:^20}|".format("Date",outDict[d][2]).center(100)+"\n")
+                    outStr +=("|{0:^15}|{1:^20}|".format("Time",outDict[d][3]).center(100)+"\n")
+                    outStr +=("|{0:^15}|{1:^20}|".format("Remaining",outDict[d][5]).center(100)+"\n")
+                    outStr +=(("="*38).center(100,)+"\n")
                 else:
-                    print("#","|{0:^15}|{1:^20}|".format("workshop ID",d).center(100),"#")
-                    print("#",("."*38).center(100,),"#")
-                    print("#","|{0:^15}|{1:^20}|".format("Title",outDict[d][0]).center(100),"#")
-                    print("#","|{0:^15}|{1:^20}|".format("Location",outDict[d][1]).center(100),"#")
-                    print("#","|{0:^15}|{1:^20}|".format("Date",outDict[d][2]).center(100),"#")
-                    print("#","|{0:^15}|{1:^20}|".format("Time",outDict[d][3]).center(100),"#")
-                    print("#","|{0:^15}|{1:^20}|".format("Quota",outDict[d][4]).center(100),"#")
-                    print("#","|{0:^15}|{1:^20}|".format("Remaining",outDict[d][5]).center(100),"#")
-                    print("#",("="*38).center(100,),"#")
+                    outStr +=("|{0:^15}|{1:^20}|".format("workshop ID",d).center(100)+"\n")
+                    outStr +=(("."*38).center(100,)+"\n")
+                    outStr +=("|{0:^15}|{1:^20}|".format("Title",outDict[d][0]).center(100)+"\n")
+                    outStr +=("|{0:^15}|{1:^20}|".format("Location",outDict[d][1]).center(100)+"\n")
+                    outStr +=("|{0:^15}|{1:^20}|".format("Date",outDict[d][2]).center(100)+"\n")
+                    outStr +=("|{0:^15}|{1:^20}|".format("Time",outDict[d][3]).center(100)+"\n")
+                    outStr +=("|{0:^15}|{1:^20}|".format("Quota",outDict[d][4]).center(100)+"\n")
+                    outStr +=("|{0:^15}|{1:^20}|".format("Remaining",outDict[d][5]).center(100)+"\n")
+                    outStr +=(("="*38).center(100,)+"\n")
         if (flag == False):
-            print("#","NO Found".center(100),"#")
+            outStr += ("NO Found".center(100)+"\n")
+        return outStr
             
     def findByLocation(self,inLocatin):
         """
@@ -116,34 +122,35 @@ class searchEngine():
         """
         
         outDict = self.getWorkshopDataDict()
-        
+        outStr = ""
         flag = False
-        print("#","Found:".center(100,"-"),"#")
-        print("#","".center(100,"-"),"#")
+        outStr +=("Found:".center(100)+"\n")
+        outStr +=(("="*38).center(100,)+"\n")
         for d in outDict:
             if (outDict[d][1] == inLocatin):
                 flag = True
                 if (self.isStudent):
-                    print("#","|{0:^15}|{1:^20}|".format("workshop ID",d).center(100),"#")
-                    print("#",("."*38).center(100,),"#")
-                    print("#","|{0:^15}|{1:^20}|".format("Title",outDict[d][0]).center(100),"#")
-                    print("#","|{0:^15}|{1:^20}|".format("Location",outDict[d][1]).center(100),"#")
-                    print("#","|{0:^15}|{1:^20}|".format("Date",outDict[d][2]).center(100),"#")
-                    print("#","|{0:^15}|{1:^20}|".format("Time",outDict[d][3]).center(100),"#")
-                    print("#","|{0:^15}|{1:^20}|".format("Remaining",outDict[d][5]).center(100),"#")
-                    print("#",("="*38).center(100,),"#")
+                    outStr +=("|{0:^15}|{1:^20}|".format("workshop ID",d).center(100)+"\n")
+                    outStr +=(("."*38).center(100,)+"\n")
+                    outStr +=("|{0:^15}|{1:^20}|".format("Title",outDict[d][0]).center(100)+"\n")
+                    outStr +=("|{0:^15}|{1:^20}|".format("Location",outDict[d][1]).center(100)+"\n")
+                    outStr +=("|{0:^15}|{1:^20}|".format("Date",outDict[d][2]).center(100)+"\n")
+                    outStr +=("|{0:^15}|{1:^20}|".format("Time",outDict[d][3]).center(100)+"\n")
+                    outStr +=("|{0:^15}|{1:^20}|".format("Remaining",outDict[d][5]).center(100)+"\n")
+                    outStr +=(("="*38).center(100,)+"\n")
                 else:
-                    print("#","|{0:^15}|{1:^20}|".format("workshop ID",d).center(100),"#")
-                    print("#",("."*38).center(100,),"#")
-                    print("#","|{0:^15}|{1:^20}|".format("Title",outDict[d][0]).center(100),"#")
-                    print("#","|{0:^15}|{1:^20}|".format("Location",outDict[d][1]).center(100),"#")
-                    print("#","|{0:^15}|{1:^20}|".format("Date",outDict[d][2]).center(100),"#")
-                    print("#","|{0:^15}|{1:^20}|".format("Time",outDict[d][3]).center(100),"#")
-                    print("#","|{0:^15}|{1:^20}|".format("Quota",outDict[d][4]).center(100),"#")
-                    print("#","|{0:^15}|{1:^20}|".format("Remaining",outDict[d][5]).center(100),"#")
-                    print("#",("="*38).center(100,),"#")
+                    outStr +=("|{0:^15}|{1:^20}|".format("workshop ID",d).center(100)+"\n")
+                    outStr +=(("."*38).center(100,)+"\n")
+                    outStr +=("|{0:^15}|{1:^20}|".format("Title",outDict[d][0]).center(100)+"\n")
+                    outStr +=("|{0:^15}|{1:^20}|".format("Location",outDict[d][1]).center(100)+"\n")
+                    outStr +=("|{0:^15}|{1:^20}|".format("Date",outDict[d][2]).center(100)+"\n")
+                    outStr +=("|{0:^15}|{1:^20}|".format("Time",outDict[d][3]).center(100)+"\n")
+                    outStr +=("|{0:^15}|{1:^20}|".format("Quota",outDict[d][4]).center(100)+"\n")
+                    outStr +=("|{0:^15}|{1:^20}|".format("Remaining",outDict[d][5]).center(100)+"\n")
+                    outStr +=(("="*38).center(100,)+"\n")
         if (flag == False):
-            print("#","NO Found".center(100),"#")
+            outStr += ("NO Found".center(100)+"\n")
+        return outStr
             
     def findByDate(self,inD):
         """
@@ -154,34 +161,35 @@ class searchEngine():
         """
 
         outDict = self.getWorkshopDataDict()
-        
+        outStr = ""
         flag = False
-        print("#","Found:".center(100,"-"),"#")
-        print("#","".center(100,"-"),"#")
+        outStr +=("Found:".center(100)+"\n")
+        outStr +=(("="*38).center(100,)+"\n")
         for d in outDict:
             if (outDict[d][2] == inD):
                 flag = True
                 if (self.isStudent):
-                    print("#","|{0:^15}|{1:^20}|".format("workshop ID",d).center(100),"#")
-                    print("#",("."*38).center(100,),"#")
-                    print("#","|{0:^15}|{1:^20}|".format("Title",outDict[d][0]).center(100),"#")
-                    print("#","|{0:^15}|{1:^20}|".format("Location",outDict[d][1]).center(100),"#")
-                    print("#","|{0:^15}|{1:^20}|".format("Date",outDict[d][2]).center(100),"#")
-                    print("#","|{0:^15}|{1:^20}|".format("Time",outDict[d][3]).center(100),"#")
-                    print("#","|{0:^15}|{1:^20}|".format("Remaining",outDict[d][5]).center(100),"#")
-                    print("#",("="*38).center(100,),"#")
+                    outStr +=("|{0:^15}|{1:^20}|".format("workshop ID",d).center(100)+"\n")
+                    outStr +=(("."*38).center(100,)+"\n")
+                    outStr +=("|{0:^15}|{1:^20}|".format("Title",outDict[d][0]).center(100)+"\n")
+                    outStr +=("|{0:^15}|{1:^20}|".format("Location",outDict[d][1]).center(100)+"\n")
+                    outStr +=("|{0:^15}|{1:^20}|".format("Date",outDict[d][2]).center(100)+"\n")
+                    outStr +=("|{0:^15}|{1:^20}|".format("Time",outDict[d][3]).center(100)+"\n")
+                    outStr +=("|{0:^15}|{1:^20}|".format("Remaining",outDict[d][5]).center(100)+"\n")
+                    outStr +=(("="*38).center(100,)+"\n")
                 else:
-                    print("#","|{0:^15}|{1:^20}|".format("workshop ID",d).center(100),"#")
-                    print("#",("."*38).center(100,),"#")
-                    print("#","|{0:^15}|{1:^20}|".format("Title",outDict[d][0]).center(100),"#")
-                    print("#","|{0:^15}|{1:^20}|".format("Location",outDict[d][1]).center(100),"#")
-                    print("#","|{0:^15}|{1:^20}|".format("Date",outDict[d][2]).center(100),"#")
-                    print("#","|{0:^15}|{1:^20}|".format("Time",outDict[d][3]).center(100),"#")
-                    print("#","|{0:^15}|{1:^20}|".format("Quota",outDict[d][4]).center(100),"#")
-                    print("#","|{0:^15}|{1:^20}|".format("Remaining",outDict[d][5]).center(100),"#")
-                    print("#",("="*38).center(100,),"#")
+                    outStr +=("|{0:^15}|{1:^20}|".format("workshop ID",d).center(100)+"\n")
+                    outStr +=(("."*38).center(100,)+"\n")
+                    outStr +=("|{0:^15}|{1:^20}|".format("Title",outDict[d][0]).center(100)+"\n")
+                    outStr +=("|{0:^15}|{1:^20}|".format("Location",outDict[d][1]).center(100)+"\n")
+                    outStr +=("|{0:^15}|{1:^20}|".format("Date",outDict[d][2]).center(100)+"\n")
+                    outStr +=("|{0:^15}|{1:^20}|".format("Time",outDict[d][3]).center(100)+"\n")
+                    outStr +=("|{0:^15}|{1:^20}|".format("Quota",outDict[d][4]).center(100)+"\n")
+                    outStr +=("|{0:^15}|{1:^20}|".format("Remaining",outDict[d][5]).center(100)+"\n")
+                    outStr +=(("="*38).center(100,)+"\n")
         if (flag == False):
-            print("#","NO Found".center(100),"#")
+            outStr += ("NO Found".center(100)+"\n")
+        return outStr
             
     def findByTime(self,inT):
         """
@@ -192,34 +200,35 @@ class searchEngine():
         """
 
         outDict = self.getWorkshopDataDict()
-        
+        outStr = ""
         flag = False
-        print("#","Found:".center(100,"-"),"#")
-        print("#","".center(100,"-"),"#")
+        outStr +=("Found:".center(100)+"\n")
+        outStr +=(("="*38).center(100,)+"\n")
         for d in outDict:
             if (outDict[d][3] == inT):
                 flag = True
                 if (self.isStudent):
-                    print("#","|{0:^15}|{1:^20}|".format("workshop ID",d).center(100),"#")
-                    print("#",("."*38).center(100,),"#")
-                    print("#","|{0:^15}|{1:^20}|".format("Title",outDict[d][0]).center(100),"#")
-                    print("#","|{0:^15}|{1:^20}|".format("Location",outDict[d][1]).center(100),"#")
-                    print("#","|{0:^15}|{1:^20}|".format("Date",outDict[d][2]).center(100),"#")
-                    print("#","|{0:^15}|{1:^20}|".format("Time",outDict[d][3]).center(100),"#")
-                    print("#","|{0:^15}|{1:^20}|".format("Remaining",outDict[d][5]).center(100),"#")
-                    print("#",("="*38).center(100,),"#")
+                    outStr +=("|{0:^15}|{1:^20}|".format("workshop ID",d).center(100)+"\n")
+                    outStr +=(("."*38).center(100,)+"\n")
+                    outStr +=("|{0:^15}|{1:^20}|".format("Title",outDict[d][0]).center(100)+"\n")
+                    outStr +=("|{0:^15}|{1:^20}|".format("Location",outDict[d][1]).center(100)+"\n")
+                    outStr +=("|{0:^15}|{1:^20}|".format("Date",outDict[d][2]).center(100)+"\n")
+                    outStr +=("|{0:^15}|{1:^20}|".format("Time",outDict[d][3]).center(100)+"\n")
+                    outStr +=("|{0:^15}|{1:^20}|".format("Remaining",outDict[d][5]).center(100)+"\n")
+                    outStr +=(("="*38).center(100,)+"\n")
                 else:
-                    print("#","|{0:^15}|{1:^20}|".format("workshop ID",d).center(100),"#")
-                    print("#",("."*38).center(100,),"#")
-                    print("#","|{0:^15}|{1:^20}|".format("Title",outDict[d][0]).center(100),"#")
-                    print("#","|{0:^15}|{1:^20}|".format("Location",outDict[d][1]).center(100),"#")
-                    print("#","|{0:^15}|{1:^20}|".format("Date",outDict[d][2]).center(100),"#")
-                    print("#","|{0:^15}|{1:^20}|".format("Time",outDict[d][3]).center(100),"#")
-                    print("#","|{0:^15}|{1:^20}|".format("Quota",outDict[d][4]).center(100),"#")
-                    print("#","|{0:^15}|{1:^20}|".format("Remaining",outDict[d][5]).center(100),"#")
-                    print("#",("="*38).center(100,),"#")
+                    outStr +=("|{0:^15}|{1:^20}|".format("workshop ID",d).center(100)+"\n")
+                    outStr +=(("."*38).center(100,)+"\n")
+                    outStr +=("|{0:^15}|{1:^20}|".format("Title",outDict[d][0]).center(100)+"\n")
+                    outStr +=("|{0:^15}|{1:^20}|".format("Location",outDict[d][1]).center(100)+"\n")
+                    outStr +=("|{0:^15}|{1:^20}|".format("Date",outDict[d][2]).center(100)+"\n")
+                    outStr +=("|{0:^15}|{1:^20}|".format("Time",outDict[d][3]).center(100)+"\n")
+                    outStr +=("|{0:^15}|{1:^20}|".format("Quota",outDict[d][4]).center(100)+"\n")
+                    outStr +=("|{0:^15}|{1:^20}|".format("Remaining",outDict[d][5]).center(100)+"\n")
+                    outStr +=(("="*38).center(100,)+"\n")
         if (flag == False):
-            print("#","NO Found".center(100),"#")
+            outStr += ("NO Found".center(100)+"\n")
+        return outStr
                 
     def findByQuota(self,inQuota):
         """
@@ -230,24 +239,25 @@ class searchEngine():
         """
         
         outDict = self.getWorkshopDataDict()
-        
+        outStr = ""
         flag = False
-        print("#","Found:".center(100,"-"),"#")
-        print("#","".center(100,"-"),"#")
+        outStr +=("Found:".center(100)+"\n")
+        outStr +=(("="*38).center(100,)+"\n")
         for d in outDict:
             if (outDict[d][4] == inQuota):
                 flag = True
-                print("#","|{0:^15}|{1:^20}|".format("workshop ID",d).center(100),"#")
-                print("#",("."*38).center(100,),"#")
-                print("#","|{0:^15}|{1:^20}|".format("Title",outDict[d][0]).center(100),"#")
-                print("#","|{0:^15}|{1:^20}|".format("Location",outDict[d][1]).center(100),"#")
-                print("#","|{0:^15}|{1:^20}|".format("Date",outDict[d][2]).center(100),"#")
-                print("#","|{0:^15}|{1:^20}|".format("Time",outDict[d][3]).center(100),"#")
-                print("#","|{0:^15}|{1:^20}|".format("Quota",outDict[d][4]).center(100),"#")
-                print("#","|{0:^15}|{1:^20}|".format("Remaining",outDict[d][5]).center(100),"#")
-                print("#",("="*38).center(100,),"#")
+                outStr +=("|{0:^15}|{1:^20}|".format("workshop ID",d).center(100)+"\n")
+                outStr +=(("."*38).center(100,)+"\n")
+                outStr +=("|{0:^15}|{1:^20}|".format("Title",outDict[d][0]).center(100)+"\n")
+                outStr +=("|{0:^15}|{1:^20}|".format("Location",outDict[d][1]).center(100)+"\n")
+                outStr +=("|{0:^15}|{1:^20}|".format("Date",outDict[d][2]).center(100)+"\n")
+                outStr +=("|{0:^15}|{1:^20}|".format("Time",outDict[d][3]).center(100)+"\n")
+                outStr +=("|{0:^15}|{1:^20}|".format("Quota",outDict[d][4]).center(100)+"\n")
+                outStr +=("|{0:^15}|{1:^20}|".format("Remaining",outDict[d][5]).center(100)+"\n")
+                outStr +=(("="*38).center(100,)+"\n")
         if (flag == False):
-            print("#","NO Found".center(100),"#")
+            outStr += ("NO Found".center(100)+"\n")
+        return outStr
             
     def findByRemaining(self,inRemaining):
         """
@@ -258,34 +268,35 @@ class searchEngine():
         """
         
         outDict = self.getWorkshopDataDict()
-        
+        outStr = ""
         flag = False
-        print("#","Found:".center(100,"-"),"#")
-        print("#","".center(100,"-"),"#")
+        outStr +=("Found:".center(100)+"\n")
+        outStr +=(("="*38).center(100,)+"\n")
         for d in outDict:
             if (outDict[d][5] == inRemaining):
                 flag = True
                 if (self.isStudent):
-                    print("#","|{0:^15}|{1:^20}|".format("workshop ID",d).center(100),"#")
-                    print("#",("."*38).center(100,),"#")
-                    print("#","|{0:^15}|{1:^20}|".format("Title",outDict[d][0]).center(100),"#")
-                    print("#","|{0:^15}|{1:^20}|".format("Location",outDict[d][1]).center(100),"#")
-                    print("#","|{0:^15}|{1:^20}|".format("Date",outDict[d][2]).center(100),"#")
-                    print("#","|{0:^15}|{1:^20}|".format("Time",outDict[d][3]).center(100),"#")
-                    print("#","|{0:^15}|{1:^20}|".format("Remaining",outDict[d][5]).center(100),"#")
-                    print("#",("="*38).center(100,),"#")
+                    outStr +=("|{0:^15}|{1:^20}|".format("workshop ID",d).center(100)+"\n")
+                    outStr +=(("."*38).center(100,)+"\n")
+                    outStr +=("|{0:^15}|{1:^20}|".format("Title",outDict[d][0]).center(100)+"\n")
+                    outStr +=("|{0:^15}|{1:^20}|".format("Location",outDict[d][1]).center(100)+"\n")
+                    outStr +=("|{0:^15}|{1:^20}|".format("Date",outDict[d][2]).center(100)+"\n")
+                    outStr +=("|{0:^15}|{1:^20}|".format("Time",outDict[d][3]).center(100)+"\n")
+                    outStr +=("|{0:^15}|{1:^20}|".format("Remaining",outDict[d][5]).center(100)+"\n")
+                    outStr +=(("="*38).center(100,)+"\n")
                 else:
-                    print("#","|{0:^15}|{1:^20}|".format("workshop ID",d).center(100),"#")
-                    print("#",("."*38).center(100,),"#")
-                    print("#","|{0:^15}|{1:^20}|".format("Title",outDict[d][0]).center(100),"#")
-                    print("#","|{0:^15}|{1:^20}|".format("Location",outDict[d][1]).center(100),"#")
-                    print("#","|{0:^15}|{1:^20}|".format("Date",outDict[d][2]).center(100),"#")
-                    print("#","|{0:^15}|{1:^20}|".format("Time",outDict[d][3]).center(100),"#")
-                    print("#","|{0:^15}|{1:^20}|".format("Quota",outDict[d][4]).center(100),"#")
-                    print("#","|{0:^15}|{1:^20}|".format("Remaining",outDict[d][5]).center(100),"#")
-                    print("#",("="*38).center(100,),"#")
+                    outStr +=("|{0:^15}|{1:^20}|".format("workshop ID",d).center(100)+"\n")
+                    outStr +=(("."*38).center(100,)+"\n")
+                    outStr +=("|{0:^15}|{1:^20}|".format("Title",outDict[d][0]).center(100)+"\n")
+                    outStr +=("|{0:^15}|{1:^20}|".format("Location",outDict[d][1]).center(100)+"\n")
+                    outStr +=("|{0:^15}|{1:^20}|".format("Date",outDict[d][2]).center(100)+"\n")
+                    outStr +=("|{0:^15}|{1:^20}|".format("Time",outDict[d][3]).center(100)+"\n")
+                    outStr +=("|{0:^15}|{1:^20}|".format("Quota",outDict[d][4]).center(100)+"\n")
+                    outStr +=("|{0:^15}|{1:^20}|".format("Remaining",outDict[d][5]).center(100)+"\n")
+                    outStr +=(("="*38).center(100,)+"\n")
         if (flag == False):
-            print("#","NO Found".center(100),"#")
+            outStr += ("NO Found".center(100)+"\n")
+        return outStr
 
 
 class Administrator():
@@ -405,6 +416,7 @@ class Administrator():
             num = line.strip("\n").split()
             list.append(num)
         dictList = dict(list)
+        file.close()
         return dictList
     
     def writeWorkshopData(inDict):
@@ -434,13 +446,15 @@ class Administrator():
     
     def updateWorkShop(wID,inData,Index):
         outDict = Administrator.getWorkshopDataDict()
-
+        outStr = ""
         if (wID in outDict):
             outDict[wID][eval(Index)] = inData
+            outStr +=("Update successfully!".center(100)+"\n")
         else:
-            print("Workshop ID:{0} not found! Please try again!".format(wID))
+            outStr +=("Workshop ID:{0} not found! Please try again!".format(wID).center(100)+"\n")
             
         Administrator.writeWorkshopData(outDict)
+        return outStr
         
     def updateName(wID,inName):
         """
@@ -450,7 +464,7 @@ class Administrator():
             - wID: a String of the number of workshop's ID
             - inName: the name to update to that workshop
         """
-        Administrator.updateWorkShop(wID,inName,0)
+        return(Administrator.updateWorkShop(wID,inName,0))
 
     def updateLocation(wID,inLocation):
         """
@@ -460,7 +474,7 @@ class Administrator():
             - wID: a String of the number of workshop's ID
             - inLocation: the location to update to that workshop
         """
-        Administrator.updateWorkShop(wID,inLocation,1)
+        return(Administrator.updateWorkShop(wID,inLocation,1))
 
     def updateDate(wID,inDate):
         """
@@ -470,7 +484,7 @@ class Administrator():
             - wID: a String of the number of workshop's ID
             - inTime: the date to update to that workshop
         """
-        Administrator.updateWorkShop(wID,inDate,2)
+        return(Administrator.updateWorkShop(wID,inDate,2))
         
     def updateTime(wID,inTime):
         """
@@ -480,7 +494,7 @@ class Administrator():
             - wID: a String of the number of workshop's ID
             - inTime: the time to update to that workshop
         """
-        Administrator.updateWorkShop(wID,inTime,3)
+        return(Administrator.updateWorkShop(wID,inTime,3))
         
     def updateQuota(wID,inQuota):
         """
@@ -491,7 +505,7 @@ class Administrator():
             - inQuota: the quotas to update to taht workshop
         """
         outDict = Administrator.getWorkshopDataDict()
-        
+        outStr = ""
         if (wID in outDict):
             enrolledNum = eval(outDict[wID][4]) - eval(outDict[wID][5])
             outDict[wID][4] = inQuota
@@ -499,10 +513,12 @@ class Administrator():
                 outDict[wID][5] = "0"
             else:
                 outDict[wID][5] = (str)(eval(outDict[wID][4]) - enrolledNum)
+            outStr +=("Update successfully!".center(100)+"\n")
         else:
-            print("Workshop ID:{0} not found! Please try again!".format(wID))
-
+            outStr +=("Workshop ID:{0} not found! Please try again!".format(wID).center(100)+"\n")
+            
         Administrator.writeWorkshopData(outDict)
+        return outStr
         
     def updateRemaining(wID,inRemaining):
         """
@@ -513,16 +529,18 @@ class Administrator():
             - inRemaining: the remianing quotas to update to taht workshop
         """
         outDict = Administrator.getWorkshopDataDict()
-
+        outStr = ""
         if (wID in outDict):
             if (eval(inRemaining)>eval(outDict[wID][4])):
-                print("Illegal input! Remaining CAN NOT be greater than quota!")
+                outStr +=("Illegal input! Remaining CAN NOT be greater than quota!".center(100)+"\n")
             else:
                 outDict[wID][5] = inRemaining
+                outStr +=("Update successfully!".center(100)+"\n")
         else:
-            print("Workshop ID:{0} not found! Please try again!".format(wID))
+            outStr +=("Workshop ID:{0} not found! Please try again!".format(wID).center(100)+"\n")
 
         Administrator.writeWorkshopData(outDict)
+        return outStr
 
     def listAll():
         """
@@ -531,24 +549,25 @@ class Administrator():
         file = open('workshop.txt',mode='r')
         readLine = file.readlines()
         outList = []
-        
+        outStr = ""
         for i in readLine:
             lineList = i.strip("\n").split(":")
             lineList[1] = lineList[1].split(" ")
             outList.append(lineList)
         outDict = dict(outList)
         file.close()
-        print("#","".center(100,"-"),"#")
+        outStr +=(("="*38).center(100,)+"\n")
         for d in outDict:
-            print("#","|{0:^15}|{1:^20}|".format("workshop ID",d).center(100),"#")
-            print("#",("."*38).center(100,),"#")
-            print("#","|{0:^15}|{1:^20}|".format("Title",outDict[d][0]).center(100),"#")
-            print("#","|{0:^15}|{1:^20}|".format("Location",outDict[d][1]).center(100),"#")
-            print("#","|{0:^15}|{1:^20}|".format("Date",outDict[d][2]).center(100),"#")
-            print("#","|{0:^15}|{1:^20}|".format("Time",outDict[d][3]).center(100),"#")
-            print("#","|{0:^15}|{1:^20}|".format("Quota",outDict[d][4]).center(100),"#")
-            print("#","|{0:^15}|{1:^20}|".format("Remaining",outDict[d][5]).center(100),"#")
-            print("#",("="*38).center(100,),"#")
+            outStr +=("|{0:^15}|{1:^20}|".format("workshop ID",d).center(100)+"\n")
+            outStr +=(("."*38).center(100,)+"\n")
+            outStr +=("|{0:^15}|{1:^20}|".format("Title",outDict[d][0]).center(100)+"\n")
+            outStr +=("|{0:^15}|{1:^20}|".format("Location",outDict[d][1]).center(100)+"\n")
+            outStr +=("|{0:^15}|{1:^20}|".format("Date",outDict[d][2]).center(100)+"\n")
+            outStr +=("|{0:^15}|{1:^20}|".format("Time",outDict[d][3]).center(100)+"\n")
+            outStr +=("|{0:^15}|{1:^20}|".format("Quota",outDict[d][4]).center(100)+"\n")
+            outStr +=("|{0:^15}|{1:^20}|".format("Remaining",outDict[d][5]).center(100)+"\n")
+            outStr +=(("="*38).center(100,)+"\n")
+        return outStr
     
     #-------------------login interface for administractor-------------------
     def login():
@@ -614,7 +633,7 @@ class Administrator():
         elif(choose == "u"):
             print("#","Updating workshop information".center(100),"#")
             print("#","All workshop information:".center(100),"#")
-            Administrator.listAll()
+            print(Administrator.listAll())
             print("#","Enter the ID of event for updating:".center(100,"-"),"#")
             eventChoose = input("# >>> ID:")
             print("#","Update based on (l):Location; (n):Name; (d)Date; (t)Time; (quo)Quota; (r)Remaining".center(100),"#")
@@ -623,22 +642,22 @@ class Administrator():
             print("#","Please enter the updated information:".center(100,"-"),"#")
             data = input("# >>>").lower()
             if(choose == "d"):
-                Administrator.updateDate(eventChoose,data)
+                print(Administrator.updateDate(eventChoose,data))
 
             elif(choose == "t"):
-                Administrator.updateTime(eventChoose,data)
+                print(Administrator.updateTime(eventChoose,data))
 
             elif(choose == "l"):
-                Administrator.updateLocation(eventChoose,data)
+                print(Administrator.updateLocation(eventChoose,data))
 
             elif(choose == "n"):
-                Administrator.updateName(eventChoose,data)
+                print(Administrator.updateName(eventChoose,data))
 
             elif(choose == "quo"):
-                Administrator.updateQuota(eventChoose,data)
+                print(Administrator.updateQuota(eventChoose,data))
                 
             elif(choose == "r"):
-                Administrator.updateRemaining(eventChoose,data)
+                print(Administrator.updateRemaining(eventChoose,data))
                 
             self.adminInterface()
 
@@ -652,19 +671,19 @@ class Administrator():
             adminSe = searchEngine()
             adminSe.setAdmin()
             if(choose == "i"):
-                adminSe.findBywID(data)
+                print(adminSe.findBywID(data))
             elif(choose == "n"):
-                adminSe.findByName(data)
+                print(adminSe.findByName(data))
             elif(choose == "d"):
-                adminSe.findByDate(data)
+                print(adminSe.findByDate(data))
             elif(choose == "t"):
-                adminSe.findByTime(data)
+                print(adminSe.findByTime(data))
             elif(choose == "quo"):
-                adminSe.findByQuota(data)
+                print(adminSe.findByQuota(data))
             elif(choose == "r"):
-                adminSe.findByRemaining(data)
+                print(adminSe.findByRemaining(data))
             elif(choose == "l"):
-                adminSe.findByLocation(data)
+                print(adminSe.findByLocation(data))
             else:
                 print("#","Empty or Illegal input, back to the previous page!".center(100),"#")
             
@@ -754,6 +773,7 @@ class Student():
             num = line.strip("\n").split()
             list.append(num)
         dictList = dict(list)
+        file.close()
         return dictList
     
     def getWorkshopDataDict():
@@ -824,7 +844,7 @@ class Student():
         """
         file = open(sID +".txt",mode='r')
         readLine = file.readlines()
-        
+        file.close()
         if readLine == ['\n']:
             return False
         else:
@@ -865,10 +885,10 @@ class Student():
         outDict = Student.getWorkshopDataDict()
 
         outDictsID = self.getEnrolledDataDict(sID)
-
+        outStr = ""
         if self.isfindBywIDforEroll(sID,wID) == False:    
                     if int(outDict[wID][5]) <= 0:
-                        print("Sorry you can not eroll the workshop! No remaining quota!")
+                        outStr +=("Sorry you can not eroll the workshop! No remaining quota!".center(100)+"\n")
                     else: 
                         outDict[wID][5] = str(int(outDict[wID][5]) - 1)
                         outDictsID[wID] = outDict[wID]
@@ -878,9 +898,10 @@ class Student():
                             outDictsID[item] = outDict[item]
                         self.writeEnrolledData(sID,outDictsID)
                         
-                        print("Successful erollment!")
+                        outStr +=("Successful erollment!".center(100)+"\n")
         else:
-            print("Sorry you can not eroll this workshop more than once!")
+            outStr +=("Sorry you can not eroll this workshop more than once!".center(100)+"\n")
+        return outStr
 
     def cancel(self,sID,wID):
         """
@@ -893,7 +914,7 @@ class Student():
         outDict = Student.getWorkshopDataDict()
 
         outDictsID = self.getEnrolledDataDict(sID)
-
+        outStr = ""
         if self.isfindBywIDforCancel(sID,wID) == True: 
             
             outDict[wID][5] = str(int(outDict[wID][5]) + 1)
@@ -903,8 +924,10 @@ class Student():
             for item in outDictsID:
                 outDictsID[item] = outDict[item]
             self.writeEnrolledData(sID,outDictsID)
-            
-            print("Successful cancllation!")
+            outStr +=("Successful cancllation!".center(100)+"\n")
+        else:
+            outStr +=("Unsuccessful! No such enrollment!".center(100)+"\n")
+        return outStr
 
     def listAll():
         """
@@ -913,7 +936,7 @@ class Student():
         file = open('workshop.txt',mode='r')
         readLine = file.readlines()
         outList = []
-        
+        outStr = ""
         for i in readLine:
             lineList = i.strip("\n").split(":")
             lineList[1] = lineList[1].split(" ")
@@ -921,15 +944,16 @@ class Student():
         outDict = dict(outList)
         file.close()
         for d in outDict:
-            print("#","|{0:^15}|{1:^20}|".format("workshop ID",d).center(100),"#")
-            print("#",("."*38).center(100,),"#")
-            print("#","|{0:^15}|{1:^20}|".format("Title",outDict[d][0]).center(100),"#")
-            print("#","|{0:^15}|{1:^20}|".format("Location",outDict[d][1]).center(100),"#")
-            print("#","|{0:^15}|{1:^20}|".format("Date",outDict[d][2]).center(100),"#")
-            print("#","|{0:^15}|{1:^20}|".format("Time",outDict[d][3]).center(100),"#")
-            print("#","|{0:^15}|{1:^20}|".format("Remaining",outDict[d][5]).center(100),"#")
-            print("#",("="*38).center(100,),"#")
-        
+            outStr +=("|{0:^15}|{1:^20}|".format("workshop ID",d).center(100)+"\n")
+            outStr +=(("."*38).center(100,)+"\n")
+            outStr +=("|{0:^15}|{1:^20}|".format("Title",outDict[d][0]).center(100)+"\n")
+            outStr +=("|{0:^15}|{1:^20}|".format("Location",outDict[d][1]).center(100)+"\n")
+            outStr +=("|{0:^15}|{1:^20}|".format("Date",outDict[d][2]).center(100)+"\n")
+            outStr +=("|{0:^15}|{1:^20}|".format("Time",outDict[d][3]).center(100)+"\n")
+            outStr +=("|{0:^15}|{1:^20}|".format("Remaining",outDict[d][5]).center(100)+"\n")
+            outStr +=(("="*38).center(100,)+"\n")
+        return outStr
+    
     def listEnrolledWs(self,sID):
         """
         function to list all workshops enrolled by a studnet
@@ -941,7 +965,7 @@ class Student():
         file = open(sIDfile,mode='r')
         readLine = file.readlines()
         outList = []
-        
+        outStr = ""
         for i in readLine:
             lineList = i.strip("\n").split(":")
             lineList[1] = lineList[1].split(" ")
@@ -952,18 +976,18 @@ class Student():
         wsDict = Student.getWorkshopDataDict()
         
         if (len(outDict) == 0):
-            print("No enrolled workshop!")
+            outStr +=("No enrolled workshop!".center(100)+"\n")
         else:
             for d in outDict:
-                print("#","|{0:^15}|{1:^20}|".format("workshop ID",d).center(100),"#")
-                print("#",("."*38).center(100,),"#")
-                print("#","|{0:^15}|{1:^20}|".format("Title",wsDict[d][0]).center(100),"#")
-                print("#","|{0:^15}|{1:^20}|".format("Location",wsDict[d][1]).center(100),"#")
-                print("#","|{0:^15}|{1:^20}|".format("Date",wsDict[d][2]).center(100),"#")
-                print("#","|{0:^15}|{1:^20}|".format("Time",wsDict[d][3]).center(100),"#")
-                print("#","|{0:^15}|{1:^20}|".format("Remaining",wsDict[d][5]).center(100),"#")
-                print("#",("="*38).center(100,),"#")
-    
+                outStr +=("|{0:^15}|{1:^20}|".format("workshop ID",d).center(100)+"\n")
+                outStr +=(("."*38).center(100,)+"\n")
+                outStr +=("|{0:^15}|{1:^20}|".format("Title",wsDict[d][0]).center(100)+"\n")
+                outStr +=("|{0:^15}|{1:^20}|".format("Location",wsDict[d][1]).center(100)+"\n")
+                outStr +=("|{0:^15}|{1:^20}|".format("Date",wsDict[d][2]).center(100)+"\n")
+                outStr +=("|{0:^15}|{1:^20}|".format("Time",wsDict[d][3]).center(100)+"\n")
+                outStr +=("|{0:^15}|{1:^20}|".format("Remaining",wsDict[d][5]).center(100)+"\n")
+                outStr +=(("="*38).center(100,)+"\n")
+        return outStr
     #-------------------login interface for student-------------------
     def login():
         """
@@ -1009,10 +1033,10 @@ class Student():
             self.cancel(self.getUsers(),wID)
         elif(choose == "la"):
             print("---All workshops---\n----------------------")
-            Student.listAll()
+            print(Student.listAll())
         elif(choose == "l"):
             print("---Your Enrollments---\n----------------------")
-            self.listEnrolledWs(self.getUsers())
+            print(self.listEnrolledWs(self.getUsers()))
         elif(choose == "q"):
             main()
             return 0
@@ -1025,17 +1049,17 @@ class Student():
             stuSe = searchEngine()
             stuSe.setStudnet()
             if(choose == "i"):
-                stuSe.findBywID(data)
+                print(stuSe.findBywID(data))
             elif(choose == "n"):
-                stuSe.findByName(data)
+                print(stuSe.findByName(data))
             elif(choose == "d"):
-                stuSe.findByDate(data)
+                print(stuSe.findByDate(data))
             elif(choose == "t"):
-                stuSe.findByTime(data)
+                print(stuSe.findByTime(data))
             elif(choose == "r"):
-                stuSe.findByRemaining(data)
+                print(stuSe.findByRemaining(data))
             elif(choose == "l"):
-                stuSe.findByLocation(data)
+                print(stuSe.findByLocation(data))
             else:
                 print("Empty or Illegal input, back to the previous page!")
             self.studentInterface()
@@ -1053,8 +1077,10 @@ class Student():
         if Student.isContainUsers(users)==False:   
             passwd = Student.setPasswd()
             str = "\n"+users+" "+passwd
-            with open('student.txt','a')as file:
-                file.write(str)
+            
+            file = open('student.txt','a')
+            file.write(str)
+            file.close()
             print("Seccessfully register a new account as student!")
             Student.login()
         else:
