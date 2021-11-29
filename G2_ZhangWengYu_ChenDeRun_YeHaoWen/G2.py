@@ -891,21 +891,24 @@ class Student():
 
         outDictsID = self.getEnrolledDataDict(sID)
         outStr = ""
-        if self.isfindBywIDforEroll(sID,wID) == False:    
-                    if int(outDict[wID][5]) <= 0:
-                        outStr +=("Sorry you can not eroll the workshop! No remaining quota!".center(100)+"\n")
-                    else: 
-                        outDict[wID][5] = str(int(outDict[wID][5]) - 1)
-                        outDictsID[wID] = outDict[wID]
-                        
-                        Student.writeWorkshopData(outDict)
-                        for item in outDictsID:
-                            outDictsID[item] = outDict[item]
-                        self.writeEnrolledData(sID,outDictsID)
-                        
-                        outStr +=("Successful erollment!".center(100)+"\n")
+        if (wID in outDict):
+            if self.isfindBywIDforEroll(sID,wID) == False:    
+                        if int(outDict[wID][5]) <= 0:
+                            outStr +=("Sorry you can not eroll the workshop! No remaining quota!".center(100)+"\n")
+                        else: 
+                            outDict[wID][5] = str(int(outDict[wID][5]) - 1)
+                            outDictsID[wID] = outDict[wID]
+                            
+                            Student.writeWorkshopData(outDict)
+                            for item in outDictsID:
+                                outDictsID[item] = outDict[item]
+                            self.writeEnrolledData(sID,outDictsID)
+                            
+                            outStr +=("Successful erollment!".center(100)+"\n")
+            else:
+                outStr +=("Sorry you can not eroll this workshop more than once!".center(100)+"\n")
         else:
-            outStr +=("Sorry you can not eroll this workshop more than once!".center(100)+"\n")
+            outStr +=("No such workshop!".center(100)+"\n")
         return outStr
 
     def cancel(self,sID,wID):
@@ -920,18 +923,21 @@ class Student():
 
         outDictsID = self.getEnrolledDataDict(sID)
         outStr = ""
-        if self.isfindBywIDforCancel(sID,wID) == True: 
-            
-            outDict[wID][5] = str(int(outDict[wID][5]) + 1)
-            outDictsID.pop(wID)
-            
-            Student.writeWorkshopData(outDict)
-            for item in outDictsID:
-                outDictsID[item] = outDict[item]
-            self.writeEnrolledData(sID,outDictsID)
-            outStr +=("Successful cancllation!".center(100)+"\n")
+        if (wID in outDict):
+            if self.isfindBywIDforCancel(sID,wID) == True: 
+                
+                outDict[wID][5] = str(int(outDict[wID][5]) + 1)
+                outDictsID.pop(wID)
+                
+                Student.writeWorkshopData(outDict)
+                for item in outDictsID:
+                    outDictsID[item] = outDict[item]
+                self.writeEnrolledData(sID,outDictsID)
+                outStr +=("Successful cancllation!".center(100)+"\n")
+            else:
+                outStr +=("Unsuccessful! No such enrollment!".center(100)+"\n")
         else:
-            outStr +=("Unsuccessful! No such enrollment!".center(100)+"\n")
+            outStr +=("No such workshop!".center(100)+"\n")     
         return outStr
 
     def listAll():
@@ -1162,15 +1168,11 @@ def Main_GUI():
         pos = '%dx%d+%d+%d' % (200, 100, (screenWidth-width)/2, (screenHeight-height)/2)
         win_quit_con.geometry(pos)
         win_quit_con.title("Confirm Quit?")
-        
-        win.withdraw()
-        
         def con_exit():
             exit()
         def can_exit():
             win_quit_con.destroy()
-            win.update()
-            win.deiconify()
+            
         
         # confirm button on the quit page
         Button(win_quit_con,text='Quit',command=con_exit).place(x=60,y=40)
@@ -1542,7 +1544,7 @@ def Main_GUI():
 
         stu_title = Label(stu_win,textvariable=stu_title_text,text = "Enrollment information:",font=(CENTER,14)).place(x = 275,y = 25)
         stu_sub_title = Label(stu_win,textvariable=stu_sub_title_text,text = "Please select functions!",font=(CENTER,14)).place(x= 275, y = 450)
-        stu_inform = Label(stu_win, textvariable=stu_inform_text,font = (CENTER,14)).place(x = 290,y = 650)
+        stu_inform = Label(stu_win, textvariable=stu_inform_text,font = (CENTER,14)).place(x = 100,y = 650)
         stu_title_text.set("Enrollment information:")
         stu_sub_title_text.set("Please select functions!")
         
@@ -1568,12 +1570,12 @@ def Main_GUI():
         #function block 
         var_stu_input = StringVar(stu_win)
         stu_input = Entry(stu_win,textvariable = var_stu_input)
-        stu_input.place(x = 300,y = 530)
+        stu_input.place(x = 320,y = 533)
 
         #drop-down-box setting
         # normal_ddl = Label(stu_win, text= "Function Choices: ")
         ddl = ttk.Combobox(stu_win,width = 9)
-        ddl.place(x = 190,y = 533)
+        ddl.place(x = 210,y = 533)
         ddl['value'] = ('WorkshopID','Title','Location','Date','Time','Quota')
         ddl.current(0)
 
@@ -1590,10 +1592,13 @@ def Main_GUI():
                 stu_win.withdraw()
                 win_logout_con.destroy()
                 win.deiconify()
+                sub_title_text.set("Please select your indentity to login or register")
+                enter_user.set("")
+                enter_pwd.set("")
+                
             def can_exit():
                 win_logout_con.destroy()
-                win.update()
-                win.deiconify()
+                
         
             # confirm button on the quit page
             Button(win_logout_con,text='Log out',command=con_exit).place(x=20,y=30)
@@ -1626,52 +1631,59 @@ def Main_GUI():
 
         def stu_confirm_listener():
             if (v.get()==1):
-                inStu.eroll(inStu.getUsers(),var_stu_input.get())
-                stu_inform_text.set("Successfully enrollment!")
-                refresh()
+                if (var_stu_input.get() == ""):
+                    stu_inform_text.set("Empty input!".center(100))
+                else:
+                    stu_inform_text.set(inStu.eroll(inStu.getUsers(),var_stu_input.get()))
+                    refresh()
 
-            if (v.get()==2):
-                inStu.cancel(inStu.getUsers(),var_stu_input.get())
-                stu_inform_text.set("Successfully Cancellation!")
-                refresh()
+            elif (v.get()==2):
+                if (var_stu_input.get() == ""):
+                    stu_inform_text.set("Empty input!".center(100))
+                else:
+                    stu_inform_text.set(inStu.cancel(inStu.getUsers(),var_stu_input.get()))
+                    refresh()
 
-            if (v.get()==3):
+            elif (v.get()==3):
                 displayText.configure(state='normal')
                 displayText.delete(1.0, END)
                 displayText.insert(END,Student.listAll())
                 displayText.configure(state='disabled')
-                stu_inform_text.set("Successfully List All!")
+                stu_inform_text.set("Successfully List All!".center(100))
 
-            if (v.get()==4):
+            elif (v.get()==4):
                 displayText.configure(state='normal')
                 displayText.delete(1.0, END)
                 displayText.insert(END,inStu.listEnrolledWs(inStu.getUsers()))
                 displayText.configure(state='disabled')
-                stu_inform_text.set("Successfully List Enrollment!")
+                stu_inform_text.set("Successfully List Enrollment!".center(100))
 
-            if (v.get()==5):
+            elif (v.get()==5):
                 stuSe = searchEngine()
                 displayText.configure(state='normal')
                 displayText.delete(1.0, END)
                 if(ddl.get()=="WorkshopID"):
                     displayText.insert(END,stuSe.findBywID(var_stu_input.get()))
-                    stu_inform_text.set("Successfully searching with WorkshopID!")
-                if(ddl.get()=="Title"):
+                    stu_inform_text.set("Successfully searching with WorkshopID!".center(100))
+                elif(ddl.get()=="Title"):
                     displayText.insert(END,stuSe.findByName(var_stu_input.get()))
-                    stu_inform_text.set("Successfully searching with Name!")
-                if(ddl.get()=="Location"):
+                    stu_inform_text.set("Successfully searching with Name!".center(100))
+                elif(ddl.get()=="Location"):
                     displayText.insert(END,stuSe.findByLocation(var_stu_input.get()))
-                    stu_inform_text.set("Successfully searching with Location!")
-                if(ddl.get()=="Date"):
+                    stu_inform_text.set("Successfully searching with Location!".center(100))
+                elif(ddl.get()=="Date"):
                     displayText.insert(END,stuSe.findByDate(var_stu_input.get()))
-                    stu_inform_text.set("Successfully searching with Date!")
-                if(ddl.get()=="Time"):
+                    stu_inform_text.set("Successfully searching with Date!".center(100))
+                elif(ddl.get()=="Time"):
                     displayText.insert(END,stuSe.findByTime(var_stu_input.get()))
-                    stu_inform_text.set("Successfully searching with Time!")
-                if(ddl.get()=="Quota"):
+                    stu_inform_text.set("Successfully searching with Time!".center(100))
+                elif(ddl.get()=="Quota"):
                     displayText.insert(END,stuSe.findByQuota(var_stu_input.get()))
-                    stu_inform_text.set("Successfully searching with Quota!")
+                    stu_inform_text.set("Successfully searching with Quota!".center(100))
                 displayText.configure(state='disabled')
+            else:
+                stu_inform_text.set("Please choose the function that using!".center(100))
+
             return 0
 
         # 2 button on the admin page
