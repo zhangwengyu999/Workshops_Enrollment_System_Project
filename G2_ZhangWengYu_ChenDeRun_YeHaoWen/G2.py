@@ -439,8 +439,13 @@ class Administrator():
         """
         wID = Administrator.inID()
         
+        inList = list()
+        
+        for item in infoString:
+            inList.append(item.replace(" ","-"))
+        
         outDict = Administrator.getWorkshopDataDict()
-        outDict[wID] = infoString
+        outDict[wID] = inList
         
         Administrator.writeWorkshopData(outDict)
     
@@ -876,7 +881,7 @@ class Student():
         
     def eroll(self,sID,wID):
         """
-        function to ecroll workshop by student
+        function to eroll workshop by student
 
         parameter:
             - sID: the student ID
@@ -1137,14 +1142,14 @@ def Main_GUI():
     
     # user entry
     Label(main_page,text='User:').place(x=150,y=300)
-    var_usr_name=StringVar()
-    input_user=Entry(main_page,textvariable=var_usr_name)
+    enter_user=StringVar()
+    input_user=Entry(main_page,textvariable=enter_user)
     input_user.place(x=250,y=300)
 
     # password entry
     Label(main_page,text='Password:').place(x=150,y=350)
-    var_usr_pwd=StringVar()
-    input_pwd=Entry(main_page,textvariable=var_usr_pwd,show='*')
+    enter_pwd=StringVar()
+    input_pwd=Entry(main_page,textvariable=enter_pwd,show='*')
     input_pwd.place(x=250,y=350)
 
 
@@ -1228,6 +1233,7 @@ def Main_GUI():
         
     # admin page for inAdmin
     def admin_page(inAdmin):
+        win.withdraw()
         admin_win = Tk() 
         admin_win.title("Administrator Page - "+inAdmin.users)
         width = 730
@@ -1237,13 +1243,13 @@ def Main_GUI():
         pos = '%dx%d+%d+%d' % (width, height, (screenWidth-width)/2, (screenHeight-height)/2)
         admin_win.geometry(pos)
         admin_win.resizable(width=True, height=True)
-        y = IntVar() # radio button value
+        adminC = IntVar(admin_win) # radio button value
         
-        admin_title_text = StringVar()
-        admin_sub_title_text = StringVar()
+        admin_title_text = StringVar(admin_win)
+        admin_sub_title_text = StringVar(admin_win)
         
         admin_title = Label(admin_win,textvariable = admin_title_text,text="Workshop information:",font=(CENTER,14)).place(x=275,y=25)
-        admin_sub_title = Label(admin_win,textvariable=admin_sub_title_text,text="Please select functions!",font=(CENTER,14)).place(x=275,y=450)
+        admin_sub_title = Label(admin_win,textvariable=admin_sub_title_text,text="Please select functions!",font=(CENTER,14)).place(x=250,y=450)
         
         admin_sub_title_text.set("Please select functions!")
         admin_title_text.set("Workshop information:")
@@ -1256,61 +1262,64 @@ def Main_GUI():
         displayText.configure(state='disabled')
         
         # function block
-        admin_label1_text = StringVar()
+        admin_label1_text = StringVar(admin_win)
         admin_label1_text.set("Title")
         admin_label_1 = Label(admin_win,textvariable=admin_label1_text,text="Title",font=(CENTER,14))
         admin_label_1.place(x=225,y=575)
-        admin_entry1_text = StringVar()
+        admin_entry1_text = StringVar(admin_win)
         admin_entry_1 = Entry(admin_win,textvariable=admin_entry1_text)
-        admin_entry_1.place(x=300,y=575)
+        admin_entry_1.place(x=320,y=575)
         
-        admin_label2_text = StringVar()
+        admin_label2_text = StringVar(admin_win)
         admin_label2_text.set("Location")
         admin_label_2 = Label(admin_win,textvariable=admin_label2_text,text="Location",font=(CENTER,14))
         admin_label_2.place(x=225,y=600)
-        admin_entry2_text = StringVar()
+        admin_entry2_text = StringVar(admin_win)
         admin_entry_2 = Entry(admin_win,textvariable=admin_entry2_text)
-        admin_entry_2.place(x=300,y=600)
+        admin_entry_2.place(x=320,y=600)
         
-        admin_label3_text = StringVar()
+        
+        # for search
+        admin_Com_value = StringVar(admin_win)
+        admin_Com_choise = ttk.Combobox(admin_win,textvariable=admin_Com_value,width=8)
+        admin_Com_choise["values"] = ("ID","Title","Location","Date","Time","Quota","Remaining")
+        admin_Com_choise.current(0)
+        admin_Com_choise.configure(state="readonly")
+        
+        # for update
+        admin_Com_value2 = StringVar(admin_win)
+        admin_Com_choise2 = ttk.Combobox(admin_win,textvariable=admin_Com_value2,width=8)
+        admin_Com_choise2["values"] = ("Title","Location","Date","Time","Quota","Remaining")
+        admin_Com_choise2.current(0)
+        admin_Com_choise2.configure(state="readonly")
+        
+        admin_label3_text = StringVar(admin_win)
         admin_label3_text.set("Date")
         admin_label_3 = Label(admin_win,textvariable=admin_label3_text,text="Date",font=(CENTER,14))
         admin_label_3.place(x=225,y=625)
-        admin_entry3_text = StringVar()
+        admin_entry3_text = StringVar(admin_win)
         admin_entry_3 = Entry(admin_win,textvariable=admin_entry3_text)
-        admin_entry_3.place(x=300,y=625)
+        admin_entry_3.place(x=320,y=625)
         
-        admin_label4_text = StringVar()
+        admin_label4_text = StringVar(admin_win)
         admin_label4_text.set("Time")
         admin_label_4 = Label(admin_win,textvariable=admin_label4_text,text="Time",font=(CENTER,14))
         admin_label_4.place(x=225,y=650)
-        admin_entry4_text = StringVar()
+        admin_entry4_text = StringVar(admin_win)
         admin_entry_4 = Entry(admin_win,textvariable=admin_entry4_text)
-        admin_entry_4.place(x=300,y=650)
+        admin_entry_4.place(x=320,y=650)
         
-        admin_label5_text = StringVar()
+        admin_label5_text = StringVar(admin_win)
         admin_label5_text.set("Quota")
         admin_label_5 = Label(admin_win,textvariable=admin_label5_text,text="Quota",font=(CENTER,14))
         admin_label_5.place(x=225,y=675)
-        admin_entry5_text = StringVar()
+        admin_entry5_text = StringVar(admin_win)
         admin_entry_5 = Entry(admin_win,textvariable=admin_entry5_text)
-        admin_entry_5.place(x=300,y=675)
-        
-        # radio button choise
-        def admin_fun_choose():
-            # if (y.get() == 1):
-            #     admin_label_1.
-                
-            return 0
-        
-        # function radio button
-        rbt_admin_add = Radiobutton(admin_win,text="Add",variable=y,value=1,command=admin_fun_choose).place(x=225,y=500)
-        rbt_admin_update = Radiobutton(admin_win,text="Update",variable=y,value=2,command=admin_fun_choose).place(x=325,y=500)
-        rbt_admin_search = Radiobutton(admin_win,text="Search",variable=y,value=3,command=admin_fun_choose).place(x=425,y=500)
-        
+        admin_entry_5.place(x=320,y=675)
+       
         # log out confirm listener
         def admin_logout_listener():
-            win_logout_con=Toplevel(main_page)
+            win_logout_con=Toplevel(admin_win)
             screenWidth = win.winfo_screenwidth()
             screenHeight = win.winfo_screenheight()
             pos = '%dx%d+%d+%d' % (200, 100, (screenWidth-width)/2, (screenHeight-height)/2)
@@ -1320,18 +1329,198 @@ def Main_GUI():
             def con_exit():
                 admin_win.withdraw()
                 win_logout_con.destroy()
+                win.deiconify()
+                sub_title_text.set("Please select your indentity to login or register")
+                enter_user.set("")
+                enter_pwd.set("")
+
+                
             def can_exit():
                 win_logout_con.destroy()
-                win.update()
-                win.deiconify()
+                
         
             # confirm button on the quit page
             Button(win_logout_con,text='Log out',command=con_exit).place(x=50,y=40)
             Button(win_logout_con,text='Cancel',command=can_exit).place(x=110,y=40)
+       
+       
+        
+        # radio button choise
+        def admin_fun_choose():
+            if (adminC.get() == 1):
+                
+                displayText.configure(state='normal')
+                displayText.delete(1.0,END)
+                displayText.insert(END,Administrator.listAll())
+                displayText.configure(state='disabled')
+                
+                admin_sub_title_text.set("New workshop creation".center(50))
+                admin_label_1.place(x=225,y=575)
+                admin_entry_1.place(x=320,y=575)
+                admin_label1_text.set("Title")
+                admin_entry1_text.set("")
+                
+                admin_Com_choise.place_forget()
+                admin_Com_choise2.place_forget()
+                
+                admin_label_2.place(x=225,y=600)
+                admin_entry_2.place(x=320,y=600)
+                admin_label2_text.set("Location")
+                admin_entry2_text.set("")
+                
+                admin_label_3.place(x=225,y=625)
+                admin_entry_3.place(x=320,y=625)
+                admin_label3_text.set("Date")
+                admin_entry3_text.set("")
+                
+                admin_label_4.place(x=225,y=650)
+                admin_entry_4.place(x=320,y=650)
+                admin_label4_text.set("Time")
+                admin_entry4_text.set("")
+                
+                admin_label_5.place(x=225,y=675)
+                admin_entry_5.place(x=320,y=675)
+                admin_label5_text.set("Quota")
+                admin_entry5_text.set("")
+                
+            elif(adminC.get() == 2):
+                
+                displayText.configure(state='normal')
+                displayText.delete(1.0,END)
+                displayText.insert(END,Administrator.listAll())
+                displayText.configure(state='disabled')
+                
+                admin_sub_title_text.set("Updating workshop information".center(50))
+                admin_label_1.place(x=225,y=575)
+                admin_entry_1.place(x=320,y=575)
+                admin_label1_text.set("ID")
+                admin_entry1_text.set("")
+                
+                admin_label_2.place_forget()
+                admin_entry2_text.set("")
+                
+                admin_Com_choise.place_forget()
+                admin_Com_choise2.place(x=225,y=600)
+                
+                admin_entry_2.place(x=320,y=600)
+               
+                admin_label_3.place_forget()
+                admin_entry_3.place_forget()
+                
+                admin_label_4.place_forget()
+                admin_entry_4.place_forget()
+                
+                admin_label_5.place_forget()
+                admin_entry_5.place_forget()
+                
+            elif(adminC.get() == 3):
+                admin_sub_title_text.set("Searching workshop information".center(50))
+                admin_label_1.place_forget()
+                admin_entry_1.place_forget()
+                
+                admin_Com_choise2.place_forget()
+                
+                admin_Com_choise.place(x=225,y=600)
+                
+                admin_label_2.place_forget()
+                admin_entry_2.place(x=320,y=600)
+                admin_entry2_text.set("")
+               
+                admin_label_3.place_forget()
+                admin_entry_3.place_forget()
+                
+                admin_label_4.place_forget()
+                admin_entry_4.place_forget()
+                
+                admin_label_5.place_forget()
+                admin_entry_5.place_forget()
+                
+            else:
+                admin_sub_title_text.set("Please select your identity first!".center(50))
+            
+        
+        # function radio button
+        rbt_admin_add = Radiobutton(admin_win,text="Add",variable=adminC,value=1,command = admin_fun_choose).place(x=225,y=500)
+        rbt_admin_update = Radiobutton(admin_win,text="Update",variable=adminC,value=2,command = admin_fun_choose).place(x=325,y=500)
+        rbt_admin_search = Radiobutton(admin_win,text="Search",variable=adminC,value=3,command = admin_fun_choose).place(x=425,y=500)
+        
+        
+        
+        def admin_go_listener():
+            if (adminC.get() == 1):
+                if (admin_entry_1.get() == "" or admin_entry_2.get() == "" or admin_entry_3.get() == "" or
+                    admin_entry_4.get() == "" or admin_entry_5.get() == ""):
+                    admin_sub_title_text.set("Empty input!".center(50))
+                else:
+                    infoList = [str(admin_entry_1.get()),str(admin_entry_2.get()),str(admin_entry_3.get()),str(admin_entry_4.get())
+                                ,str(admin_entry_5.get()),str(admin_entry_5.get())]
+                    Administrator.addWs(infoList)
+                    admin_sub_title_text.set("Create workshop successfully!".center(50))
+                    
+                    displayText.configure(state='normal')
+                    displayText.delete(1.0,END)
+                    displayText.insert(END,Administrator.listAll())
+                    displayText.configure(state='disabled')
+                    
+            elif (adminC.get() == 2):
+                if (admin_entry_1.get() == "" or admin_entry_2.get() == ""):
+                    admin_sub_title_text.set("Empty input!".center(50))
+                else:
+                    if (admin_Com_choise2.get() == "Title"):
+                        admin_sub_title_text.set((Administrator.updateName(admin_entry_1.get(),admin_entry_2.get())).center(50))
+                    elif (admin_Com_choise2.get() == "Location"):
+                        admin_sub_title_text.set((Administrator.updateLocation(admin_entry_1.get(),admin_entry_2.get())).center(50))
+                    elif (admin_Com_choise2.get() == "Date"):
+                        admin_sub_title_text.set((Administrator.updateDate(admin_entry_1.get(),admin_entry_2.get())).center(50))
+                    elif (admin_Com_choise2.get() == "Time"):
+                        admin_sub_title_text.set((Administrator.updateTime(admin_entry_1.get(),admin_entry_2.get())).center(50))
+                    elif (admin_Com_choise2.get() == "Quota"):
+                        admin_sub_title_text.set((Administrator.updateQuota(admin_entry_1.get(),admin_entry_2.get())).center(50))
+                    elif (admin_Com_choise2.get() == "Remaining"):
+                        admin_sub_title_text.set((Administrator.updateRemaining(admin_entry_1.get(),admin_entry_2.get())).center(50))
+                    displayText.configure(state='normal')
+                    displayText.delete(1.0,END)
+                    displayText.insert(END,Administrator.listAll())
+                    displayText.configure(state='disabled')
+            elif (adminC.get() == 3):
+                if (admin_entry_2.get() == ""):
+                    admin_sub_title_text.set("Empty input!".center(50))
+                else:
+                    adminSe = searchEngine()
+                    adminSe.setAdmin()
+                    outStr = ""
+                    if (admin_Com_choise.get() == "ID"):
+                        outStr = adminSe.findBywID(admin_entry_2.get())
+                    elif (admin_Com_choise.get() == "Title"):
+                        outStr = adminSe.findByName(admin_entry_2.get())
+                    elif (admin_Com_choise.get() == "Location"):
+                        outStr = adminSe.findByLocation(admin_entry_2.get())
+                    elif (admin_Com_choise.get() == "Date"):
+                        outStr = adminSe.findByDate(admin_entry_2.get())
+                    elif (admin_Com_choise.get() == "Time"):
+                        outStr = adminSe.findByTime(admin_entry_2.get())
+                    elif (admin_Com_choise.get() == "Quota"):
+                        outStr = adminSe.findByQuota(admin_entry_2.get())
+                    elif (admin_Com_choise.get() == "Remaining"):
+                        outStr = adminSe.findByRemaining(admin_entry_2.get())
+                        
+                    displayText.configure(state='normal')
+                    displayText.delete(1.0,END)
+                    displayText.insert(END,outStr)
+                    displayText.configure(state='disabled')
+            else:
+                admin_sub_title_text.set("Please select your identity first!".center(50))
+            
+        
         
         # 2 button on the admin page
-        Button(admin_win,text='Go').place(x=300,y=725)
+        Button(admin_win,text='Go',command=admin_go_listener).place(x=300,y=725)
         Button(admin_win,text='Log out',command=admin_logout_listener).place(x=400,y=725)
+        
+        
+        
+        admin_win.mainloop()
+        
         
 
     def stu_page(inStu):
@@ -1344,42 +1533,206 @@ def Main_GUI():
         pos = '%dx%d+%d+%d' % (width, height, (screenWidth-width)/2, (screenHeight-height)/2)
         stu_win.geometry(pos)
         stu_win.resizable(width=True, height=True)
-        v = IntVar() # radio button value
+        v = IntVar(stu_win) # radio button value
         
-        stu_title_text = StringVar()
-        stu_sub_title_text = StringVar()
-        stu_title = Label(stu_win,textvariable=stu_title_text,font=(CENTER,14))
-        stu_title_text.set("Workshop information:")
-        stu_title.place(x=350,y=25)
-        stu_sub_title = Label(stu_win,textvariable=stu_sub_title_text,font=(CENTER,14))
+        stu_title_text = StringVar(stu_win)
+        stu_sub_title_text = StringVar(stu_win)
+        stu_inform_text = StringVar(stu_win)
+
+
+        stu_title = Label(stu_win,textvariable=stu_title_text,text = "Enrollment information:",font=(CENTER,14)).place(x = 275,y = 25)
+        stu_sub_title = Label(stu_win,textvariable=stu_sub_title_text,text = "Please select functions!",font=(CENTER,14)).place(x= 275, y = 450)
+        stu_inform = Label(stu_win, textvariable=stu_inform_text,font = (CENTER,14)).place(x = 290,y = 650)
+        stu_title_text.set("Enrollment information:")
         stu_sub_title_text.set("Please select functions!")
-        stu_sub_title.place(x=350,y=500)
+        
         
         displayText = scrolledtext.ScrolledText(stu_win,height=30,width=100)
         displayText.place(x=0,y=50)
         displayText.configure(state='normal')
-        displayText.insert(END,Student.listAll())
+        displayText.insert(END,inStu.listEnrolledWs(inStu.getUsers()))
         displayText.configure(state='disabled')
 
-        rb_stu_enrollment = Radiobutton(stu_win,text= "Enrollment",variable = v,value = 1,command =stu_fun_choose().place(x = 125,y = 500))
-        rb_stu_enrollment = Radiobutton(stu_win,text= "Cancellation",variable = v,value = 2,command =stu_fun_choose().place(x = 225,y = 500))
-        rb_stu_enrollment = Radiobutton(stu_win,text= "ListAll",variable = v,value = 3,command =stu_fun_choose().place(x = 325,y = 500))
-        rb_stu_enrollment = Radiobutton(stu_win,text= "List Enrollment",variable = v,value = 4,command =stu_fun_choose().place(x = 425,y = 500))
-        rb_stu_enrollment = Radiobutton(stu_win,text= "Searching",variable = v,value = 5,command =stu_fun_choose().place(x = 525,y = 500))
+        def refresh():
+            displayText.configure(state='normal')
+            displayText.delete(1.0, END)
+            displayText.insert(END,inStu.listEnrolledWs(inStu.getUsers()))
+            displayText.configure(state='disabled')
+            
         
-        var_stu_input = StringVar()
-        stu_input = Entry(stu_page,textvariable = var_stu_input)
-        stu_input.place(x = 300,y = 525)
-        normal_ddl = Label(stu_win, text= "Function Choices: ")
-        ddl = ttk.Combobox(stu_win)
-        ddl['Choice'] = ('WorkshopID','Title','Location','Date','Time','Quota')
-        ddl.current(0)
-        
-    
-        def enrollment_listener():
-            # if (v.get()==1):
+            displayText.configure(state='normal')
+            displayText.delete(1.0, END)
+            displayText.insert(END,inStu.listEnrolledWs(inStu.getUsers()))
+            displayText.configure(state='disabled')
 
-                return 0
+        #function block 
+        var_stu_input = StringVar(stu_win)
+        stu_input = Entry(stu_win,textvariable = var_stu_input)
+        stu_input.place(x = 300,y = 530)
+
+        #drop-down-box setting
+        # normal_ddl = Label(stu_win, text= "Function Choices: ")
+        ddl = ttk.Combobox(stu_win,width = 9)
+        ddl.place(x = 190,y = 533)
+        ddl['value'] = ('WorkshopID','Title','Location','Date','Time','Quota')
+        ddl.current(0)
+
+        #logout listener
+        def stu_logout_listener():
+            win_logout_con=Toplevel(stu_win)
+            screenWidth = win.winfo_screenwidth()
+            screenHeight = win.winfo_screenheight()
+            pos = '%dx%d+%d+%d' % (200, 100, (screenWidth-width)/2, (screenHeight-height)/2)
+            win_logout_con.geometry(pos)
+            win_logout_con.title("Confirm Log out?")
+            
+            def con_exit():
+                stu_win.withdraw()
+                win_logout_con.destroy()
+                win.deiconify()
+            def can_exit():
+                win_logout_con.destroy()
+                win.update()
+                win.deiconify()
+        
+            # confirm button on the quit page
+            Button(win_logout_con,text='Log out',command=con_exit).place(x=20,y=30)
+            Button(win_logout_con,text='Cancel',command=can_exit).place(x=110,y=30)
+       
+        #radio button choice
+        def stu_fun_choose():
+            if (v.get() == 1 or v.get()==2):
+                # ddl['value'] = ('WorkshopID')
+                stu_input.config(state = NORMAL)
+                ddl['value'] = ('WorkshopID')
+                ddl['state'] = 'readonly'
+                ddl.current(0)
+            elif (v.get()==3 or v.get()==4):
+                stu_input.config(state = DISABLED)
+                ddl['state'] = 'disabled'
+            elif (v.get()==5):
+                stu_input.config(state = NORMAL)
+                ddl['value'] = ('WorkshopID','Title','Location','Date','Time','Quota')
+                ddl['state'] = 'readonly'
+                ddl.current(0) 
+            return 0
+
+        #function radio button
+        rb_stu_enrollment = Radiobutton(stu_win,text= "Enrollment",variable = v,value = 1,command =stu_fun_choose).place(x = 125,y = 500)
+        rb_stu_enrollment = Radiobutton(stu_win,text= "Cancellation",variable = v,value = 2,command =stu_fun_choose).place(x = 225,y = 500)
+        rb_stu_enrollment = Radiobutton(stu_win,text= "ListAll",variable = v,value = 3,command =stu_fun_choose).place(x = 325,y = 500)
+        rb_stu_enrollment = Radiobutton(stu_win,text= "List Enrollment",variable = v,value = 4,command =stu_fun_choose).place(x = 400,y = 500)
+        rb_stu_enrollment = Radiobutton(stu_win,text= "Searching",variable = v,value = 5,command =stu_fun_choose).place(x = 525,y = 500)
+
+        def stu_confirm_listener():
+            if (v.get()==1):
+                inStu.eroll(inStu.getUsers(),var_stu_input.get())
+                stu_inform_text.set("Successfully enrollment!")
+                refresh()
+
+            if (v.get()==2):
+                inStu.cancel(inStu.getUsers(),var_stu_input.get())
+                stu_inform_text.set("Successfully Cancellation!")
+                refresh()
+
+            if (v.get()==3):
+                displayText.configure(state='normal')
+                displayText.delete(1.0, END)
+                displayText.insert(END,Student.listAll())
+                displayText.configure(state='disabled')
+                stu_inform_text.set("Successfully List All!")
+
+            if (v.get()==4):
+                displayText.configure(state='normal')
+                displayText.delete(1.0, END)
+                displayText.insert(END,inStu.listEnrolledWs(inStu.getUsers()))
+                displayText.configure(state='disabled')
+                stu_inform_text.set("Successfully List Enrollment!")
+
+            if (v.get()==5):
+                stuSe = searchEngine()
+                displayText.configure(state='normal')
+                displayText.delete(1.0, END)
+                if(ddl.get()=="WorkshopID"):
+                    displayText.insert(END,stuSe.findBywID(var_stu_input.get()))
+                    stu_inform_text.set("Successfully searching with WorkshopID!")
+                if(ddl.get()=="Title"):
+                    displayText.insert(END,stuSe.findByName(var_stu_input.get()))
+                    stu_inform_text.set("Successfully searching with Name!")
+                if(ddl.get()=="Location"):
+                    displayText.insert(END,stuSe.findByLocation(var_stu_input.get()))
+                    stu_inform_text.set("Successfully searching with Location!")
+                if(ddl.get()=="Date"):
+                    displayText.insert(END,stuSe.findByDate(var_stu_input.get()))
+                    stu_inform_text.set("Successfully searching with Date!")
+                if(ddl.get()=="Time"):
+                    displayText.insert(END,stuSe.findByTime(var_stu_input.get()))
+                    stu_inform_text.set("Successfully searching with Time!")
+                if(ddl.get()=="Quota"):
+                    displayText.insert(END,stuSe.findByQuota(var_stu_input.get()))
+                    stu_inform_text.set("Successfully searching with Quota!")
+                displayText.configure(state='disabled')
+            return 0
+
+        # 2 button on the admin page
+        Button(stu_win,text='Confirm',command = stu_confirm_listener).place(x=275,y=700)
+        Button(stu_win,text='Log out',command=stu_logout_listener).place(x=375,y=700)
+
+        stu_win.mainloop()
+
+    # login button listener
+    def login_listener():
+        inUser = input_user.get()
+        inPw = input_pwd.get()
+        if (x.get() == 2):
+            if (not Student.isContainUsers(inUser)):
+                sub_title_text.set("No such user! Please register first!".center(50))
+                
+            elif (not Student.isCorrectPasswd(inUser,inPw) or inUser == "" or inPw == ""):
+                sub_title_text.set("Wrong User name or Password!".center(50))
+            else:
+                inStu = Student(inUser,inPw)
+                sub_title_text.set("Successfully login! Welcome {0}".format(inStu.users).center(50))
+                stu_page(inStu)
+                # do sth stu
+        elif (x.get() == 1):
+            if (not Administrator.isContainUsers(inUser)):
+                sub_title_text.set("No such user!".center(50))
+                
+            elif (not Administrator.isCorrectPasswd(inUser,inPw) or inUser == "" or inPw == ""):
+                sub_title_text.set("Wrong User name or Password!".center(50))
+            else:
+                inAdmin = Administrator(inUser,inPw)
+                sub_title_text.set("Successfully login! Welcome {0}".format(inAdmin.users).center(50))
+                # do sth admin
+                admin_page(inAdmin)
+        else:
+            sub_title_text.set("Please select your identity first!".center(50))
+    
+    # 3 buttons on the main page
+    bt_login=Button(main_page,text='Login',command=login_listener)
+    bt_login.place(x=150,y=400)
+    bt_register=Button(main_page,text='Register',command = register_linstener)
+    bt_register.place(x=250,y=400)
+    bt_quit=Button(main_page,text='Quit',command = quit_linstener)
+    bt_quit.place(x=350,y=400)
+
+    
+
+    # identity radio button listener
+    def select_ID():
+        if (x.get() == 1):
+            bt_register.place_forget()
+            bt_register.config(state=DISABLED)
+        elif (x.get() == 2):
+            bt_register.place(x=250,y=400)
+            bt_register.config(state=NORMAL)
+            
+    # 2 radiobuttons on the main page
+    rbt_admin = Radiobutton(main_page,text="Admin",variable=x,value=1,command=select_ID).place(x=175,y=275)
+    rbt_stu = Radiobutton(main_page,text="Student",variable=x,value=2,command=select_ID).place(x=325,y=275)
+
+    win.mainloop()
 
     # login button listener
     def login_listener():
