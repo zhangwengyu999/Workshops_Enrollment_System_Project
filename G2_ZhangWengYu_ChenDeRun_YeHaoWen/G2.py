@@ -1,7 +1,6 @@
-from os import write
 from tkinter import*
-import os
-
+from tkinter import scrolledtext
+from tkinter import ttk
 class searchEngine():
     """a search engine class to implement search
     """
@@ -10,7 +9,7 @@ class searchEngine():
     def __init__(self):
         searchEngine.isStudent = False
     
-    def setStudnet(self):
+    def tsetStudnet(self):
         self.isStudent = True
     def setAdmin(self):
         self.isStudent = False
@@ -1014,7 +1013,7 @@ class Student():
                     times = 0
             else:
                 times+=1
-                print("#","Users is not exist! Enter 'n' to create new account; Else to back the login!".center(100,"-"),"#")
+                print("#","Users is not exist! Enter 'n' to create new account; Else back to the login!".center(100,"-"),"#")
                 choose = input("# >>>").lower()
                 if choose =="n":
                     Student.addusers()
@@ -1114,38 +1113,36 @@ class Student():
             Student.strToTxt(users)
 
 
-def GUI():
+def Main_GUI():
     win = Tk()
     win.title("Workshops Enrollment System - Group2")
     width = 600
     height = 600
-    screenwidth = win.winfo_screenwidth()
-    screenheight = win.winfo_screenheight()
-    alignstr = '%dx%d+%d+%d' % (width, height, (screenwidth-width)/2, (screenheight-height)/2)
-    win.geometry(alignstr)
+    screenWidth = win.winfo_screenwidth()
+    screenHeight = win.winfo_screenheight()
+    pos = '%dx%d+%d+%d' % (width, height, (screenWidth-width)/2, (screenHeight-height)/2)
+    win.geometry(pos)
     win.resizable(width=False, height=False)
     x = IntVar() # radio button value
     sub_title_text = StringVar()
     sub_title_text.set("Please select your indentity to login or register")
 
     # main login page
-    main_page = Canvas(win).place(x=0,y=0)
+    main_page = Frame(win).place(x=0,y=0)
 
     # title lable
 
     main_title = Label(main_page,text="Welcome to use Workshops Enrollment System made by Group 2!\n\nZHANG Wengyu21098431d\nCHEN Derun21098424d\nYE Haowen21098829d",font=(CENTER,14)).place(x=85,y=50)
     sub_title = Label(main_page,textvariable=sub_title_text,font=(CENTER,14)).place(x=150,y=200)
-
-    # user and password label
-    Label(main_page,text='User:').place(x=150,y=300)
-    Label(main_page,text='Password:').place(x=150,y=350)
-
+    
     # user entry
+    Label(main_page,text='User:').place(x=150,y=300)
     var_usr_name=StringVar()
     input_user=Entry(main_page,textvariable=var_usr_name)
     input_user.place(x=250,y=300)
 
     # password entry
+    Label(main_page,text='Password:').place(x=150,y=350)
     var_usr_pwd=StringVar()
     input_pwd=Entry(main_page,textvariable=var_usr_pwd,show='*')
     input_pwd.place(x=250,y=350)
@@ -1155,16 +1152,20 @@ def GUI():
     def quit_linstener():
         
         win_quit_con=Toplevel(main_page)
-        screenwidth = win.winfo_screenwidth()
-        screenheight = win.winfo_screenheight()
-        alignstr = '%dx%d+%d+%d' % (200, 100, (screenwidth-width)/2, (screenheight-height)/2)
-        win_quit_con.geometry(alignstr)
+        screenWidth = win.winfo_screenwidth()
+        screenHeight = win.winfo_screenheight()
+        pos = '%dx%d+%d+%d' % (200, 100, (screenWidth-width)/2, (screenHeight-height)/2)
+        win_quit_con.geometry(pos)
         win_quit_con.title("Confirm Quit?")
+        
+        win.withdraw()
         
         def con_exit():
             exit()
         def can_exit():
             win_quit_con.destroy()
+            win.update()
+            win.deiconify()
         
         # confirm button on the quit page
         Button(win_quit_con,text='Quit',command=con_exit).place(x=60,y=40)
@@ -1179,20 +1180,20 @@ def GUI():
             return 0
         #register page
         win_reg=Toplevel(main_page)
-        screenwidth = win.winfo_screenwidth()
-        screenheight = win.winfo_screenheight()
-        alignstr = '%dx%d+%d+%d' % (400, 250, (screenwidth-width)/2, (screenheight-height)/2)
-        win_reg.geometry(alignstr)
+        screenWidth = win.winfo_screenwidth()
+        screenHeight = win.winfo_screenheight()
+        pos = '%dx%d+%d+%d' % (400, 250, (screenWidth-width)/2, (screenHeight-height)/2)
+        win_reg.geometry(pos)
         
         win_reg.title('Register New Account')
         # user
         in_name=StringVar()
         Label(win_reg,text='User:').place(x=10,y=10)
-        inUser = Entry(win_reg,textvariable=in_name).place(x=150,y=10)
+        Entry(win_reg,textvariable=in_name).place(x=150,y=10)
         #password
         in_pwd=StringVar()
         Label(win_reg,text='Enter Password').place(x=10,y=50)
-        inPw = Entry(win_reg,textvariable=in_pwd,show='*').place(x=150,y=50)    
+        Entry(win_reg,textvariable=in_pwd,show='*').place(x=150,y=50)    
         #password confirm
         in_pwd_confirm=StringVar()
         Label(win_reg,text='Conform Password:').place(x=10,y=90)
@@ -1217,13 +1218,168 @@ def GUI():
                 file.write(str)
                 file.close()
                 register_title.set("Seccessfully registered!".center(50))
+            else:
+                register_title.set("Illagel input!".center(50))
             return 0
          
         #confirm button
-        bt_confirm_sign_up=Button(win_reg,text='Confirm',command=confirm_listener)
+        bt_confirm_sign_up=Button(win_reg,text='Confirm',command = confirm_listener)
         bt_confirm_sign_up.place(x=150,y=130)
         
+    # admin page for inAdmin
+    def admin_page(inAdmin):
+        admin_win = Tk() 
+        admin_win.title("Administrator Page - "+inAdmin.users)
+        width = 730
+        height = 800
+        screenWidth = admin_win.winfo_screenwidth()
+        screenHeight = admin_win.winfo_screenheight()
+        pos = '%dx%d+%d+%d' % (width, height, (screenWidth-width)/2, (screenHeight-height)/2)
+        admin_win.geometry(pos)
+        admin_win.resizable(width=True, height=True)
+        y = IntVar() # radio button value
         
+        admin_title_text = StringVar()
+        admin_sub_title_text = StringVar()
+        
+        admin_title = Label(admin_win,textvariable = admin_title_text,text="Workshop information:",font=(CENTER,14)).place(x=275,y=25)
+        admin_sub_title = Label(admin_win,textvariable=admin_sub_title_text,text="Please select functions!",font=(CENTER,14)).place(x=275,y=450)
+        
+        admin_sub_title_text.set("Please select functions!")
+        admin_title_text.set("Workshop information:")
+        
+        # workshop display
+        displayText = scrolledtext.ScrolledText(admin_win,height=30,width=100)
+        displayText.place(x=0,y=50)
+        displayText.configure(state='normal')
+        displayText.insert(END,Administrator.listAll())
+        displayText.configure(state='disabled')
+        
+        # function block
+        admin_label1_text = StringVar()
+        admin_label1_text.set("Title")
+        admin_label_1 = Label(admin_win,textvariable=admin_label1_text,text="Title",font=(CENTER,14))
+        admin_label_1.place(x=225,y=575)
+        admin_entry1_text = StringVar()
+        admin_entry_1 = Entry(admin_win,textvariable=admin_entry1_text)
+        admin_entry_1.place(x=300,y=575)
+        
+        admin_label2_text = StringVar()
+        admin_label2_text.set("Location")
+        admin_label_2 = Label(admin_win,textvariable=admin_label2_text,text="Location",font=(CENTER,14))
+        admin_label_2.place(x=225,y=600)
+        admin_entry2_text = StringVar()
+        admin_entry_2 = Entry(admin_win,textvariable=admin_entry2_text)
+        admin_entry_2.place(x=300,y=600)
+        
+        admin_label3_text = StringVar()
+        admin_label3_text.set("Date")
+        admin_label_3 = Label(admin_win,textvariable=admin_label3_text,text="Date",font=(CENTER,14))
+        admin_label_3.place(x=225,y=625)
+        admin_entry3_text = StringVar()
+        admin_entry_3 = Entry(admin_win,textvariable=admin_entry3_text)
+        admin_entry_3.place(x=300,y=625)
+        
+        admin_label4_text = StringVar()
+        admin_label4_text.set("Time")
+        admin_label_4 = Label(admin_win,textvariable=admin_label4_text,text="Time",font=(CENTER,14))
+        admin_label_4.place(x=225,y=650)
+        admin_entry4_text = StringVar()
+        admin_entry_4 = Entry(admin_win,textvariable=admin_entry4_text)
+        admin_entry_4.place(x=300,y=650)
+        
+        admin_label5_text = StringVar()
+        admin_label5_text.set("Quota")
+        admin_label_5 = Label(admin_win,textvariable=admin_label5_text,text="Quota",font=(CENTER,14))
+        admin_label_5.place(x=225,y=675)
+        admin_entry5_text = StringVar()
+        admin_entry_5 = Entry(admin_win,textvariable=admin_entry5_text)
+        admin_entry_5.place(x=300,y=675)
+        
+        # radio button choise
+        def admin_fun_choose():
+            # if (y.get() == 1):
+            #     admin_label_1.
+                
+            return 0
+        
+        # function radio button
+        rbt_admin_add = Radiobutton(admin_win,text="Add",variable=y,value=1,command=admin_fun_choose).place(x=225,y=500)
+        rbt_admin_update = Radiobutton(admin_win,text="Update",variable=y,value=2,command=admin_fun_choose).place(x=325,y=500)
+        rbt_admin_search = Radiobutton(admin_win,text="Search",variable=y,value=3,command=admin_fun_choose).place(x=425,y=500)
+        
+        # log out confirm listener
+        def admin_logout_listener():
+            win_logout_con=Toplevel(main_page)
+            screenWidth = win.winfo_screenwidth()
+            screenHeight = win.winfo_screenheight()
+            pos = '%dx%d+%d+%d' % (200, 100, (screenWidth-width)/2, (screenHeight-height)/2)
+            win_logout_con.geometry(pos)
+            win_logout_con.title("Confirm Log out?")
+            
+            def con_exit():
+                admin_win.withdraw()
+                win_logout_con.destroy()
+            def can_exit():
+                win_logout_con.destroy()
+                win.update()
+                win.deiconify()
+        
+            # confirm button on the quit page
+            Button(win_logout_con,text='Log out',command=con_exit).place(x=50,y=40)
+            Button(win_logout_con,text='Cancel',command=can_exit).place(x=110,y=40)
+        
+        # 2 button on the admin page
+        Button(admin_win,text='Go').place(x=300,y=725)
+        Button(admin_win,text='Log out',command=admin_logout_listener).place(x=400,y=725)
+        
+
+    def stu_page(inStu):
+        stu_win = Tk() 
+        stu_win.title("Student Page - "+inStu.users)
+        width = 730
+        height = 800
+        screenWidth = stu_win.winfo_screenwidth()
+        screenHeight = stu_win.winfo_screenheight()
+        pos = '%dx%d+%d+%d' % (width, height, (screenWidth-width)/2, (screenHeight-height)/2)
+        stu_win.geometry(pos)
+        stu_win.resizable(width=True, height=True)
+        v = IntVar() # radio button value
+        
+        stu_title_text = StringVar()
+        stu_sub_title_text = StringVar()
+        stu_title = Label(stu_win,textvariable=stu_title_text,font=(CENTER,14))
+        stu_title_text.set("Workshop information:")
+        stu_title.place(x=350,y=25)
+        stu_sub_title = Label(stu_win,textvariable=stu_sub_title_text,font=(CENTER,14))
+        stu_sub_title_text.set("Please select functions!")
+        stu_sub_title.place(x=350,y=500)
+        
+        displayText = scrolledtext.ScrolledText(stu_win,height=30,width=100)
+        displayText.place(x=0,y=50)
+        displayText.configure(state='normal')
+        displayText.insert(END,Student.listAll())
+        displayText.configure(state='disabled')
+
+        rb_stu_enrollment = Radiobutton(stu_win,text= "Enrollment",variable = v,value = 1,command =stu_fun_choose().place(x = 125,y = 500))
+        rb_stu_enrollment = Radiobutton(stu_win,text= "Cancellation",variable = v,value = 2,command =stu_fun_choose().place(x = 225,y = 500))
+        rb_stu_enrollment = Radiobutton(stu_win,text= "ListAll",variable = v,value = 3,command =stu_fun_choose().place(x = 325,y = 500))
+        rb_stu_enrollment = Radiobutton(stu_win,text= "List Enrollment",variable = v,value = 4,command =stu_fun_choose().place(x = 425,y = 500))
+        rb_stu_enrollment = Radiobutton(stu_win,text= "Searching",variable = v,value = 5,command =stu_fun_choose().place(x = 525,y = 500))
+        
+        var_stu_input = StringVar()
+        stu_input = Entry(stu_page,textvariable = var_stu_input)
+        stu_input.place(x = 300,y = 525)
+        normal_ddl = Label(stu_win, text= "Function Choices: ")
+        ddl = ttk.Combobox(stu_win)
+        ddl['Choice'] = ('WorkshopID','Title','Location','Date','Time','Quota')
+        ddl.current(0)
+        
+    
+        def enrollment_listener():
+            # if (v.get()==1):
+
+                return 0
 
     # login button listener
     def login_listener():
@@ -1238,7 +1394,8 @@ def GUI():
             else:
                 inStu = Student(inUser,inPw)
                 sub_title_text.set("Successfully login! Welcome {0}".format(inStu.users).center(50))
-                # do sth
+                stu_page(inStu)
+                # do sth stu
         elif (x.get() == 1):
             if (not Administrator.isContainUsers(inUser)):
                 sub_title_text.set("No such user!".center(50))
@@ -1248,7 +1405,8 @@ def GUI():
             else:
                 inAdmin = Administrator(inUser,inPw)
                 sub_title_text.set("Successfully login! Welcome {0}".format(inAdmin.users).center(50))
-                # do sth
+                # do sth admin
+                admin_page(inAdmin)
         else:
             sub_title_text.set("Please select your identity first!".center(50))
     
@@ -1265,8 +1423,10 @@ def GUI():
     # identity radio button listener
     def select_ID():
         if (x.get() == 1):
+            bt_register.place_forget()
             bt_register.config(state=DISABLED)
         elif (x.get() == 2):
+            bt_register.place(x=250,y=400)
             bt_register.config(state=NORMAL)
             
     # 2 radiobuttons on the main page
@@ -1292,7 +1452,7 @@ def main():
     print("#","Enter(c/g/q)".center(100,"-"),"#")
     choose = input("# >>> ")
     if (choose == "g"):
-        GUI()
+        Main_GUI()
         exit()
     elif(choose == "q"):
         exit()
