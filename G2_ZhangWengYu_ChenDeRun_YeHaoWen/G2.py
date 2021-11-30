@@ -18,7 +18,7 @@ class searchEngine():
         """a function to get a dictionary from workshop text file
 
         Returns:
-            dictionary: a dictionary from workshop text file (key: wID; value:[name,location,date,time,quota,remaining])
+            dictionary: a dictionary from workshop text file (key: wID; value:[title,location,date,time,quota,remaining])
 
         """
 
@@ -85,12 +85,9 @@ class searchEngine():
         return:
             - outStr: result of finding by workshop name
         """
-        
-        if (inBase != -1):
-            inDict = self.getWorkshopDataDict()
-            outDict = searchEngine.sort(inDict,inBase,inOrder)
-        else:
-            outDict = self.getWorkshopDataDict()
+            
+        inDict = self.getWorkshopDataDict()
+        outDict = searchEngine.sort(inDict,inBase,inOrder)
         
         outStr = ""
         
@@ -135,11 +132,8 @@ class searchEngine():
             - outStr: result of finding by workshop location
         """
         
-        if (inBase != -1):
-            inDict = self.getWorkshopDataDict()
-            outDict = searchEngine.sort(inDict,inBase,inOrder)
-        else:
-            outDict = self.getWorkshopDataDict()
+        inDict = self.getWorkshopDataDict()
+        outDict = searchEngine.sort(inDict,inBase,inOrder)
             
         outStr = ""
         flag = False
@@ -183,11 +177,8 @@ class searchEngine():
             - outStr: result of finding by workshop date
         """
 
-        if (inBase != -1):
-            inDict = self.getWorkshopDataDict()
-            outDict = searchEngine.sort(inDict,inBase,inOrder)
-        else:
-            outDict = self.getWorkshopDataDict()
+        inDict = self.getWorkshopDataDict()
+        outDict = searchEngine.sort(inDict,inBase,inOrder)
             
             
         outStr = ""
@@ -232,11 +223,8 @@ class searchEngine():
             - outStr: result of finding by workshop time
         """
 
-        if (inBase != -1):
-            inDict = self.getWorkshopDataDict()
-            outDict = searchEngine.sort(inDict,inBase,inOrder)
-        else:
-            outDict = self.getWorkshopDataDict()
+        inDict = self.getWorkshopDataDict()
+        outDict = searchEngine.sort(inDict,inBase,inOrder)
             
             
         outStr = ""
@@ -319,11 +307,8 @@ class searchEngine():
             - outStr: result of finding by workshop remaining number
         """
         
-        if (inBase != -1):
-            inDict = self.getWorkshopDataDict()
-            outDict = searchEngine.sort(inDict,inBase,inOrder)
-        else:
-            outDict = self.getWorkshopDataDict()
+        inDict = self.getWorkshopDataDict()
+        outDict = searchEngine.sort(inDict,inBase,inOrder)
             
         outStr = ""
         flag = False
@@ -725,7 +710,7 @@ class Administrator():
         
         if (choose == "a"):
             print("#","New workshop creation".center(100),"#")
-            print("#","Please enter Workshop Name:".center(100,"-"),"#")
+            print("#","Please enter Workshop Title:".center(100,"-"),"#")
             name = input("# >>>")
             
             print("#","Please enter Workshop Location:".center(100,"-"),"#")
@@ -764,8 +749,8 @@ class Administrator():
             print(Administrator.listAll(-1,True))
             print("#","Enter the ID of event for updating:".center(100,"-"),"#")
             eventChoose = input("# >>> ID:")
-            print("#","Update based on (l):Location; (til):Title; (d)Date; (t)Time; (quo)Quota; (r)Remaining".center(100),"#")
-            print("#","Enter(l/til/d/t/quo/r)".center(100,"-"),"#")
+            print("#","Update based on (l):Location; (tit):Title; (d)Date; (t)Time; (quo)Quota; (r)Remaining".center(100),"#")
+            print("#","Enter(l/tit/d/t/quo/r)".center(100,"-"),"#")
             choose = input("# >>>").lower()
             print("#","Please enter the updated information:".center(100,"-"),"#")
             data = input("# >>>").lower()
@@ -778,7 +763,7 @@ class Administrator():
             elif(choose == "l"):
                 print(Administrator.updateLocation(eventChoose,data))
 
-            elif(choose == "til"):
+            elif(choose == "tit"):
                 print(Administrator.updateName(eventChoose,data))
 
             elif(choose == "quo"):
@@ -791,15 +776,15 @@ class Administrator():
 
         elif(choose == "s"):
             print("#","Searching workshop information".center(100),"#")
-            print("#","Search for [i]ID; [n]:Name; [l]Location; [d]Date; [t]Time; [quo]Quota; [r]Remaining;  else to back".center(100),"#")
-            print("#","Enter(i/n/l/d/t/quo/r)".center(100,"-"),"#")
+            print("#","Search for [i]ID; [tit]:Title; [l]Location; [d]Date; [t]Time; [quo]Quota; [r]Remaining;  else to back".center(100),"#")
+            print("#","Enter(i/tit/l/d/t/quo/r)".center(100,"-"),"#")
             choose = input("# >>>").lower()
             print("#","Please enter the data to search:".center(100,"-"),"#")
             data = input("# >>>")
-            print("#","Sort based on [n]:Name; [l]Location; [d]Date; [t]Time; [quo]Quota; [r]Remaining; else on ID".center(100),"#")
-            print("#","Enter(n/l/d/t/quo/r)".center(100,"-"),"#")
+            print("#","Sort based on [tit]:Title; [l]Location; [d]Date; [t]Time; [quo]Quota; [r]Remaining; else on ID".center(100),"#")
+            print("#","Enter(tit/l/d/t/quo/r)".center(100,"-"),"#")
             base = input("# >>>")
-            if (base == "n"):
+            if (base == "tit"):
                 inBase = 0
             elif (base == "l"):
                 inBase = 1
@@ -828,7 +813,7 @@ class Administrator():
             adminSe.setAdmin()
             if(choose == "i"):
                 print(adminSe.findBywID(data))
-            elif(choose == "n"):
+            elif(choose == "tit"):
                 print(adminSe.findByName(data,inBase,inOrder))
             elif(choose == "d"):
                 print(adminSe.findByDate(data,inBase,inOrder))
@@ -1264,10 +1249,10 @@ class Student():
         elif(choose == "la"):
             
             
-            print("#","Sort based on [n]:Name; [l]Location; [d]Date; [t]Time; [quo]Quota; [r]Remaining; else on ID".center(100),"#")
-            print("#","Enter(n/l/d/t/quo/r)".center(100,"-"),"#")
+            print("#","Sort based on [tit]:Title; [l]Location; [d]Date; [t]Time; [quo]Quota; [r]Remaining; else on ID".center(100),"#")
+            print("#","Enter(tit/l/d/t/quo/r)".center(100,"-"),"#")
             base = input("# >>>")
-            if (base == "n"):
+            if (base == "tit"):
                 inBase = 0
             elif (base == "l"):
                 inBase = 1
@@ -1296,10 +1281,10 @@ class Student():
             
         elif(choose == "l"):
             
-            print("#","Sort based on [n]:Name; [l]Location; [d]Date; [t]Time; [quo]Quota; else on ID".center(100),"#")
-            print("#","Enter(n/l/d/t/quo/r)".center(100,"-"),"#")
+            print("#","Sort based on [tit]:Title; [l]Location; [d]Date; [t]Time; [quo]Quota; else on ID".center(100),"#")
+            print("#","Enter(tit/l/d/t/quo/r)".center(100,"-"),"#")
             base = input("# >>>")
-            if (base == "n"):
+            if (base == "tit"):
                 inBase = 0
             elif (base == "l"):
                 inBase = 1
@@ -1329,16 +1314,16 @@ class Student():
             return 0
         elif(choose == "s"):
             print("#","Searching workshop information".center(100),"#")
-            print("#","Search for [i]ID; [n]:Name; [l]Location; [d]Date; [t]Time; [r]Remaining;  else to back".center(100),"#")
-            print("#","Enter(i/n/d/t/r)".center(100,"-"),"#")
+            print("#","Search for [i]ID; [tit]:Title; [l]Location; [d]Date; [t]Time; [r]Remaining;  else to back".center(100),"#")
+            print("#","Enter(i/tit/d/t/r)".center(100,"-"),"#")
             choose = input("# >>>").lower()
             print("#","Please enter the data to search:".center(100,"-"),"#")
             data = input("# >>>")
             
-            print("#","Sort based on [n]:Name; [l]Location; [d]Date; [t]Time; [quo]Quota; else on ID".center(100),"#")
-            print("#","Enter(n/l/d/t/quo/r)".center(100,"-"),"#")
+            print("#","Sort based on [tit]:Title; [l]Location; [d]Date; [t]Time; [quo]Quota; else on ID".center(100),"#")
+            print("#","Enter(tit/l/d/t/quo/r)".center(100,"-"),"#")
             base = input("# >>>")
-            if (base == "n"):
+            if (base == "tit"):
                 inBase = 0
             elif (base == "l"):
                 inBase = 1
@@ -1365,7 +1350,7 @@ class Student():
             stuSe.setStudnet()
             if(choose == "i"):
                 print(stuSe.findBywID(data))
-            elif(choose == "n"):
+            elif(choose == "tit"):
                 print(stuSe.findByName(data,inBase,inOrder))
             elif(choose == "d"):
                 print(stuSe.findByDate(data,inBase,inOrder))
@@ -2001,8 +1986,6 @@ def Main_GUI():
                 inBase = 3
             elif (ddls_kind.get()=="Remaining"):
                 inBase = 5
-            else:
-                inBase = -1
             return inBase
 
         def ddls_Order_CJ():
@@ -2010,8 +1993,6 @@ def Main_GUI():
                 inOrder = True
             elif (ddls_order.get()=="Descending"):
                 inOrder = False
-            else:
-                inOrder = True
             return inOrder
 
         def refresh():
@@ -2064,12 +2045,14 @@ def Main_GUI():
             elif (v.get()==3 or v.get()==4):
                 stu_input.config(state = DISABLED)
                 ddl['state'] = 'disabled'
-                ddls_kind['state'] = 'normal'
-                ddls_order['state'] = 'normal'
+                ddls_kind['state'] = 'readonly'
+                ddls_order['state'] = 'readonly'
             elif (v.get()==5):
                 stu_input.config(state = NORMAL)
                 ddl['value'] = ('WorkshopID','Title','Location','Date','Time','Remaining')
                 ddl['state'] = 'readonly'
+                ddls_kind['state'] = 'readonly'
+                ddls_order['state'] = 'readonly'
                 ddl.current(0) 
             return 0
 
@@ -2115,26 +2098,32 @@ def Main_GUI():
                 displayText.configure(state='normal')
                 displayText.delete(1.0, END)
                 if(ddl.get()=="WorkshopID"):
+                    ddls_kind['value'] = ('Title','Location','Date','Time','Remaining')
                     displayText.insert(END,stuSe.findBywID(var_stu_input.get()))
                     stu_inform_text.set("Successfully searching with WorkshopID!".center(100))
                 elif(ddl.get()=="Title"):
+                    ddls_kind['value'] = ('WorkshopID','Location','Date','Time','Remaining')
                     displayText.insert(END,stuSe.findByName(var_stu_input.get(),ddls_Kind_CJ(),ddls_Order_CJ()))
                     stu_inform_text.set("Successfully searching with Name!".center(100))
                 elif(ddl.get()=="Location"):
+                    ddls_kind['value'] = ('WorkshopID','Title','Date','Time','Remaining')
                     displayText.insert(END,stuSe.findByLocation(var_stu_input.get(),ddls_Kind_CJ(),ddls_Order_CJ()))
                     stu_inform_text.set("Successfully searching with Location!".center(100))
                 elif(ddl.get()=="Date"):
+                    ddls_kind['value'] = ('WorkshopID','Title','Location','Time','Remaining')
                     displayText.insert(END,stuSe.findByDate(var_stu_input.get(),ddls_Kind_CJ(),ddls_Order_CJ()))
                     stu_inform_text.set("Successfully searching with Date!".center(100))
                 elif(ddl.get()=="Time"):
+                    ddls_kind['value'] = ('WorkshopID','Title','Location','Date','Remaining')
                     displayText.insert(END,stuSe.findByTime(var_stu_input.get(),ddls_Kind_CJ(),ddls_Order_CJ()))
                     stu_inform_text.set("Successfully searching with Time!".center(100))
                 elif(ddl.get()=="Remaining"):
+                    ddls_kind['value'] = ('WorkshopID','Title','Location','Date','Time')
                     displayText.insert(END,stuSe.findByRemaining(var_stu_input.get(),ddls_Kind_CJ(),ddls_Order_CJ()))
                     stu_inform_text.set("Successfully searching with Remaining!".center(100))
-                    displayText.configure(state='disabled')
                 else:
                     stu_inform_text.set("Please choose the function that using!".center(100))
+                displayText.configure(state='disabled')
 
                 #return 0
 
