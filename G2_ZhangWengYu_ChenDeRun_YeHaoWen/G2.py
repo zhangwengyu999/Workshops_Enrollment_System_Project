@@ -40,6 +40,8 @@ class searchEngine():
 
         parameter:
             - inwID: a String of the workshop's ID
+        return:
+            - outStr: result of finding by workshop ID
         """
         
         outDict = self.getWorkshopDataDict()
@@ -78,6 +80,10 @@ class searchEngine():
 
         parameter:
             - inName: a String of the workshop's name
+            - inBase: sort based on inBase
+            - inOrder: sort order
+        return:
+            - outStr: result of finding by workshop name
         """
         
         if (inBase != -1):
@@ -123,6 +129,10 @@ class searchEngine():
 
         parameter:
             - inName: a String of the workshop's location
+            - inBase: sort based on inBase
+            - inOrder: sort order
+        return:
+            - outStr: result of finding by workshop location
         """
         
         if (inBase != -1):
@@ -167,6 +177,10 @@ class searchEngine():
 
         parameter:
             - inName: a String of the workshop's date
+            - inBase: sort based on inBase
+            - inOrder: sort order
+        return:
+            - outStr: result of finding by workshop date
         """
 
         if (inBase != -1):
@@ -212,6 +226,10 @@ class searchEngine():
 
         parameter:
             - inName: a String of the workshop's time
+            - inBase: sort based on inBase
+            - inOrder: sort order
+        return:
+            - outStr: result of finding by workshop time
         """
 
         if (inBase != -1):
@@ -257,6 +275,10 @@ class searchEngine():
 
         parameter:
             - inName: a String of the workshop's quotas
+            - inBase: sort based on inBase
+            - inOrder: sort order
+        return:
+            - outStr: result of finding by workshop quota
         """
         
         if (inBase != -1):
@@ -291,6 +313,10 @@ class searchEngine():
 
         parameter:
             - inName: a String of the workshop's remaining quotas
+            - inBase: sort based on inBase
+            - inOrder: sort order
+        return:
+            - outStr: result of finding by workshop remaining number
         """
         
         if (inBase != -1):
@@ -331,19 +357,37 @@ class searchEngine():
     
     def sort(inDict,inBase,inOrder):
         # inOrder True = increasing order; False = decreasing order
+        """
+        function to sort
+        parameter:
+            - inDict: input dictionary
+            - inBase: sort based on inBase
+            - inOrder: sort order
+        return:
+            - outDict: output dictionary
+        """
         inList = list(inDict)
-        for i in range(len(inList)):
-            for j in range(len(inList)-i-1):
-                if (inBase == 4 or inBase == 5):
-                    inDict[inList[j]][inBase] = int(inDict[inList[j]][inBase])
-                    inDict[inList[j+1]][inBase] = int(inDict[inList[j+1]][inBase])
-                if ((inOrder == True and inDict[inList[j]][inBase]>inDict[inList[j+1]][inBase]) or
-                    (inOrder == False and inDict[inList[j]][inBase]<inDict[inList[j+1]][inBase])):
-                    inList[j],inList[j+1] = inList[j+1],inList[j]
-                    #inDict[inList[j]],inDict[inList[j+1]] = inDict[inList[j+1]],inDict[inList[j]]
-        outDict = dict()
-        for item in inList:
-            outDict[item] = inDict[item]
+        if (inBase == -1):
+            for i in range(len(inList)):
+                for j in range(len(inList)-i-1):
+                    if ((inOrder == True and inList[j]>inList[j+1]) or
+                        (inOrder == False and inList[j]<inList[j+1])):
+                        inList[j],inList[j+1] = inList[j+1],inList[j]
+            outDict = dict()
+            for item in inList:
+                outDict[item] = inDict[item]
+        else:
+            for i in range(len(inList)):
+                for j in range(len(inList)-i-1):
+                    if (inBase == 4 or inBase == 5):
+                        inDict[inList[j]][inBase] = int(inDict[inList[j]][inBase])
+                        inDict[inList[j+1]][inBase] = int(inDict[inList[j+1]][inBase])
+                    if ((inOrder == True and inDict[inList[j]][inBase]>inDict[inList[j+1]][inBase]) or
+                        (inOrder == False and inDict[inList[j]][inBase]<inDict[inList[j+1]][inBase])):
+                        inList[j],inList[j+1] = inList[j+1],inList[j]
+            outDict = dict()
+            for item in inList:
+                outDict[item] = inDict[item]
         return outDict
 
 
@@ -1094,7 +1138,10 @@ class Student():
         """
         function to print all workshops to studnets
         parameter:
-            - inBase
+            - inBase: sort based on inBase
+            - inOrder: sort order
+        return:
+            - outStr: the result
         """
         file = open('workshop.txt',mode='r')
         readLine = file.readlines()
@@ -1107,10 +1154,9 @@ class Student():
         inDict = dict(outList)
         file.close()
         
-        if (inBase != -1):
-            outDict = searchEngine.sort(inDict,inBase,inOrder)
-        else:
-            outDict = inDict
+        
+        outDict = searchEngine.sort(inDict,inBase,inOrder)
+        
         
         outStr +=(("="*38).center(100,)+"\n")
         for d in outDict:
@@ -1130,6 +1176,10 @@ class Student():
 
         parameter:
             - sID: a String of the number of student's ID
+            - inBase: sort basd on inBase
+            - inOrder: sort order
+        return:
+            - outStr: result
         """
         sIDfile = sID+".txt"
         file = open(sIDfile,mode='r')
@@ -1143,26 +1193,25 @@ class Student():
         inDict = dict(outList)
         file.close()
         
-        if (inBase != -1):
-            outDict = searchEngine.sort(inDict,inBase,inOrder)
-        else:
-            outDict = inDict
-        
         wsDict = Student.getWorkshopDataDict()
+        
+
+        outDict = searchEngine.sort(inDict,inBase,inOrder)
         
         if (len(outDict) == 0):
             outStr +=("No enrolled workshop!".center(100)+"\n")
         else:
             outStr +=(("="*38).center(100,)+"\n")
             for d in outDict:
-                outStr +=("|{0:^15}|{1:^20}|".format("workshop ID",d).center(100)+"\n")
-                outStr +=(("."*38).center(100,)+"\n")
-                outStr +=("|{0:^15}|{1:^20}|".format("Title",wsDict[d][0]).center(100)+"\n")
-                outStr +=("|{0:^15}|{1:^20}|".format("Location",wsDict[d][1]).center(100)+"\n")
-                outStr +=("|{0:^15}|{1:^20}|".format("Date",wsDict[d][2]).center(100)+"\n")
-                outStr +=("|{0:^15}|{1:^20}|".format("Time",wsDict[d][3]).center(100)+"\n")
-                outStr +=("|{0:^15}|{1:^20}|".format("Remaining",wsDict[d][5]).center(100)+"\n")
-                outStr +=(("="*38).center(100,)+"\n")
+                if (d in inDict):
+                    outStr +=("|{0:^15}|{1:^20}|".format("workshop ID",d).center(100)+"\n")
+                    outStr +=(("."*38).center(100,)+"\n")
+                    outStr +=("|{0:^15}|{1:^20}|".format("Title",outDict[d][0]).center(100)+"\n")
+                    outStr +=("|{0:^15}|{1:^20}|".format("Location",outDict[d][1]).center(100)+"\n")
+                    outStr +=("|{0:^15}|{1:^20}|".format("Date",outDict[d][2]).center(100)+"\n")
+                    outStr +=("|{0:^15}|{1:^20}|".format("Time",outDict[d][3]).center(100)+"\n")
+                    outStr +=("|{0:^15}|{1:^20}|".format("Remaining",outDict[d][5]).center(100)+"\n")
+                    outStr +=(("="*38).center(100,)+"\n")
         return outStr
     #-------------------login interface for student-------------------
     def login():
