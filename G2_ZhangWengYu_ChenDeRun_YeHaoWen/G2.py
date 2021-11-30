@@ -988,31 +988,41 @@ class Student():
 
 
     def enrollTimeCheck(self,sID,wID):
+        """
+        the function to check whether the same time of different workshops
+        
+        parameter:
+            - sID: the student ID
+            - wID: the workshop ID
+        return:
+             - True: different date or same date of different time (no overlap time as well)
+             - False: enroll workshop of same date and same time/overlap time
+        """
         outDict = Student.getWorkshopDataDict()
         outDictsID = self.getEnrolledDataDict(sID)
-        outStr = ""
+        outListForEnrolled = []
         outListForEnroll = []
-        outListForAllWs = []
-    
+
         for i in outDictsID:
             j = 0
-            outListForEnroll.append(outDictsID[i][3].split("-")[j])
-            j += 1
-        
-        outListForAllWs.append(outDict[wID][3].split("-")[0])
-        outListForAllWs.append(outDict[wID][3].split("-")[1])
+            outListForEnrolled.append((outDictsID[i][3].split("-"))[j])
+            outListForEnrolled.append((outDictsID[i][3].split("-"))[j+1])
+            
+        outListForEnroll.append((outDict[wID][3].split("-"))[0])
+        outListForEnroll.append((outDict[wID][3].split("-"))[1])
 
-        for i in range(len(outListForEnroll) // 2):
-            if (outListForEnroll[i*2] >= outListForEnroll[1] and outListForEnroll[i*2+1] <= outListForAllWs[0]):
+        for i in outDictsID:
+            if(outDictsID[i][2] != outDict[wID][2]):
                 return True
-            elif(outListForEnroll[i*2] == outListForAllWs[0] and outListForEnroll[i*2+1] == outListForAllWs[1]):
-                outStr += ("Sorry you can not eroll a workshop of same date and time!".center(100)+"\n")
-                return False
-            else:
-                outStr +=("Sorry you can not eroll a workshop of same date with a overlap time!".center(100)+"\n")
-                return False
+            for i in range(len(outListForEnrolled) // 2):
+                if (outListForEnrolled[i*2] >= outListForEnrolled[1] and outListForEnrolled[i*2+1] <= outListForEnroll[0]):
+                    return True
+                elif(outListForEnrolled[i*2] == outListForEnroll[0] and outListForEnrolled[i*2+1] == outListForEnroll[1]):
+                    return False
+                else:
+                    return False
 
-                
+    
     def eroll(self,sID,wID):
         """
         function to eroll workshop by student
@@ -1020,25 +1030,29 @@ class Student():
         parameter:
             - sID: the student ID
             - wID: the workshop ID which the student want to enroll
+        return:
+            - outStr: hint
         """
         outDict = Student.getWorkshopDataDict()
 
         outDictsID = self.getEnrolledDataDict(sID)
         outStr = ""
         if (wID in outDict):
-            if (self.isfindBywIDforEroll(sID,wID) == False) and (Student.enrollTimeCheck(self,sID,wID == True)):                      
-                        if int(outDict[wID][5]) <= 0:
-                            outStr +=("Sorry you can not eroll the workshop! No remaining quota!".center(100)+"\n")  
-                        else: 
-                            outDict[wID][5] = str(int(outDict[wID][5]) - 1)
-                            outDictsID[wID] = outDict[wID]
-                            
-                            Student.writeWorkshopData(outDict)
-                            for item in outDictsID:
-                                outDictsID[item] = outDict[item]
-                            self.writeEnrolledData(sID,outDictsID)
-                            
-                            outStr +=("Successful erollment!".center(100)+"\n")
+            if (self.isfindBywIDforEroll(sID,wID) == False):  
+                if (Student.enrollTimeCheck(self,sID,wID) == False):  
+                    outStr += ("Sorry you can not eroll a workshop of a same date and same time/overlap time!".center(100)+"\n")                  
+                elif(int(outDict[wID][5]) <= 0):
+                    outStr +=("Sorry you can not eroll the workshop! No remaining quota!".center(100)+"\n")  
+                else: 
+                    outDict[wID][5] = str(int(outDict[wID][5]) - 1)
+                    outDictsID[wID] = outDict[wID]
+                    
+                    Student.writeWorkshopData(outDict)
+                    for item in outDictsID:
+                        outDictsID[item] = outDict[item]
+                    self.writeEnrolledData(sID,outDictsID)
+                    
+                    outStr +=("Successful erollment!".center(100)+"\n")
             else:
                 outStr +=("Sorry you can not eroll this workshop more than once!".center(100)+"\n")
         else:
@@ -1052,6 +1066,8 @@ class Student():
         parameter:
             - sID: the student ID
             - wID: the workshop ID which the student want to cancel
+        return:
+            - outStr: hint
         """
         outDict = Student.getWorkshopDataDict()
 
@@ -1077,6 +1093,8 @@ class Student():
     def listAll(inBase,inOrder):
         """
         function to print all workshops to studnets
+        parameter:
+            - inBase
         """
         file = open('workshop.txt',mode='r')
         readLine = file.readlines()
@@ -1480,9 +1498,9 @@ def Main_GUI():
         admin_sub_title_text = StringVar(admin_win)
         
         admin_title = Label(admin_win,textvariable = admin_title_text,text="Workshop information:",font=(CENTER,14)).place(x=275,y=25)
-        admin_sub_title = Label(admin_win,textvariable=admin_sub_title_text,text="Please select functions!",font=(CENTER,14)).place(x=250,y=450)
+        admin_sub_title = Label(admin_win,textvariable=admin_sub_title_text,text="Please select functions!",font=(CENTER,14)).place(x=225,y=450)
         
-        admin_sub_title_text.set("Please select functions!")
+        admin_sub_title_text.set("Please select functions!".center(50))
         admin_title_text.set("Workshop information:")
         
         # workshop display
@@ -1709,15 +1727,55 @@ def Main_GUI():
                 admin_Com_choise_sort.current(0)
                 admin_Com_choise_sort_order.current(0)
                 admin_Com_choise2.current(0)
+            
+            elif (adminC.get() == 4):
+                admin_sub_title_text.set("Workshop deletion".center(50))
+                displayText.configure(state='normal')
+                displayText.delete(1.0,END)
+                displayText.insert(END,Administrator.listAll(-1,True))
+                displayText.configure(state='disabled')
+                
+                admin_label_1.place(x=225,y=575)
+                admin_entry_1.place(x=320,y=575)
+                admin_label1_text.set("ID")
+                admin_entry1_text.set("")
+                
+                admin_label_2.place_forget()
+                admin_entry2_text.set("")
+                
+                admin_Com_choise.place_forget()
+                admin_Com_choise2.place_forget()
+                
+                admin_entry_2.place_forget()
+                
+               
+                admin_label_3.place_forget()
+                admin_entry_3.place_forget()
+                
+                admin_label_4.place_forget()
+                admin_entry_4.place_forget()
+                
+                admin_label_5.place_forget()
+                admin_entry_5.place_forget()
+                
+                admin_Com_choise_sort.place_forget()
+                admin_Com_choise_sort_order.place_forget()
+                
+                admin_Com_choise.current(0)
+                admin_Com_choise_sort.current(0)
+                admin_Com_choise_sort_order.current(0)
+                admin_Com_choise2.current(0)
                 
             else:
-                admin_sub_title_text.set("Please select your identity first!".center(50))
+                admin_sub_title_text.set("Please select your identity first!")
             
         
         # function radio button
-        rbt_admin_add = Radiobutton(admin_win,text="Add",variable=adminC,value=1,command = admin_fun_choose).place(x=225,y=500)
-        rbt_admin_update = Radiobutton(admin_win,text="Update",variable=adminC,value=2,command = admin_fun_choose).place(x=325,y=500)
-        rbt_admin_search = Radiobutton(admin_win,text="Search",variable=adminC,value=3,command = admin_fun_choose).place(x=425,y=500)
+        rbt_admin_add = Radiobutton(admin_win,text="Add",variable=adminC,value=1,command = admin_fun_choose).place(x=200,y=500)
+        rbt_admin_del = Radiobutton(admin_win,text="Delete",variable=adminC,value=4,command = admin_fun_choose).place(x=300,y=500)
+        rbt_admin_update = Radiobutton(admin_win,text="Update",variable=adminC,value=2,command = admin_fun_choose).place(x=400,y=500)
+        rbt_admin_search = Radiobutton(admin_win,text="Search",variable=adminC,value=3,command = admin_fun_choose).place(x=500,y=500)
+        
         
         
         
@@ -1734,7 +1792,7 @@ def Main_GUI():
                     
                     displayText.configure(state='normal')
                     displayText.delete(1.0,END)
-                    displayText.insert(END,Administrator.listAll())
+                    displayText.insert(END,Administrator.listAll(-1,True))
                     displayText.configure(state='disabled')
                     
             elif (adminC.get() == 2):
@@ -1755,7 +1813,7 @@ def Main_GUI():
                         admin_sub_title_text.set((Administrator.updateRemaining(admin_entry_1.get(),admin_entry_2.get())).center(50))
                     displayText.configure(state='normal')
                     displayText.delete(1.0,END)
-                    displayText.insert(END,Administrator.listAll())
+                    displayText.insert(END,Administrator.listAll(-1,True))
                     displayText.configure(state='disabled')
             elif (adminC.get() == 3):
                 if (admin_entry_2.get() == ""):
@@ -1807,6 +1865,16 @@ def Main_GUI():
                     displayText.delete(1.0,END)
                     displayText.insert(END,outStr)
                     displayText.configure(state='disabled')
+            elif(adminC.get() == 4):
+                if (admin_entry_1.get() == ""):
+                    admin_sub_title_text.set("Empty input!".center(50))
+                else:
+                    admin_sub_title_text.set(Administrator.deleteWs(admin_entry_1.get()).strip(" "))
+                    displayText.configure(state='normal')
+                    displayText.delete(1.0,END)
+                    displayText.insert(END,Administrator.listAll(-1,True))
+                    displayText.configure(state='disabled')
+            
             else:
                 admin_sub_title_text.set("Please select your identity first!".center(50))
             
@@ -1816,12 +1884,8 @@ def Main_GUI():
         Button(admin_win,text='Go',command=admin_go_listener).place(x=300,y=725)
         Button(admin_win,text='Log out',command=admin_logout_listener).place(x=400,y=725)
         
-        
-        
         admin_win.mainloop()
         
-        
-
     def stu_page(inStu):
         stu_win = Tk() 
         stu_win.title("Student Page - "+inStu.users)
@@ -1832,39 +1896,19 @@ def Main_GUI():
         pos = '%dx%d+%d+%d' % (width, height, (screenWidth-width)/2, (screenHeight-height)/2)
         stu_win.geometry(pos)
         stu_win.resizable(width=True, height=True)
-        v = IntVar(stu_win) # radio button value
-        
+        v = IntVar(stu_win) # radio button value'
+
         stu_title_text = StringVar(stu_win)
         stu_sub_title_text = StringVar(stu_win)
         stu_inform_text = StringVar(stu_win)
-
 
         stu_title = Label(stu_win,textvariable=stu_title_text,text = "Enrollment information:",font=(CENTER,14)).place(x = 275,y = 25)
         stu_sub_title = Label(stu_win,textvariable=stu_sub_title_text,text = "Please select functions!",font=(CENTER,14)).place(x= 275, y = 450)
         stu_inform = Label(stu_win, textvariable=stu_inform_text,font = (CENTER,14)).place(x = 100,y = 650)
         stu_title_text.set("Enrollment information:")
         stu_sub_title_text.set("Please select functions!")
-        
-        
-        displayText = scrolledtext.ScrolledText(stu_win,height=30,width=100)
-        displayText.place(x=0,y=50)
-        displayText.configure(state='normal')
-        displayText.insert(END,inStu.listEnrolledWs(inStu.getUsers()))
-        displayText.configure(state='disabled')
 
-        def refresh():
-            displayText.configure(state='normal')
-            displayText.delete(1.0, END)
-            displayText.insert(END,inStu.listEnrolledWs(inStu.getUsers()))
-            displayText.configure(state='disabled')
-            
-        
-            displayText.configure(state='normal')
-            displayText.delete(1.0, END)
-            displayText.insert(END,inStu.listEnrolledWs(inStu.getUsers()))
-            displayText.configure(state='disabled')
-
-        #function block 
+         #function block 
         var_stu_input = StringVar(stu_win)
         stu_input = Entry(stu_win,textvariable = var_stu_input)
         stu_input.place(x = 320,y = 533)
@@ -1873,20 +1917,65 @@ def Main_GUI():
         # normal_ddl = Label(stu_win, text= "Function Choices: ")
         ddl = ttk.Combobox(stu_win,width = 9)
         ddl.place(x = 210,y = 533)
-        ddl['value'] = ('WorkshopID','Title','Location','Date','Time','Quota')
+        ddl['value'] = ('WorkshopID','Title','Location','Date','Time','Remaining')
         ddl.current(0)
 
         #drop-down-box setting for sorting kind and sorting order
-        ddls_kind_text = Label(stu_win, text = "Sort On").place(x = 180, y = 553)
+        ddls_kind_text = Label(stu_win, text = "Sort On").place(x = 200, y = 580)
         ddls_kind = ttk.Combobox(stu_win, width = 9)
-        ddls_kind.place(x = 210, y = 553)
-        ddls_kind['value'] = ('WorkshopID','Title','Location','Date','Time','Quota')
+        ddls_kind.place(x = 280, y = 580)
+        ddls_kind['value'] = ('WorkshopID','Title','Location','Date','Time','Remaining')
         ddls_kind.current(0)
         
         ddls_order = ttk.Combobox(stu_win, width = 10)
-        ddls_order.place(x = 250, y = 553)
+        ddls_order.place(x = 400, y = 580)
         ddls_order['value'] = ('Ascending','Descending')
         ddls_order.current(0)
+
+        displayText = scrolledtext.ScrolledText(stu_win,height=30,width=100)
+        displayText.place(x=0,y=50)
+        displayText.configure(state='normal')
+        displayText.insert(END,inStu.listEnrolledWs(inStu.getUsers(),-1,True))
+        displayText.configure(state='disabled')
+
+        #drop-down-box condition judging for ddls
+        def ddls_Kind_CJ():
+            if (ddls_kind.get()=="WorkshopID"):
+                inBase = -1
+            elif (ddls_kind.get()=="Title"):
+                inBase = 0
+            elif (ddls_kind.get()=="Location"):
+                inBase = 1
+            elif (ddls_kind.get()=="Date"):
+                inBase = 2
+            elif (ddls_kind.get()=="Time"):
+                inBase = 3
+            elif (ddls_kind.get()=="Remaining"):
+                inBase = 5
+            else:
+                inBase = -1
+            return inBase
+
+        def ddls_Order_CJ():
+            if (ddls_order.get()=="Ascending"):
+                inOrder = True
+            elif (ddls_order.get()=="Descending"):
+                inOrder = False
+            else:
+                inOrder = True
+            return inOrder
+
+        def refresh():
+            displayText.configure(state='normal')
+            displayText.delete(1.0, END)
+            displayText.insert(END,inStu.listEnrolledWs(inStu.getUsers(),ddls_Kind_CJ(),ddls_Order_CJ()))
+            displayText.configure(state='disabled')
+            
+        
+            displayText.configure(state='normal')
+            displayText.delete(1.0, END)
+            displayText.insert(END,inStu.listEnrolledWs(inStu.getUsers(),ddls_Kind_CJ(),ddls_Order_CJ()))
+            displayText.configure(state='disabled')
 
         #logout listener
         def stu_logout_listener():
@@ -1921,6 +2010,8 @@ def Main_GUI():
                 ddl['value'] = ('WorkshopID')
                 ddl['state'] = 'readonly'
                 ddl.current(0)
+                ddls_kind['state'] = 'disabled'
+                ddls_order['state'] = 'disabled'
             elif (v.get()==3 or v.get()==4):
                 stu_input.config(state = DISABLED)
                 ddl['state'] = 'disabled'
@@ -1928,7 +2019,7 @@ def Main_GUI():
                 ddls_order['state'] = 'normal'
             elif (v.get()==5):
                 stu_input.config(state = NORMAL)
-                ddl['value'] = ('WorkshopID','Title','Location','Date','Time','Quota')
+                ddl['value'] = ('WorkshopID','Title','Location','Date','Time','Remaining')
                 ddl['state'] = 'readonly'
                 ddl.current(0) 
             return 0
@@ -1940,7 +2031,9 @@ def Main_GUI():
         rb_stu_enrollment = Radiobutton(stu_win,text= "List Enrollment",variable = v,value = 4,command =stu_fun_choose).place(x = 400,y = 500)
         rb_stu_enrollment = Radiobutton(stu_win,text= "Searching",variable = v,value = 5,command =stu_fun_choose).place(x = 525,y = 500)
 
+        #confirm button listener
         def stu_confirm_listener():
+            stuSe = searchEngine()
             if (v.get()==1):
                 if (var_stu_input.get() == ""):
                     stu_inform_text.set("Empty input!".center(100))
@@ -1958,44 +2051,43 @@ def Main_GUI():
             elif (v.get()==3):
                 displayText.configure(state='normal')
                 displayText.delete(1.0, END)
-                displayText.insert(END,Student.listAll())
+                displayText.insert(END,Student.listAll(ddls_Kind_CJ(),ddls_Order_CJ()))
                 displayText.configure(state='disabled')
                 stu_inform_text.set("Successfully List All!".center(100))
 
             elif (v.get()==4):
                 displayText.configure(state='normal')
                 displayText.delete(1.0, END)
-                displayText.insert(END,inStu.listEnrolledWs(inStu.getUsers()))
+                displayText.insert(END,inStu.listEnrolledWs(inStu.getUsers(),ddls_Kind_CJ(),ddls_Order_CJ()))
                 displayText.configure(state='disabled')
                 stu_inform_text.set("Successfully List Enrollment!".center(100))
 
             elif (v.get()==5):
-                stuSe = searchEngine()
                 displayText.configure(state='normal')
                 displayText.delete(1.0, END)
                 if(ddl.get()=="WorkshopID"):
                     displayText.insert(END,stuSe.findBywID(var_stu_input.get()))
                     stu_inform_text.set("Successfully searching with WorkshopID!".center(100))
                 elif(ddl.get()=="Title"):
-                    displayText.insert(END,stuSe.findByName(var_stu_input.get()))
+                    displayText.insert(END,stuSe.findByName(var_stu_input.get(),ddls_Kind_CJ(),ddls_Order_CJ()))
                     stu_inform_text.set("Successfully searching with Name!".center(100))
                 elif(ddl.get()=="Location"):
-                    displayText.insert(END,stuSe.findByLocation(var_stu_input.get()))
+                    displayText.insert(END,stuSe.findByLocation(var_stu_input.get(),ddls_Kind_CJ(),ddls_Order_CJ()))
                     stu_inform_text.set("Successfully searching with Location!".center(100))
                 elif(ddl.get()=="Date"):
-                    displayText.insert(END,stuSe.findByDate(var_stu_input.get()))
+                    displayText.insert(END,stuSe.findByDate(var_stu_input.get(),ddls_Kind_CJ(),ddls_Order_CJ()))
                     stu_inform_text.set("Successfully searching with Date!".center(100))
                 elif(ddl.get()=="Time"):
-                    displayText.insert(END,stuSe.findByTime(var_stu_input.get()))
+                    displayText.insert(END,stuSe.findByTime(var_stu_input.get(),ddls_Kind_CJ(),ddls_Order_CJ()))
                     stu_inform_text.set("Successfully searching with Time!".center(100))
-                elif(ddl.get()=="Quota"):
-                    displayText.insert(END,stuSe.findByQuota(var_stu_input.get()))
-                    stu_inform_text.set("Successfully searching with Quota!".center(100))
-                displayText.configure(state='disabled')
-            else:
-                stu_inform_text.set("Please choose the function that using!".center(100))
+                elif(ddl.get()=="Remaining"):
+                    displayText.insert(END,stuSe.findByRemaining(var_stu_input.get(),ddls_Kind_CJ(),ddls_Order_CJ()))
+                    stu_inform_text.set("Successfully searching with Remaining!".center(100))
+                    displayText.configure(state='disabled')
+                else:
+                    stu_inform_text.set("Please choose the function that using!".center(100))
 
-            return 0
+                #return 0
 
         # 2 button on the admin page
         Button(stu_win,text='Confirm',command = stu_confirm_listener).place(x=275,y=700)
