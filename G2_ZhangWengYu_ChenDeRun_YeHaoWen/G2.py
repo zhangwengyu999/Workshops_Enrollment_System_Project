@@ -72,7 +72,7 @@ class searchEngine():
                 outStr +=(("="*38).center(100,)+"\n")
         return outStr
     
-    def findByName(self,inName):
+    def findByName(self,inName,inBase,inOrder):
         """
         function to find workshops according to thier name , and print out
 
@@ -80,7 +80,11 @@ class searchEngine():
             - inName: a String of the workshop's name
         """
         
-        outDict = self.getWorkshopDataDict()
+        if (inBase != -1):
+            inDict = self.getWorkshopDataDict()
+            outDict = searchEngine.sort(inDict,inBase,inOrder)
+        else:
+            outDict = self.getWorkshopDataDict()
         
         outStr = ""
         
@@ -113,7 +117,7 @@ class searchEngine():
             outStr += ("NO Found".center(100)+"\n")
         return outStr
             
-    def findByLocation(self,inLocatin):
+    def findByLocation(self,inLocatin,inBase,inOrder):
         """
         function to find workshops according to thier location , and print out
 
@@ -121,7 +125,12 @@ class searchEngine():
             - inName: a String of the workshop's location
         """
         
-        outDict = self.getWorkshopDataDict()
+        if (inBase != -1):
+            inDict = self.getWorkshopDataDict()
+            outDict = searchEngine.sort(inDict,inBase,inOrder)
+        else:
+            outDict = self.getWorkshopDataDict()
+            
         outStr = ""
         flag = False
         outStr +=("Found:".center(100)+"\n")
@@ -152,7 +161,7 @@ class searchEngine():
             outStr += ("NO Found".center(100)+"\n")
         return outStr
             
-    def findByDate(self,inD):
+    def findByDate(self,inD,inBase,inOrder):
         """
         function to find workshops according to thier date , and print out
 
@@ -160,7 +169,13 @@ class searchEngine():
             - inName: a String of the workshop's date
         """
 
-        outDict = self.getWorkshopDataDict()
+        if (inBase != -1):
+            inDict = self.getWorkshopDataDict()
+            outDict = searchEngine.sort(inDict,inBase,inOrder)
+        else:
+            outDict = self.getWorkshopDataDict()
+            
+            
         outStr = ""
         flag = False
         outStr +=("Found:".center(100)+"\n")
@@ -191,7 +206,7 @@ class searchEngine():
             outStr += ("NO Found".center(100)+"\n")
         return outStr
             
-    def findByTime(self,inT):
+    def findByTime(self,inT,inBase,inOrder):
         """
         function to find workshops according to thier time , and print out
 
@@ -199,7 +214,13 @@ class searchEngine():
             - inName: a String of the workshop's time
         """
 
-        outDict = self.getWorkshopDataDict()
+        if (inBase != -1):
+            inDict = self.getWorkshopDataDict()
+            outDict = searchEngine.sort(inDict,inBase,inOrder)
+        else:
+            outDict = self.getWorkshopDataDict()
+            
+            
         outStr = ""
         flag = False
         outStr +=("Found:".center(100)+"\n")
@@ -230,7 +251,7 @@ class searchEngine():
             outStr += ("NO Found".center(100)+"\n")
         return outStr
                 
-    def findByQuota(self,inQuota):
+    def findByQuota(self,inQuota,inBase,inOrder):
         """
         function to find workshops according to thier quotas , and print out
 
@@ -238,7 +259,12 @@ class searchEngine():
             - inName: a String of the workshop's quotas
         """
         
-        outDict = self.getWorkshopDataDict()
+        if (inBase != -1):
+            inDict = self.getWorkshopDataDict()
+            outDict = searchEngine.sort(inDict,inBase,inOrder)
+        else:
+            outDict = self.getWorkshopDataDict()
+            
         outStr = ""
         flag = False
         outStr +=("Found:".center(100)+"\n")
@@ -259,7 +285,7 @@ class searchEngine():
             outStr += ("NO Found".center(100)+"\n")
         return outStr
             
-    def findByRemaining(self,inRemaining):
+    def findByRemaining(self,inRemaining,inBase,inOrder):
         """
         function to find workshops according to thier remaining quotas , and print out
 
@@ -267,7 +293,12 @@ class searchEngine():
             - inName: a String of the workshop's remaining quotas
         """
         
-        outDict = self.getWorkshopDataDict()
+        if (inBase != -1):
+            inDict = self.getWorkshopDataDict()
+            outDict = searchEngine.sort(inDict,inBase,inOrder)
+        else:
+            outDict = self.getWorkshopDataDict()
+            
         outStr = ""
         flag = False
         outStr +=("Found:".center(100)+"\n")
@@ -297,6 +328,23 @@ class searchEngine():
         if (flag == False):
             outStr += ("NO Found".center(100)+"\n")
         return outStr
+    
+    def sort(inDict,inBase,inOrder):
+        # inOrder True = increasing order; False = decreasing order
+        inList = list(inDict)
+        for i in range(len(inList)):
+            for j in range(len(inList)-i-1):
+                if (inBase == 4 or inBase == 5):
+                    inDict[inList[j]][inBase] = int(inDict[inList[j]][inBase])
+                    inDict[inList[j+1]][inBase] = int(inDict[inList[j+1]][inBase])
+                if ((inOrder == True and inDict[inList[j]][inBase]>inDict[inList[j+1]][inBase]) or
+                    (inOrder == False and inDict[inList[j]][inBase]<inDict[inList[j+1]][inBase])):
+                    inList[j],inList[j+1] = inList[j+1],inList[j]
+                    #inDict[inList[j]],inDict[inList[j+1]] = inDict[inList[j+1]],inDict[inList[j]]
+        outDict = dict()
+        for item in inList:
+            outDict[item] = inDict[item]
+        return outDict
 
 
 class Administrator():
@@ -547,7 +595,7 @@ class Administrator():
         Administrator.writeWorkshopData(outDict)
         return outStr
 
-    def listAll():
+    def listAll(inBase,inOrder):
         """
         function to print all workshops to admin
         """
@@ -559,8 +607,14 @@ class Administrator():
             lineList = i.strip("\n").split(":")
             lineList[1] = lineList[1].split(" ")
             outList.append(lineList)
-        outDict = dict(outList)
+        inDict = dict(outList)
         file.close()
+        
+        if (inBase != -1):
+            outDict = searchEngine.sort(inDict,inBase,inOrder)
+        else:
+            outDict = inDict
+        
         outStr +=(("="*38).center(100,)+"\n")
         for d in outDict:
             outStr +=("|{0:^15}|{1:^20}|".format("workshop ID",d).center(100)+"\n")
@@ -638,7 +692,7 @@ class Administrator():
         elif(choose == "u"):
             print("#","Updating workshop information".center(100),"#")
             print("#","All workshop information:".center(100),"#")
-            print(Administrator.listAll())
+            print(Administrator.listAll(-1,True))
             print("#","Enter the ID of event for updating:".center(100,"-"),"#")
             eventChoose = input("# >>> ID:")
             print("#","Update based on (l):Location; (til):Title; (d)Date; (t)Time; (quo)Quota; (r)Remaining".center(100),"#")
@@ -669,26 +723,54 @@ class Administrator():
         elif(choose == "s"):
             print("#","Searching workshop information".center(100),"#")
             print("#","Search for [i]ID; [n]:Name; [l]Location; [d]Date; [t]Time; [quo]Quota; [r]Remaining;  else to back".center(100),"#")
-            print("#","Enter(i/n/d/t/quo/r)".center(100,"-"),"#")
+            print("#","Enter(i/n/l/d/t/quo/r)".center(100,"-"),"#")
             choose = input("# >>>").lower()
             print("#","Please enter the data to search:".center(100,"-"),"#")
             data = input("# >>>")
+            print("#","Sort based on [n]:Name; [l]Location; [d]Date; [t]Time; [quo]Quota; [r]Remaining; else on ID".center(100),"#")
+            print("#","Enter(n/l/d/t/quo/r)".center(100,"-"),"#")
+            base = input("# >>>")
+            if (base == "n"):
+                inBase = 0
+            elif (base == "l"):
+                inBase = 1
+            elif (base == "d"):
+                inBase = 2
+            elif (base == "t"):
+                inBase = 3
+            elif (base == "quo"):
+                inBase = 4
+            elif (base == "r"):
+                inBase = 5
+            else:
+                inBase = -1
+                
+            print("#","Sort in [i]Increasing order or [d]Decreasing order; else on Increasing".center(100),"#")
+            print("#","Enter(i/d)".center(100,"-"),"#")
+            order = input("# >>>")
+            if (order == "i"):
+                inOrder = True
+            elif (order == "d"):
+                inOrder = False
+            else:
+                inOrder = True
+            
             adminSe = searchEngine()
             adminSe.setAdmin()
             if(choose == "i"):
                 print(adminSe.findBywID(data))
             elif(choose == "n"):
-                print(adminSe.findByName(data))
+                print(adminSe.findByName(data,inBase,inOrder))
             elif(choose == "d"):
-                print(adminSe.findByDate(data))
+                print(adminSe.findByDate(data,inBase,inOrder))
             elif(choose == "t"):
-                print(adminSe.findByTime(data))
+                print(adminSe.findByTime(data,inBase,inOrder))
             elif(choose == "quo"):
-                print(adminSe.findByQuota(data))
+                print(adminSe.findByQuota(data,inBase,inOrder))
             elif(choose == "r"):
-                print(adminSe.findByRemaining(data))
+                print(adminSe.findByRemaining(data,inBase,inOrder))
             elif(choose == "l"):
-                print(adminSe.findByLocation(data))
+                print(adminSe.findByLocation(data,inBase,inOrder))
             else:
                 print("#","Empty or Illegal input, back to the previous page!".center(100),"#")
             
@@ -844,8 +926,8 @@ class Student():
         """
         function to find whether the workshop is erolled or not 
         parameter
-        - sID: the student ID
-        - inwID: the input workshop ID
+            - sID: the student ID
+            - inwID: the input workshop ID
         """
         file = open(sID +".txt",mode='r')
         readLine = file.readlines()
@@ -878,7 +960,30 @@ class Student():
             return True
         else:
             return False
-        
+
+
+    def enrollTimeCheck(self,sID,wID):
+        outDict = Student.getWorkshopDataDict()
+
+        outDictsID = self.getEnrolledDataDict(sID)
+        outStr = ""
+        outListForEnroll = []
+        outListForAllWs = []
+    
+        for i in outDictsID:
+            outListForEnroll = outDictsID[i][3].split("-")
+        for i in outDict:
+            outListForAllWs = outDict[i][3].split("-")
+            
+        if (outListForEnroll[0] >= outListForAllWs[1] and outListForEnroll[1] <= outListForAllWs[0]):
+            return True
+        elif(outListForEnroll[0] == outListForAllWs[0] and outListForEnroll[1] == outListForAllWs[1]):
+            outStr += ("Sorry you can not eroll a workshop of same date and time!".center(100)+"\n")
+            return False
+        else:
+            outStr +=("Sorry you can not eroll a workshop of same date with a overlap time!".center(100)+"\n")
+            return False
+
     def eroll(self,sID,wID):
         """
         function to eroll workshop by student
@@ -892,9 +997,9 @@ class Student():
         outDictsID = self.getEnrolledDataDict(sID)
         outStr = ""
         if (wID in outDict):
-            if self.isfindBywIDforEroll(sID,wID) == False:    
+            if (self.isfindBywIDforEroll(sID,wID) == False) and (Student.enrollTimeCheck(self,sID,wID)):                      
                         if int(outDict[wID][5]) <= 0:
-                            outStr +=("Sorry you can not eroll the workshop! No remaining quota!".center(100)+"\n")
+                            outStr +=("Sorry you can not eroll the workshop! No remaining quota!".center(100)+"\n")  
                         else: 
                             outDict[wID][5] = str(int(outDict[wID][5]) - 1)
                             outDictsID[wID] = outDict[wID]
@@ -940,7 +1045,7 @@ class Student():
             outStr +=("No such workshop!".center(100)+"\n")     
         return outStr
 
-    def listAll():
+    def listAll(inBase,inOrder):
         """
         function to print all workshops to studnets
         """
@@ -952,8 +1057,14 @@ class Student():
             lineList = i.strip("\n").split(":")
             lineList[1] = lineList[1].split(" ")
             outList.append(lineList)
-        outDict = dict(outList)
+        inDict = dict(outList)
         file.close()
+        
+        if (inBase != -1):
+            outDict = searchEngine.sort(inDict,inBase,inOrder)
+        else:
+            outDict = inDict
+        
         outStr +=(("="*38).center(100,)+"\n")
         for d in outDict:
             outStr +=("|{0:^15}|{1:^20}|".format("workshop ID",d).center(100)+"\n")
@@ -966,7 +1077,7 @@ class Student():
             outStr +=(("="*38).center(100,)+"\n")
         return outStr
     
-    def listEnrolledWs(self,sID):
+    def listEnrolledWs(self,sID,inBase,inOrder):
         """
         function to list all workshops enrolled by a studnet
 
@@ -982,8 +1093,13 @@ class Student():
             lineList = i.strip("\n").split(":")
             lineList[1] = lineList[1].split(" ")
             outList.append(lineList)
-        outDict = dict(outList)
+        inDict = dict(outList)
         file.close()
+        
+        if (inBase != -1):
+            outDict = searchEngine.sort(inDict,inBase,inOrder)
+        else:
+            outDict = inDict
         
         wsDict = Student.getWorkshopDataDict()
         
@@ -1050,11 +1166,68 @@ class Student():
             wID = input("# >>>")
             print(self.cancel(self.getUsers(),wID))
         elif(choose == "la"):
+            
+            
+            print("#","Sort based on [n]:Name; [l]Location; [d]Date; [t]Time; [quo]Quota; [r]Remaining; else on ID".center(100),"#")
+            print("#","Enter(n/l/d/t/quo/r)".center(100,"-"),"#")
+            base = input("# >>>")
+            if (base == "n"):
+                inBase = 0
+            elif (base == "l"):
+                inBase = 1
+            elif (base == "d"):
+                inBase = 2
+            elif (base == "t"):
+                inBase = 3
+            elif (base == "quo"):
+                inBase = 4
+            elif (base == "r"):
+                inBase = 5
+            else:
+                inBase = -1
+                
+            print("#","Sort in [i]Increasing order or [d]Decreasing order; else on Increasing".center(100),"#")
+            print("#","Enter(i/d)".center(100,"-"),"#")
+            order = input("# >>>")
+            if (order == "i"):
+                inOrder = True
+            elif (order == "d"):
+                inOrder = False
+            else:
+                inOrder = True
             print("#","All workshop information:".center(100),"#")
-            print(Student.listAll())
+            print(Student.listAll(inBase,inOrder))
+            
         elif(choose == "l"):
+            
+            print("#","Sort based on [n]:Name; [l]Location; [d]Date; [t]Time; [quo]Quota; else on ID".center(100),"#")
+            print("#","Enter(n/l/d/t/quo/r)".center(100,"-"),"#")
+            base = input("# >>>")
+            if (base == "n"):
+                inBase = 0
+            elif (base == "l"):
+                inBase = 1
+            elif (base == "d"):
+                inBase = 2
+            elif (base == "t"):
+                inBase = 3
+            elif (base == "quo"):
+                inBase = 4
+            else:
+                inBase = -1
+                
+            print("#","Sort in [i]Increasing order or [d]Decreasing order; else on Increasing".center(100),"#")
+            print("#","Enter(i/d)".center(100,"-"),"#")
+            order = input("# >>>")
+            if (order == "i"):
+                inOrder = True
+            elif (order == "d"):
+                inOrder = False
+            else:
+                inOrder = True
+            
             print("#","Your enrollment information:".center(100),"#")
-            print(self.listEnrolledWs(self.getUsers()))
+            print(self.listEnrolledWs(self.getUsers(),inBase,inOrder))
         elif(choose == "q"):
             main()
             return 0
@@ -1065,20 +1238,47 @@ class Student():
             choose = input("# >>>").lower()
             print("#","Please enter the data to search:".center(100,"-"),"#")
             data = input("# >>>")
+            
+            print("#","Sort based on [n]:Name; [l]Location; [d]Date; [t]Time; [quo]Quota; else on ID".center(100),"#")
+            print("#","Enter(n/l/d/t/quo/r)".center(100,"-"),"#")
+            base = input("# >>>")
+            if (base == "n"):
+                inBase = 0
+            elif (base == "l"):
+                inBase = 1
+            elif (base == "d"):
+                inBase = 2
+            elif (base == "t"):
+                inBase = 3
+            elif (base == "quo"):
+                inBase = 4
+            else:
+                inBase = -1
+                
+            print("#","Sort in [i]Increasing order or [d]Decreasing order; else on Increasing".center(100),"#")
+            print("#","Enter(i/d)".center(100,"-"),"#")
+            order = input("# >>>")
+            if (order == "i"):
+                inOrder = True
+            elif (order == "d"):
+                inOrder = False
+            else:
+                inOrder = True
+            
             stuSe = searchEngine()
             stuSe.setStudnet()
             if(choose == "i"):
                 print(stuSe.findBywID(data))
             elif(choose == "n"):
-                print(stuSe.findByName(data))
+                print(stuSe.findByName(data,inBase,inOrder))
             elif(choose == "d"):
-                print(stuSe.findByDate(data))
+                print(stuSe.findByDate(data,inBase,inOrder))
             elif(choose == "t"):
-                print(stuSe.findByTime(data))
+                print(stuSe.findByTime(data,inBase,inOrder))
             elif(choose == "r"):
-                print(stuSe.findByRemaining(data))
+                print(stuSe.findByRemaining(data,inBase,inOrder))
             elif(choose == "l"):
-                print(stuSe.findByLocation(data))
+                print(stuSe.findByLocation(data,inBase,inOrder))
             else:
                 print("#","Empty or Illegal input, back to the previous page!".center(100),"#")
             self.studentInterface()
@@ -1260,7 +1460,7 @@ def Main_GUI():
         displayText = scrolledtext.ScrolledText(admin_win,height=30,width=100)
         displayText.place(x=0,y=50)
         displayText.configure(state='normal')
-        displayText.insert(END,Administrator.listAll())
+        displayText.insert(END,Administrator.listAll(-1,True))
         displayText.configure(state='disabled')
         
         # function block
@@ -1287,6 +1487,20 @@ def Main_GUI():
         admin_Com_choise["values"] = ("ID","Title","Location","Date","Time","Quota","Remaining")
         admin_Com_choise.current(0)
         admin_Com_choise.configure(state="readonly")
+        
+        # for search sort data
+        admin_Com_value_sort = StringVar(admin_win)
+        admin_Com_choise_sort = ttk.Combobox(admin_win,textvariable=admin_Com_value_sort,width=8)
+        admin_Com_choise_sort["values"] = ("ID","Title","Location","Date","Time","Quota","Remaining")
+        admin_Com_choise_sort.current(0)
+        admin_Com_choise_sort.configure(state="readonly")
+        
+        # for search sort order
+        admin_Com_value_sort_order = StringVar(admin_win)
+        admin_Com_choise_sort_order = ttk.Combobox(admin_win,textvariable=admin_Com_value_sort_order,width=8)
+        admin_Com_choise_sort_order["values"] = ("Ascending","Desending")
+        admin_Com_choise_sort_order.current(0)
+        admin_Com_choise_sort_order.configure(state="readonly")
         
         # for update
         admin_Com_value2 = StringVar(admin_win)
@@ -1385,6 +1599,9 @@ def Main_GUI():
                 admin_label5_text.set("Quota")
                 admin_entry5_text.set("")
                 
+                admin_Com_choise_sort.place_forget()
+                admin_Com_choise_sort_order.place_forget()
+                
             elif(adminC.get() == 2):
                 
                 displayText.configure(state='normal')
@@ -1415,6 +1632,9 @@ def Main_GUI():
                 admin_label_5.place_forget()
                 admin_entry_5.place_forget()
                 
+                admin_Com_choise_sort.place_forget()
+                admin_Com_choise_sort_order.place_forget()
+                
             elif(adminC.get() == 3):
                 admin_sub_title_text.set("Searching workshop information".center(50))
                 admin_label_1.place_forget()
@@ -1428,10 +1648,18 @@ def Main_GUI():
                 admin_entry_2.place(x=320,y=600)
                 admin_entry2_text.set("")
                
-                admin_label_3.place_forget()
+                admin_label_3.place(x=225,y=625)
+                admin_label3_text.set("Sort on:")
+                
+                admin_label_4.place(x=225,y=650)
+                admin_label4_text.set("Sort order:")
+                
+                admin_Com_choise_sort.place(x=320,y=625)
+                
+                admin_Com_choise_sort_order.place(x=320,y=650)
+            
                 admin_entry_3.place_forget()
                 
-                admin_label_4.place_forget()
                 admin_entry_4.place_forget()
                 
                 admin_label_5.place_forget()
@@ -1488,23 +1716,47 @@ def Main_GUI():
                 if (admin_entry_2.get() == ""):
                     admin_sub_title_text.set("Empty input!".center(50))
                 else:
+                    base = admin_Com_value_sort.get()
+                    if (base == "Title"):
+                        inBase = 0
+                    elif (base == "Location"):
+                        inBase = 1
+                    elif (base == "Date"):
+                        inBase = 2
+                    elif (base == "Time"):
+                        inBase = 3
+                    elif (base == "Quota"):
+                        inBase = 4
+                    elif (base == "Remaining"):
+                        inBase = 5
+                    else:
+                        inBase = -1
+                    
+                    order = admin_Com_choise_sort_order.get()
+                    if (order == "Ascending"):
+                        inOrder = True
+                    elif (order == "Desending"):
+                        inOrder = False
+                    else:
+                        inOrder = True
+                    
                     adminSe = searchEngine()
                     adminSe.setAdmin()
                     outStr = ""
                     if (admin_Com_choise.get() == "ID"):
                         outStr = adminSe.findBywID(admin_entry_2.get())
                     elif (admin_Com_choise.get() == "Title"):
-                        outStr = adminSe.findByName(admin_entry_2.get())
+                        outStr = adminSe.findByName(admin_entry_2.get(),inBase,inOrder)
                     elif (admin_Com_choise.get() == "Location"):
-                        outStr = adminSe.findByLocation(admin_entry_2.get())
+                        outStr = adminSe.findByLocation(admin_entry_2.get(),inBase,inOrder)
                     elif (admin_Com_choise.get() == "Date"):
-                        outStr = adminSe.findByDate(admin_entry_2.get())
+                        outStr = adminSe.findByDate(admin_entry_2.get(),inBase,inOrder)
                     elif (admin_Com_choise.get() == "Time"):
-                        outStr = adminSe.findByTime(admin_entry_2.get())
+                        outStr = adminSe.findByTime(admin_entry_2.get(),inBase,inOrder)
                     elif (admin_Com_choise.get() == "Quota"):
-                        outStr = adminSe.findByQuota(admin_entry_2.get())
+                        outStr = adminSe.findByQuota(admin_entry_2.get(),inBase,inOrder)
                     elif (admin_Com_choise.get() == "Remaining"):
-                        outStr = adminSe.findByRemaining(admin_entry_2.get())
+                        outStr = adminSe.findByRemaining(admin_entry_2.get(),inBase,inOrder)
                         
                     displayText.configure(state='normal')
                     displayText.delete(1.0,END)
@@ -1579,6 +1831,18 @@ def Main_GUI():
         ddl['value'] = ('WorkshopID','Title','Location','Date','Time','Quota')
         ddl.current(0)
 
+        #drop-down-box setting for sorting kind and sorting order
+        ddls_kind_text = Label(stu_win, text = "Sort On").place(x = 180, y = 553)
+        ddls_kind = ttk.Combobox(stu_win, width = 9)
+        ddls_kind.place(x = 210, y = 553)
+        ddls_kind['value'] = ('WorkshopID','Title','Location','Date','Time','Quota')
+        ddls_kind.current(0)
+        
+        ddls_order = ttk.Combobox(stu_win, width = 10)
+        ddls_order.place(x = 250, y = 553)
+        ddls_order['value'] = ('Ascending','Descending')
+        ddls_order.current(0)
+
         #logout listener
         def stu_logout_listener():
             win_logout_con=Toplevel(stu_win)
@@ -1615,6 +1879,8 @@ def Main_GUI():
             elif (v.get()==3 or v.get()==4):
                 stu_input.config(state = DISABLED)
                 ddl['state'] = 'disabled'
+                ddls_kind['state'] = 'normal'
+                ddls_order['state'] = 'normal'
             elif (v.get()==5):
                 stu_input.config(state = NORMAL)
                 ddl['value'] = ('WorkshopID','Title','Location','Date','Time','Quota')
@@ -1818,10 +2084,12 @@ def main():
     choose = input("# >>> ")
     if (choose == "g"):
         Main_GUI()
-        exit()
+        exit()    
     elif(choose == "q"):
         exit()
-        
+    elif (choose != "c" and choose != "g" and choose != "q"):
+        print("Illegal input! Try again!".center(100,"-"),"#")
+        main()
     
     print("#","CLI launched!".center(100),"#")
     print("#","Choose your identity, [a]administrator or [s]student? [q] for quit".center(100),"#")
