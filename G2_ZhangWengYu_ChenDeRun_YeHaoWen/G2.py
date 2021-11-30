@@ -483,7 +483,7 @@ class Administrator():
         """a function to add a workshop into the storage 
 
         Args:
-            infoString ([type]): [description]
+            infoString (String): the workshop-wID to be added
         """
         wID = Administrator.inID()
         
@@ -497,6 +497,22 @@ class Administrator():
         
         Administrator.writeWorkshopData(outDict)
     
+    def deleteWs(wID):
+        """a function to delete a workshop from the storage 
+
+        Args:
+            wID (String): the workshop-wID to be deleted
+        """
+        outStr = ""
+        outDict = Administrator.getWorkshopDataDict()
+        if (wID in outDict):
+            outDict.pop(wID)
+            Administrator.writeWorkshopData(outDict)
+            outStr +=("Delete successfully!".center(100)+"\n")
+        else:
+            outStr +=("Workshop ID:{0} not found! Please try again!".format(wID).center(100)+"\n")
+        return outStr
+        
     def updateWorkShop(wID,inData,Index):
         outDict = Administrator.getWorkshopDataDict()
         outStr = ""
@@ -659,8 +675,8 @@ class Administrator():
         Returns:
             int: 0 to quit
         """
-        print("#","Please select function: (a)Add a workshop; (u)Update a workshop; (S)Search in workshops; (q)Quit".center(100),"#")
-        print("#","Enter (a/u/s/q)".center(100,"-"),"#")
+        print("#","Please select function: [a]Add a workshop; [d]Delete a workshop; [u]Update; [S]Search in workshops; [q]Quit".center(100),"#")
+        print("#","Enter (a/d/u/s/q)".center(100,"-"),"#")
         choose = input("# >>>").lower()
         
         if (choose == "a"):
@@ -687,6 +703,15 @@ class Administrator():
             Administrator.addWs(infoList)
             print("#","Create workshop successfully!".center(100),"#")
             
+            self.adminInterface()
+            
+        elif (choose == "d"):
+            print("#","Deletion of workshop information".center(100),"#")
+            print("#","All workshop information:".center(100),"#")
+            print(Administrator.listAll(-1,True))
+            print("#","Enter the ID of workshop for deletion:".center(100,"-"),"#")
+            eventChoose = input("# >>> ID:")
+            print(Administrator.deleteWs(eventChoose))
             self.adminInterface()
             
         elif(choose == "u"):
@@ -964,26 +989,30 @@ class Student():
 
     def enrollTimeCheck(self,sID,wID):
         outDict = Student.getWorkshopDataDict()
-
         outDictsID = self.getEnrolledDataDict(sID)
         outStr = ""
         outListForEnroll = []
         outListForAllWs = []
     
         for i in outDictsID:
-            outListForEnroll = outDictsID[i][3].split("-")
-        for i in outDict:
-            outListForAllWs = outDict[i][3].split("-")
-            
-        if (outListForEnroll[0] >= outListForAllWs[1] and outListForEnroll[1] <= outListForAllWs[0]):
-            return True
-        elif(outListForEnroll[0] == outListForAllWs[0] and outListForEnroll[1] == outListForAllWs[1]):
-            outStr += ("Sorry you can not eroll a workshop of same date and time!".center(100)+"\n")
-            return False
-        else:
-            outStr +=("Sorry you can not eroll a workshop of same date with a overlap time!".center(100)+"\n")
-            return False
+            j = 0
+            outListForEnroll.append(outDictsID[i][3].split("-")[j])
+            j += 1
+        
+        outListForAllWs.append(outDict[wID][3].split("-")[0])
+        outListForAllWs.append(outDict[wID][3].split("-")[1])
 
+        for i in range(len(outListForEnroll) // 2):
+            if (outListForEnroll[i*2] >= outListForEnroll[1] and outListForEnroll[i*2+1] <= outListForAllWs[0]):
+                return True
+            elif(outListForEnroll[i*2] == outListForAllWs[0] and outListForEnroll[i*2+1] == outListForAllWs[1]):
+                outStr += ("Sorry you can not eroll a workshop of same date and time!".center(100)+"\n")
+                return False
+            else:
+                outStr +=("Sorry you can not eroll a workshop of same date with a overlap time!".center(100)+"\n")
+                return False
+
+                
     def eroll(self,sID,wID):
         """
         function to eroll workshop by student
@@ -997,7 +1026,7 @@ class Student():
         outDictsID = self.getEnrolledDataDict(sID)
         outStr = ""
         if (wID in outDict):
-            if (self.isfindBywIDforEroll(sID,wID) == False) and (Student.enrollTimeCheck(self,sID,wID)):                      
+            if (self.isfindBywIDforEroll(sID,wID) == False) and (Student.enrollTimeCheck(self,sID,wID == True)):                      
                         if int(outDict[wID][5]) <= 0:
                             outStr +=("Sorry you can not eroll the workshop! No remaining quota!".center(100)+"\n")  
                         else: 
@@ -1567,7 +1596,7 @@ def Main_GUI():
                 
                 displayText.configure(state='normal')
                 displayText.delete(1.0,END)
-                displayText.insert(END,Administrator.listAll())
+                displayText.insert(END,Administrator.listAll(-1,True))
                 displayText.configure(state='disabled')
                 
                 admin_sub_title_text.set("New workshop creation".center(50))
@@ -1602,11 +1631,17 @@ def Main_GUI():
                 admin_Com_choise_sort.place_forget()
                 admin_Com_choise_sort_order.place_forget()
                 
+                admin_Com_choise.current(0)
+                admin_Com_choise_sort.current(0)
+                admin_Com_choise_sort_order.current(0)
+                admin_Com_choise2.current(0)
+                
+                
             elif(adminC.get() == 2):
                 
                 displayText.configure(state='normal')
                 displayText.delete(1.0,END)
-                displayText.insert(END,Administrator.listAll())
+                displayText.insert(END,Administrator.listAll(-1,True))
                 displayText.configure(state='disabled')
                 
                 admin_sub_title_text.set("Updating workshop information".center(50))
@@ -1634,6 +1669,11 @@ def Main_GUI():
                 
                 admin_Com_choise_sort.place_forget()
                 admin_Com_choise_sort_order.place_forget()
+                
+                admin_Com_choise.current(0)
+                admin_Com_choise_sort.current(0)
+                admin_Com_choise_sort_order.current(0)
+                admin_Com_choise2.current(0)
                 
             elif(adminC.get() == 3):
                 admin_sub_title_text.set("Searching workshop information".center(50))
@@ -1664,6 +1704,11 @@ def Main_GUI():
                 
                 admin_label_5.place_forget()
                 admin_entry_5.place_forget()
+                
+                admin_Com_choise.current(0)
+                admin_Com_choise_sort.current(0)
+                admin_Com_choise_sort_order.current(0)
+                admin_Com_choise2.current(0)
                 
             else:
                 admin_sub_title_text.set("Please select your identity first!".center(50))
