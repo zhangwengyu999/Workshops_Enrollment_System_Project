@@ -2090,7 +2090,7 @@ def Main_GUI():
                 if (var_stu_input.get() == ""):
                     stu_inform_text.set("Empty input!".center(100))
                 else:
-                    stu_inform_text.set(inStu.eroll(inStu.getUsers(),var_stu_input.get()))
+                    stu_inform_text.set(inStu.enroll(inStu.getUsers(),var_stu_input.get()))
                     refresh()
 
             elif (v.get()==2):
