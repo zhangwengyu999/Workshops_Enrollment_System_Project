@@ -76,7 +76,7 @@ class searchEngine():
     
     def findByName(self,inName,inBase,inOrder):
         """
-        function to find workshops according to their name , and print out
+        function to find workshops according to thier name , and print out
 
         parameter:
             - inName: a String of the workshop's name
@@ -122,7 +122,7 @@ class searchEngine():
             
     def findByLocation(self,inLocatin,inBase,inOrder):
         """
-        function to find workshops according to thier location, and print out
+        function to find workshops according to thier location , and print out
 
         parameter:
             - inName: a String of the workshop's location
@@ -1921,11 +1921,6 @@ def Main_GUI():
         admin_win.mainloop()
         
     def stu_page(inStu):
-        """all functions and information in student page after successfully login as a student identification
-
-        Args:
-            inStu (Student()): as the object of Student()
-        """
         stu_win = Tk() 
         stu_win.title("Student Page - "+inStu.users)
         width = 730
@@ -1979,11 +1974,6 @@ def Main_GUI():
 
         #drop-down-box condition judging for ddls
         def ddls_Kind_CJ():
-            """drop-down-box list for judging choice among workshopID, title, location, date ,time and remaining
-
-            Returns:
-                [int]: return the choice in drop-down-box list sort function
-            """
             if (ddls_kind.get()=="WorkshopID"):
                 inBase = -1
             elif (ddls_kind.get()=="Title"):
@@ -1999,11 +1989,6 @@ def Main_GUI():
             return inBase
 
         def ddls_Order_CJ():
-            """drop-down-box list for judging choice between ascending order and descending order
-
-            Returns:
-                [boolean]: return the choice of whether ascending or descending
-            """
             if (ddls_order.get()=="Ascending"):
                 inOrder = True
             elif (ddls_order.get()=="Descending"):
@@ -2011,8 +1996,12 @@ def Main_GUI():
             return inOrder
 
         def refresh():
-            """refresh the enrollment information page to publish the latest information of enrollment
-            """
+            displayText.configure(state='normal')
+            displayText.delete(1.0, END)
+            displayText.insert(END,inStu.listEnrolledWs(inStu.getUsers(),ddls_Kind_CJ(),ddls_Order_CJ()))
+            displayText.configure(state='disabled')
+            
+        
             displayText.configure(state='normal')
             displayText.delete(1.0, END)
             displayText.insert(END,inStu.listEnrolledWs(inStu.getUsers(),ddls_Kind_CJ(),ddls_Order_CJ()))
@@ -2020,8 +2009,6 @@ def Main_GUI():
 
         #logout listener
         def stu_logout_listener():
-            """function to logout current student user for switching or quitting
-            """
             win_logout_con=Toplevel(stu_win)
             screenWidth = win.winfo_screenwidth()
             screenHeight = win.winfo_screenheight()
@@ -2030,8 +2017,6 @@ def Main_GUI():
             win_logout_con.title("Confirm Log out?")
             
             def con_exit():
-                """continue exit function
-                """
                 stu_win.withdraw()
                 win_logout_con.destroy()
                 win.deiconify()
@@ -2040,8 +2025,6 @@ def Main_GUI():
                 enter_pwd.set("")
                 
             def can_exit():
-                """cancel exit function
-                """
                 win_logout_con.destroy()
                 
         
@@ -2051,8 +2034,6 @@ def Main_GUI():
        
         #radio button choice
         def stu_fun_choose():
-            """function choice for radio button
-            """
             if (v.get() == 1 or v.get()==2):
                 # ddl['value'] = ('WorkshopID')
                 stu_input.config(state = NORMAL)
@@ -2073,6 +2054,7 @@ def Main_GUI():
                 ddls_kind['state'] = 'readonly'
                 ddls_order['state'] = 'readonly'
                 ddl.current(0) 
+            return 0
 
         #function radio button
         rb_stu_enrollment = Radiobutton(stu_win,text= "Enrollment",variable = v,value = 1,command =stu_fun_choose).place(x = 125,y = 500)
@@ -2083,8 +2065,6 @@ def Main_GUI():
 
         #confirm button listener
         def stu_confirm_listener():
-            """choice for after click confirming button among enrollment, cancellation, listall, list enrollment and searching
-            """
             stuSe = searchEngine()
             if (v.get()==1):
                 if (var_stu_input.get() == ""):
