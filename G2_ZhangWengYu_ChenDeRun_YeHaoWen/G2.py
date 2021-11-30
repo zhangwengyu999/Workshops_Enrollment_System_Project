@@ -9,19 +9,21 @@ class searchEngine():
     def __init__(self):
         searchEngine.isStudent = False
     
-    def tsetStudnet(self):
+    def setStudnet(self):
+        """set the searchEngine ready for student
+        """
         self.isStudent = True
     def setAdmin(self):
+        """set the searchEngine ready for student
+        """
         self.isStudent = False
     
     def getWorkshopDataDict(self):
         """a function to get a dictionary from workshop text file
-
+        
         Returns:
             dictionary: a dictionary from workshop text file (key: wID; value:[title,location,date,time,quota,remaining])
-
         """
-
         file = open('workshop.txt',mode='r')
         readLine = file.readlines()
         outList = []
@@ -179,8 +181,7 @@ class searchEngine():
 
         inDict = self.getWorkshopDataDict()
         outDict = searchEngine.sort(inDict,inBase,inOrder)
-            
-            
+        
         outStr = ""
         flag = False
         outStr +=("Found:".center(100)+"\n")
@@ -225,7 +226,6 @@ class searchEngine():
 
         inDict = self.getWorkshopDataDict()
         outDict = searchEngine.sort(inDict,inBase,inOrder)
-            
             
         outStr = ""
         flag = False
@@ -341,13 +341,12 @@ class searchEngine():
         return outStr
     
     def sort(inDict,inBase,inOrder):
-        # inOrder True = increasing order; False = decreasing order
         """
         function to sort
         parameter:
             - inDict: input dictionary
             - inBase: sort based on inBase
-            - inOrder: sort order
+            - inOrder: sort order (True = increasing order; False = decreasing order)
         return:
             - outDict: output dictionary
         """
@@ -531,6 +530,9 @@ class Administrator():
 
         Args:
             wID (String): the workshop-wID to be deleted
+        
+        Return:
+            outStr(String): delete information
         """
         outStr = ""
         outDict = Administrator.getWorkshopDataDict()
@@ -543,6 +545,16 @@ class Administrator():
         return outStr
         
     def updateWorkShop(wID,inData,Index):
+        """the controller of updating function
+
+        Args:
+            wID (String): workshop with wID to be updated
+            inData (String): the new data to be updated
+            Index (String): which information to be updated (e.g. Title, Location,...)
+
+        Returns:
+            [type]: [description]
+        """
         outDict = Administrator.getWorkshopDataDict()
         outStr = ""
         if (wID in outDict):
@@ -561,6 +573,9 @@ class Administrator():
         parameter:
             - wID: a String of the number of workshop's ID
             - inName: the name to update to that workshop
+            
+        Return: 
+            the updating information
         """
         return(Administrator.updateWorkShop(wID,inName,0))
 
@@ -571,6 +586,8 @@ class Administrator():
         parameter:
             - wID: a String of the number of workshop's ID
             - inLocation: the location to update to that workshop
+        Return: 
+            the updating information
         """
         return(Administrator.updateWorkShop(wID,inLocation,1))
 
@@ -581,6 +598,8 @@ class Administrator():
         parameter:
             - wID: a String of the number of workshop's ID
             - inTime: the date to update to that workshop
+        Return: 
+            the updating information
         """
         return(Administrator.updateWorkShop(wID,inDate,2))
         
@@ -591,6 +610,8 @@ class Administrator():
         parameter:
             - wID: a String of the number of workshop's ID
             - inTime: the time to update to that workshop
+        Return: 
+            the updating information
         """
         return(Administrator.updateWorkShop(wID,inTime,3))
         
@@ -601,6 +622,8 @@ class Administrator():
         parameter:
             - wID: a String of the number of workshop's ID
             - inQuota: the quotas to update to taht workshop
+        Return: 
+            the updating information
         """
         outDict = Administrator.getWorkshopDataDict()
         outStr = ""
@@ -625,6 +648,8 @@ class Administrator():
         parameter:
             - wID: a String of the number of workshop's ID
             - inRemaining: the remianing quotas to update to taht workshop
+        Return: 
+            the updating information
         """
         outDict = Administrator.getWorkshopDataDict()
         outStr = ""
@@ -643,6 +668,8 @@ class Administrator():
     def listAll(inBase,inOrder):
         """
         function to print all workshops to admin
+        Return: 
+            - outStr: list of all workshop information
         """
         file = open('workshop.txt',mode='r')
         readLine = file.readlines()
@@ -699,7 +726,7 @@ class Administrator():
       
     #-------------------functional interface for administractor-------------------
     def adminInterface(self):
-        """an interface for administrator function including Add a workshop; Update a workshop; Search in workshops;
+        """an interface for administrator function including Add/Delete a workshop; Update a workshop; Search & Sort in workshops;
 
         Returns:
             int: 0 to quit
@@ -749,7 +776,7 @@ class Administrator():
             print(Administrator.listAll(-1,True))
             print("#","Enter the ID of event for updating:".center(100,"-"),"#")
             eventChoose = input("# >>> ID:")
-            print("#","Update based on (l):Location; (tit):Title; (d)Date; (t)Time; (quo)Quota; (r)Remaining".center(100),"#")
+            print("#","Update based on [l]:Location; [tit]:Title; [d]Date; [t]Time; [quo]Quota; [r]Remaining".center(100),"#")
             print("#","Enter(l/tit/d/t/quo/r)".center(100,"-"),"#")
             choose = input("# >>>").lower()
             print("#","Please enter the updated information:".center(100,"-"),"#")
@@ -920,7 +947,8 @@ class Student():
     def getWorkshopDataDict():
         """
         function to get the workshop dictionary
-        return: outDitc
+        return: 
+            outDitc:a dictionary of all workshop information
         """
 
         file = open('workshop.txt',mode='r')
@@ -938,7 +966,8 @@ class Student():
     def getEnrolledDataDict(self,inName):
         """
         function to get studnet's workshop dictionary
-        return: outDitc
+        return: 
+            outDitc: a dictionary of the enrolled workshop information
         """
         workshopBysID = open(inName + ".txt")
         readLine = workshopBysID.readlines()
@@ -976,12 +1005,15 @@ class Student():
             file.write(writeStr)
         file.close()
 
-    def isfindBywIDforEroll(self,sID,inwID):
+    def isfindBywIDforEnroll(self,sID,inwID):
         """
-        function to find whether the workshop is erolled or not 
+        function to find whether the workshop is enrolled or not 
         parameter
             - sID: the student ID
             - inwID: the input workshop ID
+        return:
+            False: Not enrolled
+            True: Enrolled
         """
         file = open(sID +".txt",mode='r')
         readLine = file.readlines()
@@ -993,11 +1025,14 @@ class Student():
 
     def isfindBywIDforCancel(self,sID,inwID):
         """
-        function to find whether the workshop is erolled or not 
+        function to find whether the workshop is enrolled or not 
 
         parameter
             - sID: the student ID
             - inwID: the input workshop ID
+        return:
+            False: Not enrolled
+            True: Enrolled
         """
         file = open(sID +".txt",mode='r')
         readLine = file.readlines()
@@ -1014,7 +1049,6 @@ class Student():
             return True
         else:
             return False
-
 
     def enrollTimeCheck(self,sID,wID):
         """
@@ -1051,27 +1085,26 @@ class Student():
                 else:
                     return False
 
-    
-    def eroll(self,sID,wID):
+    def enroll(self,sID,wID):
         """
-        function to eroll workshop by student
+        function to enroll workshop by student
 
         parameter:
             - sID: the student ID
             - wID: the workshop ID which the student want to enroll
         return:
-            - outStr: hint
+            - outStr: enrollment informations
         """
         outDict = Student.getWorkshopDataDict()
 
         outDictsID = self.getEnrolledDataDict(sID)
         outStr = ""
         if (wID in outDict):
-            if (self.isfindBywIDforEroll(sID,wID) == False):  
+            if (self.isfindBywIDforEnroll(sID,wID) == False):  
                 if (Student.enrollTimeCheck(self,sID,wID) == False):  
-                    outStr += ("Sorry you can not eroll a workshop of a same date and same time/overlap time!".center(100)+"\n")                  
+                    outStr += ("Sorry you can not enroll a workshop of a same date and same time/overlap time!".center(100)+"\n")                  
                 elif(int(outDict[wID][5]) <= 0):
-                    outStr +=("Sorry you can not eroll the workshop! No remaining quota!".center(100)+"\n")  
+                    outStr +=("Sorry you can not enroll the workshop! No remaining quota!".center(100)+"\n")  
                 else: 
                     outDict[wID][5] = str(int(outDict[wID][5]) - 1)
                     outDictsID[wID] = outDict[wID]
@@ -1081,22 +1114,22 @@ class Student():
                         outDictsID[item] = outDict[item]
                     self.writeEnrolledData(sID,outDictsID)
                     
-                    outStr +=("Successful erollment!".center(100)+"\n")
+                    outStr +=("Successful enrollment!".center(100)+"\n")
             else:
-                outStr +=("Sorry you can not eroll this workshop more than once!".center(100)+"\n")
+                outStr +=("Sorry you can not enroll this workshop more than once!".center(100)+"\n")
         else:
             outStr +=("No such workshop!".center(100)+"\n")
         return outStr
 
     def cancel(self,sID,wID):
         """
-        function to cancle workshop which has been erolled by student
+        function to cancle workshop which has been enrolled by student
 
         parameter:
             - sID: the student ID
             - wID: the workshop ID which the student want to cancel
         return:
-            - outStr: hint
+            - outStr: cancellation information
         """
         outDict = Student.getWorkshopDataDict()
 
@@ -1121,12 +1154,12 @@ class Student():
 
     def listAll(inBase,inOrder):
         """
-        function to print all workshops to studnets
+        function to print all sorted workshops to studnets
         parameter:
             - inBase: sort based on inBase
             - inOrder: sort order
         return:
-            - outStr: the result
+            - outStr: the list of all workshop information
         """
         file = open('workshop.txt',mode='r')
         readLine = file.readlines()
@@ -1139,9 +1172,7 @@ class Student():
         inDict = dict(outList)
         file.close()
         
-        
         outDict = searchEngine.sort(inDict,inBase,inOrder)
-        
         
         outStr +=(("="*38).center(100,)+"\n")
         for d in outDict:
@@ -1164,7 +1195,7 @@ class Student():
             - inBase: sort basd on inBase
             - inOrder: sort order
         return:
-            - outStr: result
+            - outStr: the list of all workshop information
         """
         sIDfile = sID+".txt"
         file = open(sIDfile,mode='r')
@@ -1179,8 +1210,7 @@ class Student():
         file.close()
         
         wsDict = Student.getWorkshopDataDict()
-        
-
+    
         outDict = searchEngine.sort(inDict,inBase,inOrder)
         
         if (len(outDict) == 0):
@@ -1188,15 +1218,14 @@ class Student():
         else:
             outStr +=(("="*38).center(100,)+"\n")
             for d in outDict:
-                if (d in inDict):
-                    outStr +=("|{0:^15}|{1:^20}|".format("workshop ID",d).center(100)+"\n")
-                    outStr +=(("."*38).center(100,)+"\n")
-                    outStr +=("|{0:^15}|{1:^20}|".format("Title",outDict[d][0]).center(100)+"\n")
-                    outStr +=("|{0:^15}|{1:^20}|".format("Location",outDict[d][1]).center(100)+"\n")
-                    outStr +=("|{0:^15}|{1:^20}|".format("Date",outDict[d][2]).center(100)+"\n")
-                    outStr +=("|{0:^15}|{1:^20}|".format("Time",outDict[d][3]).center(100)+"\n")
-                    outStr +=("|{0:^15}|{1:^20}|".format("Remaining",outDict[d][5]).center(100)+"\n")
-                    outStr +=(("="*38).center(100,)+"\n")
+                outStr +=("|{0:^15}|{1:^20}|".format("workshop ID",d).center(100)+"\n")
+                outStr +=(("."*38).center(100,)+"\n")
+                outStr +=("|{0:^15}|{1:^20}|".format("Title",wsDict[d][0]).center(100)+"\n")
+                outStr +=("|{0:^15}|{1:^20}|".format("Location",wsDict[d][1]).center(100)+"\n")
+                outStr +=("|{0:^15}|{1:^20}|".format("Date",wsDict[d][2]).center(100)+"\n")
+                outStr +=("|{0:^15}|{1:^20}|".format("Time",wsDict[d][3]).center(100)+"\n")
+                outStr +=("|{0:^15}|{1:^20}|".format("Remaining",wsDict[d][5]).center(100)+"\n")
+                outStr +=(("="*38).center(100,)+"\n")
         return outStr
     #-------------------login interface for student-------------------
     def login():
@@ -1228,27 +1257,23 @@ class Student():
         else:
             print("")
 
-    
-
     #-------------------functional interface for student-------------------
     def studentInterface(self):
         """an interface for student function including Enroll a workshop; Cancel a workshop; ListAll; List enrolled workshops; Search in workshops
         """
         
-        print("#","Please select:(e)Enrollment; (c)Cancellation; (la)ListAll; (l)List enrollment; (s) Searching (q)Quit".center(100),"#")
+        print("#","Please select:[e]Enrol; [c]Cancel; [la]List all workshops; [l]List enrollments; [s]Search [q]Quit".center(100),"#")
         print("#","Enter (e/c/la/l/s/q)".center(100,"-"),"#")
         choose = input("# >>>").lower()
         if(choose == "e"):
-            print("#","Please input the ID of which workshop you want to eroll:".center(100,"-"),"#")
+            print("#","Please input the ID of which workshop you want to enroll:".center(100,"-"),"#")
             wID = input("# >>>")
-            print(self.eroll(self.getUsers(),wID))
+            print(self.enroll(self.getUsers(),wID))
         elif(choose == "c"):
             print("#","Please input the ID of which workshop you want to cancel:".center(100,"-"),"#")
             wID = input("# >>>")
             print(self.cancel(self.getUsers(),wID))
         elif(choose == "la"):
-            
-            
             print("#","Sort based on [tit]:Title; [l]Location; [d]Date; [t]Time; [quo]Quota; [r]Remaining; else on ID".center(100),"#")
             print("#","Enter(tit/l/d/t/quo/r)".center(100,"-"),"#")
             base = input("# >>>")
@@ -1280,7 +1305,6 @@ class Student():
             print(Student.listAll(inBase,inOrder))
             
         elif(choose == "l"):
-            
             print("#","Sort based on [tit]:Title; [l]Location; [d]Date; [t]Time; [quo]Quota; else on ID".center(100),"#")
             print("#","Enter(tit/l/d/t/quo/r)".center(100,"-"),"#")
             base = input("# >>>")
@@ -1381,20 +1405,23 @@ class Student():
             file = open('student.txt','a')
             file.write(str)
             file.close()
+            
+            file = open(users+".txt",'a+')
+            file.close()
+            
             print("Seccessfully register a new student account!".center(100)+"\n")
             Student.login()
         else:
             print("Unseccessful! For same user name! Try again!".center(100)+"\n")
             Student.addusers()
             
-       
     def addusers():
         """
         function to register a new student account
         """
         users = Student.setUsers()
         if Student.isContainUsers(users):
-            print("#","The user have already been registered, to (l)login or continue (r)registering?".center(100),"#")
+            print("#","The user have already been registered, to [l]login or continue [r]registering?".center(100),"#")
             print("#","(l/r)".center(100,"-"),"#")
             choose = input("# >>>").lower()
             if choose=="l":
@@ -1403,9 +1430,13 @@ class Student():
                 Student.addusers()
         else:
             Student.strToTxt(users)
-
-
+            
 def Main_GUI():
+    """The GUI for the Workshops Enrollment System
+
+    Returns:
+        0: exit()
+    """
     win = Tk()
     win.title("Workshops Enrollment System - Group2")
     width = 600
@@ -1423,9 +1454,8 @@ def Main_GUI():
     main_page = Frame(win).place(x=0,y=0)
 
     # title lable
-
-    main_title = Label(main_page,text="Welcome to use Workshops Enrollment System made by Group 2!\n\nZHANG Wengyu21098431d\nCHEN Derun21098424d\nYE Haowen21098829d",font=(CENTER,14)).place(x=85,y=50)
-    sub_title = Label(main_page,textvariable=sub_title_text,font=(CENTER,14)).place(x=150,y=200)
+    Label(main_page,text="Welcome to use Workshops Enrollment System made by Group 2!\n\nZHANG Wengyu21098431d\nCHEN Derun21098424d\nYE Haowen21098829d",font=(CENTER,14)).place(x=85,y=50)
+    Label(main_page,textvariable=sub_title_text,font=(CENTER,14)).place(x=150,y=200)
     
     # user entry
     Label(main_page,text='User:').place(x=150,y=300)
@@ -1439,10 +1469,10 @@ def Main_GUI():
     input_pwd=Entry(main_page,textvariable=enter_pwd,show='*')
     input_pwd.place(x=250,y=350)
 
-
     # main page quit button listener
     def quit_linstener():
-        
+        """main page quit button listener
+        """
         win_quit_con=Toplevel(main_page)
         screenWidth = win.winfo_screenwidth()
         screenHeight = win.winfo_screenheight()
@@ -1454,13 +1484,17 @@ def Main_GUI():
         def can_exit():
             win_quit_con.destroy()
             
-        
         # confirm button on the quit page
         Button(win_quit_con,text='Quit',command=con_exit).place(x=60,y=40)
         Button(win_quit_con,text='Cancel',command=can_exit).place(x=100,y=40)
         
     # main page register button listener
     def register_linstener():
+        """main page register button listener
+
+        Returns:
+             0: exit()
+        """
         register_title = StringVar()
         register_title.set("")
         if (x.get() != 1 and x.get() != 2):
@@ -1485,12 +1519,16 @@ def Main_GUI():
         #password confirm
         in_pwd_confirm=StringVar()
         Label(win_reg,text='Conform Password:').place(x=10,y=90)
-        inConPw = Entry(win_reg,textvariable=in_pwd_confirm,show='*').place(x=150,y=90)   
-        
-        reg_label = Label(win_reg, textvariable = register_title).place(x=90,y=180)
+        Entry(win_reg,textvariable=in_pwd_confirm,show='*').place(x=150,y=90)   
+        Label(win_reg, textvariable = register_title).place(x=90,y=180)
         
         # confirm button listener
         def confirm_listener():
+            """confirm button listener
+
+            Returns:
+                0: sexit()
+            """
             inUser = in_name.get()
             inPw = in_pwd.get()
             inConPw = in_pwd_confirm.get()
@@ -1505,6 +1543,8 @@ def Main_GUI():
                 file = open('student.txt','a')
                 file.write(str)
                 file.close()
+                file = open(inUser+".txt",'a+')
+                file.close()
                 register_title.set("Seccessfully registered!".center(50))
             else:
                 register_title.set("Illagel input!".center(50))
@@ -1516,6 +1556,11 @@ def Main_GUI():
         
     # admin page for inAdmin
     def admin_page(inAdmin):
+        """admin page for inAdmin
+
+        Args:
+            inAdmin (Administrator): the user
+        """
         win.withdraw()
         admin_win = Tk() 
         admin_win.title("Administrator Page - "+inAdmin.users)
@@ -1531,8 +1576,8 @@ def Main_GUI():
         admin_title_text = StringVar(admin_win)
         admin_sub_title_text = StringVar(admin_win)
         
-        admin_title = Label(admin_win,textvariable = admin_title_text,text="Workshop information:",font=(CENTER,14)).place(x=275,y=25)
-        admin_sub_title = Label(admin_win,textvariable=admin_sub_title_text,text="Please select functions!",font=(CENTER,14)).place(x=225,y=450)
+        Label(admin_win,textvariable = admin_title_text,text="Workshop information:",font=(CENTER,14)).place(x=275,y=25)
+        Label(admin_win,textvariable=admin_sub_title_text,text="Please select functions!",font=(CENTER,14)).place(x=225,y=450)
         
         admin_sub_title_text.set("Please select functions!".center(50))
         admin_title_text.set("Workshop information:")
@@ -1560,7 +1605,6 @@ def Main_GUI():
         admin_entry2_text = StringVar(admin_win)
         admin_entry_2 = Entry(admin_win,textvariable=admin_entry2_text)
         admin_entry_2.place(x=320,y=600)
-        
         
         # for search
         admin_Com_value = StringVar(admin_win)
@@ -1616,6 +1660,8 @@ def Main_GUI():
        
         # log out confirm listener
         def admin_logout_listener():
+            """log out confirm button listener
+            """
             win_logout_con=Toplevel(admin_win)
             screenWidth = win.winfo_screenwidth()
             screenHeight = win.winfo_screenheight()
@@ -1624,6 +1670,8 @@ def Main_GUI():
             win_logout_con.title("Confirm Log out?")
             
             def con_exit():
+                """confirm exit button listener
+                """
                 admin_win.withdraw()
                 win_logout_con.destroy()
                 win.deiconify()
@@ -1631,11 +1679,11 @@ def Main_GUI():
                 enter_user.set("")
                 enter_pwd.set("")
 
-                
             def can_exit():
+                """cancel exir button listener
+                """
                 win_logout_con.destroy()
                 
-        
             # confirm button on the quit page
             Button(win_logout_con,text='Log out',command=con_exit).place(x=50,y=40)
             Button(win_logout_con,text='Cancel',command=can_exit).place(x=110,y=40)
@@ -1644,6 +1692,8 @@ def Main_GUI():
         
         # radio button choise
         def admin_fun_choose():
+            """radio button choise listener
+            """
             if (adminC.get() == 1):
                 
                 displayText.configure(state='normal')
@@ -1687,8 +1737,6 @@ def Main_GUI():
                 admin_Com_choise_sort.current(0)
                 admin_Com_choise_sort_order.current(0)
                 admin_Com_choise2.current(0)
-                
-                
             elif(adminC.get() == 2):
                 
                 displayText.configure(state='normal')
@@ -1782,7 +1830,6 @@ def Main_GUI():
                 
                 admin_entry_2.place_forget()
                 
-               
                 admin_label_3.place_forget()
                 admin_entry_3.place_forget()
                 
@@ -1803,17 +1850,15 @@ def Main_GUI():
             else:
                 admin_sub_title_text.set("Please select your identity first!")
             
-        
         # function radio button
-        rbt_admin_add = Radiobutton(admin_win,text="Add",variable=adminC,value=1,command = admin_fun_choose).place(x=200,y=500)
-        rbt_admin_del = Radiobutton(admin_win,text="Delete",variable=adminC,value=4,command = admin_fun_choose).place(x=300,y=500)
-        rbt_admin_update = Radiobutton(admin_win,text="Update",variable=adminC,value=2,command = admin_fun_choose).place(x=400,y=500)
-        rbt_admin_search = Radiobutton(admin_win,text="Search",variable=adminC,value=3,command = admin_fun_choose).place(x=500,y=500)
-        
-        
-        
+        Radiobutton(admin_win,text="Add",variable=adminC,value=1,command = admin_fun_choose).place(x=200,y=500)
+        Radiobutton(admin_win,text="Delete",variable=adminC,value=4,command = admin_fun_choose).place(x=300,y=500)
+        Radiobutton(admin_win,text="Update",variable=adminC,value=2,command = admin_fun_choose).place(x=400,y=500)
+        Radiobutton(admin_win,text="Search",variable=adminC,value=3,command = admin_fun_choose).place(x=500,y=500)
         
         def admin_go_listener():
+            """the Go function button listener
+            """
             if (adminC.get() == 1):
                 if (admin_entry_1.get() == "" or admin_entry_2.get() == "" or admin_entry_3.get() == "" or
                     admin_entry_4.get() == "" or admin_entry_5.get() == ""):
@@ -1899,6 +1944,7 @@ def Main_GUI():
                     displayText.delete(1.0,END)
                     displayText.insert(END,outStr)
                     displayText.configure(state='disabled')
+            
             elif(adminC.get() == 4):
                 if (admin_entry_1.get() == ""):
                     admin_sub_title_text.set("Empty input!".center(50))
@@ -1912,15 +1958,18 @@ def Main_GUI():
             else:
                 admin_sub_title_text.set("Please select your identity first!".center(50))
             
-        
-        
         # 2 button on the admin page
         Button(admin_win,text='Go',command=admin_go_listener).place(x=300,y=725)
         Button(admin_win,text='Log out',command=admin_logout_listener).place(x=400,y=725)
-        
         admin_win.mainloop()
         
     def stu_page(inStu):
+        """all functions and information in student page after successfully login as a student identification
+
+        Args:
+            inStu (Student()): as the object of Student()
+        """
+        win.withdraw()
         stu_win = Tk() 
         stu_win.title("Student Page - "+inStu.users)
         width = 730
@@ -1936,9 +1985,9 @@ def Main_GUI():
         stu_sub_title_text = StringVar(stu_win)
         stu_inform_text = StringVar(stu_win)
 
-        stu_title = Label(stu_win,textvariable=stu_title_text,text = "Enrollment information:",font=(CENTER,14)).place(x = 275,y = 25)
-        stu_sub_title = Label(stu_win,textvariable=stu_sub_title_text,text = "Please select functions!",font=(CENTER,14)).place(x= 275, y = 450)
-        stu_inform = Label(stu_win, textvariable=stu_inform_text,font = (CENTER,14)).place(x = 100,y = 650)
+        Label(stu_win,textvariable=stu_title_text,text = "Enrollment information:",font=(CENTER,14)).place(x = 275,y = 25)
+        Label(stu_win,textvariable=stu_sub_title_text,text = "Please select functions!",font=(CENTER,14)).place(x= 275, y = 450)
+        Label(stu_win, textvariable=stu_inform_text,font = (CENTER,14)).place(x = 100,y = 650)
         stu_title_text.set("Enrollment information:")
         stu_sub_title_text.set("Please select functions!")
 
@@ -1955,7 +2004,7 @@ def Main_GUI():
         ddl.current(0)
 
         #drop-down-box setting for sorting kind and sorting order
-        ddls_kind_text = Label(stu_win, text = "Sort On").place(x = 200, y = 580)
+        Label(stu_win, text = "Sort On").place(x = 200, y = 580)
         ddls_kind = ttk.Combobox(stu_win, width = 9)
         ddls_kind.place(x = 280, y = 580)
         ddls_kind['value'] = ('WorkshopID','Title','Location','Date','Time','Remaining')
@@ -1974,6 +2023,11 @@ def Main_GUI():
 
         #drop-down-box condition judging for ddls
         def ddls_Kind_CJ():
+            """drop-down-box list for judging choice among workshopID, title, location, date ,time and remaining
+
+            Returns:
+                [int]: return the choice in drop-down-box list sort function
+            """
             if (ddls_kind.get()=="WorkshopID"):
                 inBase = -1
             elif (ddls_kind.get()=="Title"):
@@ -1989,6 +2043,11 @@ def Main_GUI():
             return inBase
 
         def ddls_Order_CJ():
+            """drop-down-box list for judging choice between ascending order and descending order
+
+            Returns:
+                [boolean]: return the choice of whether ascending or descending
+            """
             if (ddls_order.get()=="Ascending"):
                 inOrder = True
             elif (ddls_order.get()=="Descending"):
@@ -1996,12 +2055,8 @@ def Main_GUI():
             return inOrder
 
         def refresh():
-            displayText.configure(state='normal')
-            displayText.delete(1.0, END)
-            displayText.insert(END,inStu.listEnrolledWs(inStu.getUsers(),ddls_Kind_CJ(),ddls_Order_CJ()))
-            displayText.configure(state='disabled')
-            
-        
+            """refresh the enrollment information page to publish the latest information of enrollment
+            """
             displayText.configure(state='normal')
             displayText.delete(1.0, END)
             displayText.insert(END,inStu.listEnrolledWs(inStu.getUsers(),ddls_Kind_CJ(),ddls_Order_CJ()))
@@ -2009,6 +2064,8 @@ def Main_GUI():
 
         #logout listener
         def stu_logout_listener():
+            """function to logout current student user for switching or quitting
+            """
             win_logout_con=Toplevel(stu_win)
             screenWidth = win.winfo_screenwidth()
             screenHeight = win.winfo_screenheight()
@@ -2017,6 +2074,8 @@ def Main_GUI():
             win_logout_con.title("Confirm Log out?")
             
             def con_exit():
+                """continue exit function
+                """
                 stu_win.withdraw()
                 win_logout_con.destroy()
                 win.deiconify()
@@ -2025,6 +2084,8 @@ def Main_GUI():
                 enter_pwd.set("")
                 
             def can_exit():
+                """cancel exit function
+                """
                 win_logout_con.destroy()
                 
         
@@ -2034,6 +2095,8 @@ def Main_GUI():
        
         #radio button choice
         def stu_fun_choose():
+            """function choice for radio button
+            """
             if (v.get() == 1 or v.get()==2):
                 # ddl['value'] = ('WorkshopID')
                 stu_input.config(state = NORMAL)
@@ -2054,23 +2117,24 @@ def Main_GUI():
                 ddls_kind['state'] = 'readonly'
                 ddls_order['state'] = 'readonly'
                 ddl.current(0) 
-            return 0
 
         #function radio button
-        rb_stu_enrollment = Radiobutton(stu_win,text= "Enrollment",variable = v,value = 1,command =stu_fun_choose).place(x = 125,y = 500)
-        rb_stu_enrollment = Radiobutton(stu_win,text= "Cancellation",variable = v,value = 2,command =stu_fun_choose).place(x = 225,y = 500)
-        rb_stu_enrollment = Radiobutton(stu_win,text= "ListAll",variable = v,value = 3,command =stu_fun_choose).place(x = 325,y = 500)
-        rb_stu_enrollment = Radiobutton(stu_win,text= "List Enrollment",variable = v,value = 4,command =stu_fun_choose).place(x = 400,y = 500)
-        rb_stu_enrollment = Radiobutton(stu_win,text= "Searching",variable = v,value = 5,command =stu_fun_choose).place(x = 525,y = 500)
+        Radiobutton(stu_win,text= "Enrollment",variable = v,value = 1,command =stu_fun_choose).place(x = 125,y = 500)
+        Radiobutton(stu_win,text= "Cancellation",variable = v,value = 2,command =stu_fun_choose).place(x = 225,y = 500)
+        Radiobutton(stu_win,text= "List all workshop",variable = v,value = 3,command =stu_fun_choose).place(x = 325,y = 500)
+        Radiobutton(stu_win,text= "List Enrollment",variable = v,value = 4,command =stu_fun_choose).place(x = 450,y = 500)
+        Radiobutton(stu_win,text= "Searching",variable = v,value = 5,command =stu_fun_choose).place(x = 570,y = 500)
 
         #confirm button listener
         def stu_confirm_listener():
+            """choice for after click confirming button among enrollment, cancellation, listall, list enrollment and searching
+            """
             stuSe = searchEngine()
             if (v.get()==1):
                 if (var_stu_input.get() == ""):
                     stu_inform_text.set("Empty input!".center(100))
                 else:
-                    stu_inform_text.set(inStu.eroll(inStu.getUsers(),var_stu_input.get()))
+                    stu_inform_text.set(inStu.enroll(inStu.getUsers(),var_stu_input.get()))
                     refresh()
 
             elif (v.get()==2):
@@ -2125,8 +2189,6 @@ def Main_GUI():
                     stu_inform_text.set("Please choose the function that using!".center(100))
                 displayText.configure(state='disabled')
 
-                #return 0
-
         # 2 button on the admin page
         Button(stu_win,text='Confirm',command = stu_confirm_listener).place(x=275,y=700)
         Button(stu_win,text='Log out',command=stu_logout_listener).place(x=375,y=700)
@@ -2170,10 +2232,10 @@ def Main_GUI():
     bt_quit=Button(main_page,text='Quit',command = quit_linstener)
     bt_quit.place(x=350,y=400)
 
-    
-
     # identity radio button listener
     def select_ID():
+        """identity radio button listener
+        """
         if (x.get() == 1):
             bt_register.place_forget()
             bt_register.config(state=DISABLED)
@@ -2182,66 +2244,10 @@ def Main_GUI():
             bt_register.config(state=NORMAL)
             
     # 2 radiobuttons on the main page
-    rbt_admin = Radiobutton(main_page,text="Admin",variable=x,value=1,command=select_ID).place(x=175,y=275)
-    rbt_stu = Radiobutton(main_page,text="Student",variable=x,value=2,command=select_ID).place(x=325,y=275)
-
-    win.mainloop()
-
-    # login button listener
-    def login_listener():
-        inUser = input_user.get()
-        inPw = input_pwd.get()
-        if (x.get() == 2):
-            if (not Student.isContainUsers(inUser)):
-                sub_title_text.set("No such user! Please register first!".center(50))
-                
-            elif (not Student.isCorrectPasswd(inUser,inPw) or inUser == "" or inPw == ""):
-                sub_title_text.set("Wrong User name or Password!".center(50))
-            else:
-                inStu = Student(inUser,inPw)
-                sub_title_text.set("Successfully login! Welcome {0}".format(inStu.users).center(50))
-                stu_page(inStu)
-                # do sth stu
-        elif (x.get() == 1):
-            if (not Administrator.isContainUsers(inUser)):
-                sub_title_text.set("No such user!".center(50))
-                
-            elif (not Administrator.isCorrectPasswd(inUser,inPw) or inUser == "" or inPw == ""):
-                sub_title_text.set("Wrong User name or Password!".center(50))
-            else:
-                inAdmin = Administrator(inUser,inPw)
-                sub_title_text.set("Successfully login! Welcome {0}".format(inAdmin.users).center(50))
-                # do sth admin
-                admin_page(inAdmin)
-        else:
-            sub_title_text.set("Please select your identity first!".center(50))
-    
-    # 3 buttons on the main page
-    bt_login=Button(main_page,text='Login',command=login_listener)
-    bt_login.place(x=150,y=400)
-    bt_register=Button(main_page,text='Register',command = register_linstener)
-    bt_register.place(x=250,y=400)
-    bt_quit=Button(main_page,text='Quit',command = quit_linstener)
-    bt_quit.place(x=350,y=400)
-
-    
-
-    # identity radio button listener
-    def select_ID():
-        if (x.get() == 1):
-            bt_register.place_forget()
-            bt_register.config(state=DISABLED)
-        elif (x.get() == 2):
-            bt_register.place(x=250,y=400)
-            bt_register.config(state=NORMAL)
-            
-    # 2 radiobuttons on the main page
-    rbt_admin = Radiobutton(main_page,text="Admin",variable=x,value=1,command=select_ID).place(x=175,y=275)
-    rbt_stu = Radiobutton(main_page,text="Student",variable=x,value=2,command=select_ID).place(x=325,y=275)
-
+    Radiobutton(main_page,text="Admin",variable=x,value=1,command=select_ID).place(x=175,y=275)
+    Radiobutton(main_page,text="Student",variable=x,value=2,command=select_ID).place(x=325,y=275)
     win.mainloop()
         
-
 def main():
     """
     function to run the whole program
