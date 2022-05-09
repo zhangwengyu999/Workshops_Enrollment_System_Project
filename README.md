@@ -10,6 +10,10 @@
 
 **YE Haowen [(https://github.com/ShanYu0205)](https://github.com/ShanYu0205)**
 
+## Project Report
+
+[https://doi.org/10.6084/m9.figshare.19733251.v1](https://doi.org/10.6084/m9.figshare.19733251.v1)
+
 ## Functions
 
 1. System Login by Administrators and Students;
