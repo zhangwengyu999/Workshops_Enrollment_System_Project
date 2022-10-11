@@ -1454,7 +1454,7 @@ def Main_GUI():
     main_page = Frame(win).place(x=0,y=0)
 
     # title lable
-    Label(main_page,text="Welcome to use Workshops Enrollment System made by Group 2!\n\nZHANG Wengyu21098431d\nCHEN Derun21098424d\nYE Haowen21098829d",font=(CENTER,14)).place(x=85,y=50)
+    Label(main_page,text="Welcome to use Workshops Enrollment System made by Group 2!\n",font=(CENTER,14)).place(x=85,y=50)
     Label(main_page,textvariable=sub_title_text,font=(CENTER,14)).place(x=150,y=200)
     
     # user entry
@@ -2255,9 +2255,9 @@ def main():
     print("".center(104,"#"))
     print("#","Welcome to use Workshops Enrollment System made by Group 2!".center(100),"#")
     print("#","".center(100),"#")
-    print("#","ZHANG Wengyu21098431d".center(100),"#")
-    print("#","CHEN Derun21098424d".center(100),"#")
-    print("#","YE Haowen21098829d".center(100),"#")
+    print("#"," ".center(100),"#")
+    print("#"," ".center(100),"#")
+    print("#"," ".center(100),"#")
     print("#","".center(100,"-"),"#")
     
     print("#","Launch [c]CLI or [g]GUI? [q] for quit".center(100),"#")
